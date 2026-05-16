@@ -40,3 +40,45 @@ if [ -z "$MAVEN_SKIP_RC" ] ; then
 
   if [ -f "$HOME/.mavenrc" ] ; then
     . "$HOME/.mavenrc"
+  fi
+
+fi
+
+# OS specific support. $var _must_ be set to either true or false.
+cygwin=false;
+mingw=false;
+case "`uname`" in
+  CYGWIN*) cygwin=true;;
+  MINGW*) mingw=true;;
+esac
+
+## resolve links - $0 may be a link to Maven's home
+PRG="$0"
+
+# need this for relative symlinks
+while [ -h "$PRG" ] ; do
+  ls=`ls -ld "$PRG"`
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '/.*' > /dev/null; then
+    PRG="$link"
+  else
+    PRG="`dirname "$PRG"`/$link"
+  fi
+done
+
+saveddir=`pwd`
+
+MAVEN_HOME=`dirname "$PRG"`/..
+
+# make it fully qualified
+MAVEN_HOME=`cd "$MAVEN_HOME" && pwd`
+
+cd "$saveddir"
+
+# For Cygwin, ensure paths are in Unix format before anything is touched
+if $cygwin ; then
+  [ -n "$MAVEN_HOME" ] &&
+    MAVEN_HOME=`cygpath --unix "$MAVEN_HOME"`
+  [ -n "$JAVA_HOME" ] &&
+    JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+  [ -n "$CLASSPATH" ] &&
