@@ -25,3 +25,12 @@
 @REM   MAVEN_BATCH_ECHO    (Optional) Set to 'on' to enable the echoing of the batch commands.
 @REM   MAVEN_BATCH_PAUSE   (Optional) set to 'on' to wait for a key stroke before ending.
 @REM   MAVEN_OPTS          (Optional) Java runtime options used when Maven is executed.
+@REM   MAVEN_SKIP_RC       (Optional) Flag to disable loading of mavenrc files.
+@REM   MAVEN_DEBUG_ADDRESS (Optional) Set the debug address. Default value is 8000
+@REM -----------------------------------------------------------------------------
+
+@REM Begin all REM lines with '@' in case MAVEN_BATCH_ECHO is 'on'
+@echo off
+@REM set title of command window
+title %0
+@REM enable echoing by setting MAVEN_BATCH_ECHO to 'on'
