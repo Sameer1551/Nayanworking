@@ -166,3 +166,42 @@ find_file_argument_basedir() {
     fi
     if [ "$arg" = "-f" -o "$arg" = "--file" ]; then
       found_file_switch=1
+    fi
+  done
+  echo "${basedir}"
+)
+}
+
+# concatenates all lines of a file
+concat_lines() {
+  if [ -f "$1" ]; then
+    echo "`tr -s '\r\n' '  ' < "$1"`"
+  fi
+}
+
+MAVEN_PROJECTBASEDIR="${MAVEN_BASEDIR:-`find_maven_basedir "$@"`}"
+MAVEN_OPTS="`concat_lines "$MAVEN_PROJECTBASEDIR/.mvn/jvm.config"` $MAVEN_OPTS"
+
+# For Cygwin, switch project base directory path to Windows format before
+# executing Maven otherwise this will cause Maven not to consider it.
+if $cygwin ; then
+  [ -n "$MAVEN_PROJECTBASEDIR" ] &&
+  MAVEN_PROJECTBASEDIR=`cygpath --path --windows "$MAVEN_PROJECTBASEDIR"`
+fi
+
+export MAVEN_PROJECTBASEDIR
+
+# Provide a "standardized" way to retrieve the CLI args that will
+# work with both Windows and non-Windows executions.
+MAVEN_CMD_LINE_ARGS="$MAVEN_CONFIG $@"
+export MAVEN_CMD_LINE_ARGS
+
+exec "$JAVACMD" \
+  $MAVEN_OPTS \
+  $MAVEN_DEBUG_OPTS \
+  -classpath "${CLASSWORLDS_JAR}" \
+  "-Dclassworlds.conf=${MAVEN_HOME}/bin/m2.conf" \
+  "-Dmaven.home=${MAVEN_HOME}" \
+  "-Dlibrary.jansi.path=${MAVEN_HOME}/lib/jansi-native" \
+  "-Dmaven.multiModuleProjectDirectory=${MAVEN_PROJECTBASEDIR}" \
+  ${CLASSWORLDS_LAUNCHER} ${MAVEN_ARGS} "$@"
