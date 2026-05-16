@@ -22,3 +22,15 @@ WARNING: Please consider reporting this to the maintainers of class
 com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper
 WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
 WARNING: Final field _cipher in class 
+org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher has been mutated 
+reflectively by class org.eclipse.sisu.bean.BeanPropertyField in unnamed module 
+@1d548a08 (file:/D:/my%20programming/testing%20claude/opencode/apache-maven-3.9.9/lib/
+org.eclipse.sisu.inject-0.9.0.M3.jar)
+WARNING: Use --enable-final-field-mutation=ALL-UNNAMED to avoid a warning
+WARNING: Mutating final fields will be blocked in a future release unless final field 
+mutation is enabled
+[INFO] Scanning for projects...
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml
+Progress (1): 4.6 kB
+Progress (2): 4.6 kB | 3.1 kB
