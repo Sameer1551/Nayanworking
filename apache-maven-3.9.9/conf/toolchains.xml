@@ -19,3 +19,24 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+<!--
+ | This is the toolchains file for Maven. It can be specified at two levels:
+ |
+ |  1. User Level. This toolchains.xml file provides configuration for a single user,
+ |                 and is normally provided in ${user.home}/.m2/toolchains.xml.
+ |
+ |                 NOTE: This location can be overridden with the CLI option:
+ |
+ |                 -t /path/to/user/toolchains.xml
+ |
+ |  2. Global Level. This toolchains.xml file provides configuration for all Maven
+ |                 users on a machine (assuming they're all using the same Maven
+ |                 installation). It's normally provided in
+ |                 ${maven.conf}/toolchains.xml.
+ |
+ |                 NOTE: This location can be overridden with the CLI option:
+ |
+ |                 -gt /path/to/global/toolchains.xml
+ |
+ | The sections in this sample file are intended to give you a running start at
+ | getting the most out of your Maven installation.
