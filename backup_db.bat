@@ -42,3 +42,12 @@ if %ERRORLEVEL% equ 0 (
         del "%BACKUP_FILE%"
     ) else (
         echo Encryption failed. Retaining plaintext backup.
+    )
+) else (
+    echo Error during database backup.
+)
+
+:: Optional: Delete backups older than 30 days
+forfiles /p "%BACKUP_DIR%" /s /m *.enc /d -30 /c "cmd /c del @path" 2>nul
+
+endlocal
