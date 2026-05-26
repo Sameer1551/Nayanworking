@@ -454,3 +454,155 @@ Project URL: http://hc.apache.org/httpcomponents-core-ga
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- lib/plexus-cipher-2.0.jar: org.codehaus.plexus:plexus-cipher:jar:2.0
+    Project: Plexus Cipher: encryption/decryption Component
+Project URL: https://codehaus-plexus.github.io/plexus-cipher/
+    License: Apache License, Version 2.0 (Apache-2.0)
+
+    License URL: http://www.apache.org/licenses/LICENSE-2.0.txt (lib/plexus-cipher.license)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- boot/plexus-classworlds-2.8.0.jar: org.codehaus.plexus:plexus-classworlds:bundle:2.8.0
+    Project: Plexus Classworlds
+Project URL: https://codehaus-plexus.github.io/plexus-classworlds/
+    License: Apache License, Version 2.0 (Apache-2.0)
+
+    License URL: https://www.apache.org/licenses/LICENSE-2.0.txt (boot/plexus-classworlds.license)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- lib/plexus-component-annotations-2.1.0.jar: org.codehaus.plexus:plexus-component-annotations:jar:2.1.0
+    Project: Plexus :: Component Annotations
+Project URL: http://codehaus-plexus.github.io/plexus-containers/plexus-component-annotations/
+    License: Apache License, Version 2.0 (Apache-2.0)
+
+    License URL: http://www.apache.org/licenses/LICENSE-2.0.txt (lib/plexus-component-annotations.license)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- lib/plexus-interpolation-1.27.jar: org.codehaus.plexus:plexus-interpolation:bundle:1.27
+    Project: Plexus Interpolation API
+Project URL: https://codehaus-plexus.github.io/plexus-pom/plexus-interpolation/
+    License: Apache License, Version 2.0 (Apache-2.0)
+
+    License URL: https://www.apache.org/licenses/LICENSE-2.0.txt (lib/plexus-interpolation.license)
+
+
+
+
+
+
+
+
+
+
+
+
+
