@@ -19,3 +19,10 @@ public class BillingDbReset {
         try (ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM billing_products")) {
           rs.next();
           System.out.println("billing_products rows after reset=" + rs.getInt(1));
+        }
+        try (ResultSet rs = st.executeQuery("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA='nayan-db' AND TABLE_NAME='billing_records'")) {
+          if (rs.next()) {
+            System.out.println("billing_records AUTO_INCREMENT after reset=" + rs.getLong(1));
+          }
+        }
+      }
