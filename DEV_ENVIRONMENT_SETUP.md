@@ -194,3 +194,52 @@ mvn spring-boot:run
 ### 3. Start Frontend
 ```bash
 npm run dev
+```
+
+## 📝 Logs and Monitoring
+
+### MySQL Status
+```bash
+# Windows
+sc query MySQL80
+
+# Linux/Mac
+systemctl status mysql
+```
+
+### Spring Boot Status
+- Check terminal where Spring Boot is running
+- Access: http://localhost:8080/actuator/health
+
+### Frontend Status
+- Check terminal where npm is running
+- Access: http://localhost:5173
+
+## 🎉 Success Indicators
+
+When everything is working correctly, you should see:
+
+1. **MySQL**: "MySQL is running and accessible!"
+2. **Spring Boot**: "Spring Boot is running successfully!"
+3. **Frontend**: Vite dev server running on http://localhost:5173
+4. **All URLs accessible** in your browser
+
+## 📞 Support
+
+If you encounter issues:
+
+1. Check the prerequisites
+2. Verify all services are running
+3. Check port availability
+4. Review error messages in the terminal
+5. Try running components individually
+
+## 🔄 Updates and Maintenance
+
+The scripts are designed to be:
+- **Cross-platform compatible**
+- **Configurable** for different environments
+- **Robust** with error handling and retries
+- **Maintainable** with clear structure and comments
+
+Feel free to modify the scripts to match your specific environment requirements!
