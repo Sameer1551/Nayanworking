@@ -27,3 +27,32 @@ inventoryService.refreshInventory()  (refresh frontend state cache)
 
 ### PurchaseData Fields (TypeScript Interface)
 
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | string | UUID |
+| `purchaseBillNo` | string | **UNIQUE** |
+| `purchaseDate` | string | ISO date |
+| `branch` | string | e.g. JUNG, DIGL |
+| `materialName` | string | Product name |
+| `productCode` | string | Used for inventory match |
+| `productDescription` | string | Full description |
+| `category` | enum | Spectacles / Sunglasses / Lens / Contact Lens / Frame / Solution / Other / Non-Chargeable |
+| `subcategory` | string | |
+| `hsn` | string | GST HSN code |
+| `quantity` | number | |
+| `purchasePrice` | number | Per unit |
+| `inputGSTPercent` | number | |
+| `inputGSTAmount` | number | |
+| `totalAmount` | number | |
+| `supplier.name` | string | |
+| `supplier.address` | string | |
+| `supplier.gstin` | string | |
+| `remarks` | string | Optional |
+
+---
+
+## 🔄 Bulk Purchase Flow
+
+**Frontend**: `src/pages/supplier/BulkPurchase.tsx`  
+**Service**: `src/services/bulkPurchaseService.ts`  
+**Backend**: `BulkPurchaseService.java` → `BulkPurchaseController.java`  
