@@ -19,3 +19,24 @@ Status legend:
 - [x] Supplier auth is no longer hardcoded mock-only on the frontend; it now calls the Java backend first.
 - [x] Auth session persistence now uses `localStorage` instead of tab-only session storage.
 - [x] `src/services/purchaseService.ts` no longer uses `localStorage` as the primary fallback for purchase records.
+- [x] Broken inventory calls inside `purchaseService.ts` were fixed.
+
+## Critical / High Priority Items Still Left
+
+- [ ] Backend security is still open. `SecurityConfig` still permits `/api/**`, so JWT auth is not yet enforcing protected APIs.
+- [~] Returns are backend-connected now, but they are still file-backed modules, not full repository-backed DB modules.
+- [~] Dashboard frontend uses the backend API now, but backend dashboard aggregation still needs stronger live-source normalization and return-aware analytics.
+- [ ] `billingService.getNextInvoiceNumber()` is still missing while `NewBilling.tsx` calls it.
+- [ ] `PurchaseHistory.tsx` still contains heavy `localStorage` and file-fallback logic.
+- [ ] `Customers.tsx` still contains `localStorage` fallback/sync logic.
+- [ ] Inventory movement ledger / audit trail is still missing.
+- [ ] Billing records should store and use stable `productCode` identity more consistently.
+
+## Supplier-Side Work Status
+
+- [x] Purchase page exists.
+- [x] Bulk purchase page exists.
+- [x] Purchase history page exists.
+- [x] Sales return page exists and is backend-connected.
+- [x] Purchase return page exists and is backend-connected.
+- [x] Inventory page exists.
