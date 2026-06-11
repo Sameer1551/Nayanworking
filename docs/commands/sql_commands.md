@@ -16,3 +16,21 @@ SHOW DATABASES;
 USE `nayan-db`;
 
 -- Show all tables inside nayan-db
+SHOW TABLES;
+```
+
+### 2. View Data (SELECT)
+Use `SELECT` commands to read information from the database without modifying anything.
+```sql
+-- See all users (including usernames, emails, hashed passwords)
+SELECT * FROM users;
+
+-- See all branches 
+SELECT * FROM branches;
+
+-- See all inventory items
+SELECT id, product_code, product_name, category, quantity, purchase_price, selling_price FROM inventory_items;
+
+-- See items that are out of stock
+SELECT * FROM inventory_items WHERE quantity = 0;
+
