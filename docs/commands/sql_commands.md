@@ -70,3 +70,20 @@ SET payment_status = 'PAID'
 WHERE bill_number = 'INV-2026-001';
 
 -- Promote a user to active status
+UPDATE users 
+SET is_active = 1 
+WHERE email = 'demo@example.com';
+```
+
+### 5. Delete Data (DELETE)
+Use `DELETE` to wipe rows. **EXTREME CAUTION**: Provide a `WHERE` clause to avoid wiping the entire application!
+```sql
+-- Delete a dummy inventory item
+DELETE FROM inventory_items WHERE product_code = 'DEMO-001';
+
+-- Delete an incorrect manual purchase (will NOT deduct inventory!)
+DELETE FROM purchases WHERE id = 999;
+
+-- Dangerously delete ALL data from a table (Reset tables)
+-- TRUNCATE TABLE billing_records;
+```
