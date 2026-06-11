@@ -82,3 +82,24 @@ Status legend:
 - [ ] Credit-note / debit-note style return documents.
 - [ ] Email notifications.
 - [ ] WhatsApp / SMS reminders.
+- [ ] GST / financial year reports.
+
+## Best Short Summary Of Current State
+
+The project is no longer missing the core supplier skeleton.
+
+What is done now:
+- backend-first supplier auth
+- customer portal core pages
+- backend-connected sales returns
+- backend-connected purchase returns
+- dashboard frontend moved to backend API
+- purchase-service cleanup for the reviewed issues
+
+What is still left now:
+- real backend security enforcement
+- billing contract cleanup
+- movement ledger and audit trail
+- localStorage cleanup in purchase history and customers pages
+- reports, alerts, settings, supplier master, and stock-control pages
+- live public catalog and product-detail/search flow
