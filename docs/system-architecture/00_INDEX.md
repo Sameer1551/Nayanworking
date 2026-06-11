@@ -22,3 +22,8 @@
 ---
 
 ## 🚀 Quick Navigation
+
+- **New to the project?** → Start with [Part 1](./01_stack_and_modules.md)
+- **Understanding data flow?** → [Part 2](./02_purchase_supplier_flow.md) → [Part 3](./03_inventory_system.md) → [Part 4](./04_customer_sales_flow.md)
+- **Looking at the Database?** → [Part 7](./07_database_schema_er.md)
+- **Finding bugs/gaps?** → [Part 8](./08_gaps_and_summary.md)
