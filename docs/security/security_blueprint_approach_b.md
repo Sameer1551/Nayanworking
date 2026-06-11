@@ -25,3 +25,30 @@ flowchart TD
         AuditEngine[Tamper-Evident Audit Engine]
     end
 
+    subgraph Data Layer
+        MySQL[(Encrypted MySQL Database)]
+        RefreshTokens[(Refresh Tokens Table)]
+        LoginHistory[(Login History Table)]
+    end
+
+    React -->|Strict HTTPS + Cookies| WAF
+    WAF --> Headers
+    Headers --> CSRF
+    CSRF --> JWTFilter
+    JWTFilter --> Controllers
+    Controllers --> Services
+    Services --> MySQL
+    Services --> RefreshTokens
+    Services --> LoginHistory
+    Services --> AuditEngine
+    AuditEngine --> MySQL
+```
+
+---
+
+## 2. Data Flow Explanation (Post-Login)
+
+1. **Client Request:** The React frontend makes an API request. The Access JWT is sent automatically via an `HttpOnly` secure cookie.
+2. **CSRF & CORS Validation:** The server enforces strict CORS (only allowing your specific frontend domain) and validates the **Double-Submit CSRF token**.
+3. **Dynamic Rate Limiting:** The request passes the WAF. Limits depend on the endpoint (e.g., stricter for login, standard for data fetching).
+4. **Authentication & Hierarchy:** The `JwtAuthFilter` verifies the token. Role hierarchy (`ADMIN > SUPPLIER`) automatically resolves privileges.
