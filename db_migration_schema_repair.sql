@@ -85,3 +85,32 @@ WHERE b.supplier_id IS NOT NULL
   AND NOT EXISTS (SELECT 1 FROM users u WHERE u.id = b.supplier_id)
 LIMIT 20;
 
+-- ----------------------------------------------------------------
+-- ONLY run the FK additions below if the orphan checks above return 0 rows.
+-- If orphans exist, DELETE or UPDATE them first.
+-- ----------------------------------------------------------------
+
+-- 2d. FK: purchases -> users
+SELECT COUNT(*) INTO @fk_exists
+FROM information_schema.TABLE_CONSTRAINTS
+WHERE constraint_schema = 'nayan-db'
+  AND table_name = 'purchases'
+  AND constraint_name = 'fk_purchases_supplier';
+
+SET @stmt = IF(@fk_exists = 0,
+  'ALTER TABLE purchases ADD CONSTRAINT fk_purchases_supplier FOREIGN KEY (supplier_id) REFERENCES users (id) ON DELETE SET NULL ON UPDATE CASCADE',
+  'SELECT ''fk_purchases_supplier already exists, skipping.'' AS info'
+);
+PREPARE s FROM @stmt; EXECUTE s; DEALLOCATE PREPARE s;
+
+-- 2e. FK: inventory_items -> users
+SELECT COUNT(*) INTO @fk_exists
+FROM information_schema.TABLE_CONSTRAINTS
+WHERE constraint_schema = 'nayan-db'
+  AND table_name = 'inventory_items'
+  AND constraint_name = 'fk_inventory_supplier';
+
+SET @stmt = IF(@fk_exists = 0,
+  'ALTER TABLE inventory_items ADD CONSTRAINT fk_inventory_supplier FOREIGN KEY (supplier_id) REFERENCES users (id) ON DELETE SET NULL ON UPDATE CASCADE',
+  'SELECT ''fk_inventory_supplier already exists, skipping.'' AS info'
+);
