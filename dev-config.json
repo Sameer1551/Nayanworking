@@ -16,3 +16,12 @@
       "port": 8080,
       "waitTime": 15000,
       "maxRetries": 20,
+      "healthEndpoint": "/actuator/health"
+    }
+  },
+  "frontend": {
+    "vite": {
+      "port": 5173,
+      "command": "npm run dev"
+    }
+  },
