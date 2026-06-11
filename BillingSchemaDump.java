@@ -6,3 +6,7 @@ public class BillingSchemaDump {
       try (Statement st = conn.createStatement()) {
         for (String table : new String[]{"billing_products", "billing_records"}) {
           try (ResultSet rs = st.executeQuery("SHOW CREATE TABLE " + table)) {
+            if (rs.next()) {
+              System.out.println("=== " + table + " ===");
+              System.out.println(rs.getString(2));
+            }
