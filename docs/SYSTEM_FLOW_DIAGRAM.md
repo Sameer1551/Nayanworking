@@ -385,3 +385,132 @@ STEP 5: Save Bill
 [/supplier/sales-return]
         ↓
 STEP 1: Enter return details manually:
+  ├── Return Date, Serial No
+  ├── Original Sale Bill No (manual text, not auto-linked)
+  ├── Customer: name, contact, email, address
+  ├── Product: name, code, category, subcategory, hsn
+  ├── Original Qty, Return Qty (≤ original)
+  ├── Sale Price, GST%
+  └── Return Reason (dropdown) + Remarks
+
+STEP 2: Save
+        ↓
+handleSaveReturn()
+        ↓
+Create SalesReturnRecord in memory
+        ↓
+localStorage['salesReturns'] = [..., newReturn]
+
+        ↓
+⚠️ ENDS HERE — Nothing else happens
+❌ NO: POST /api/sales-returns (no backend entity)
+❌ NO: inventory_items.quantity += returnQty
+❌ NO: billing_records update / credit note
+❌ NO: P&L adjustment in dashboard
+```
+
+---
+
+### 2J. Purchase Return Flow (Send Goods Back to Supplier)
+
+```
+[/supplier/purchase-return]
+        ↓
+STEP 1: Load purchase history
+  → purchaseService.getPurchaseRecords() or /data/purchase-records.json
+
+STEP 2: Enter return details:
+  ├── Return Date, Original Purchase Bill No
+  ├── Branch, Product: name, code, category, hsn
+  ├── Original Qty, Return Qty (≤ original)
+  ├── Purchase Price, GST%
+  └── Supplier: name, address, GSTIN + Return Reason
+
+STEP 3: Save
+        ↓
+handleSaveReturn()
+        ↓
+Create PurchaseReturnRecord in memory
+        ↓
+localStorage['purchaseReturns'] = [..., newReturn]
+
+        ↓
+⚠️ ENDS HERE — Nothing else happens
+❌ NO: POST /api/purchase-returns (no backend entity)
+❌ NO: inventory_items.quantity -= returnQty
+❌ NO: purchases table quantity update
+❌ NO: P&L adjustment in dashboard
+```
+
+---
+
+## 🔄 COMPLETE DATA FLOW MAP
+
+```
+╔═══════════════════════════════════════════════════════════════════════════════════════════════╗
+║                           NAYAN EYE CARE — FULL SYSTEM DATA FLOW                             ║
+╠═══════════════════════════════════════════════════════════════════════════════════════════════╣
+║                                                                                               ║
+║  SUPPLIER (Vendor) ──pays──→ PURCHASE ──────────────────────────────────────────────────┐    ║
+║                              │                                                          │    ║
+║                    ┌─────────┴────────────┐                                             │    ║
+║                    │                      │                                             │    ║
+║              [Single Purchase]     [Bulk Purchase]                                      │    ║
+║              (purchases table)     (bulk_purchases                                      │    ║
+║                    │               + purchase_items)                                    │    ║
+║                    └─────────┬────────────┘                                             │    ║
+║                              │                                                          │    ║
+║                              ▼ auto-sync                                                │    ║
+║                     ┌────────────────┐                                                  │    ║
+║                     │ inventory_items │ ← CENTRAL STOCK TABLE                           │    ║
+║                     │  (quantity++)  │                                                  │    ║
+║                     └───────┬────────┘                                                  │    ║
+║                             │                                                           │    ║
+║                    ┌────────┴──────────────┐                                            │    ║
+║                    │ (quantity--)          │ (quantity--)                               │    ║
+║                    ▼                       ▼                                            │    ║
+║              [New Billing]          [Purchase Return] ⚠️                                │    ║
+║              (billing_records        localStorage only                                  │    ║
+║               + billing_products)    NOT updating inv.                                  │    ║
+║                    │                       │                                            │    ║
+║                    ▼                       └────────────────────────────────────────────┘    ║
+║             CUSTOMER buys                                                                     ║
+║                    │                                                                          ║
+║           ┌────────┴──────────┐                                                              ║
+║           │                   │                                                              ║
+║    (customers table)   (billing_products)                                                    ║
+║    Update stats:              │                                                              ║
+║    visitCount++               │ SALES RETURN ⚠️                                              ║
+║    totalSpent +=              ▼ localStorage only                                            ║
+║    lastBillNo         [Sales Return Page]  NOT updating inv.                                 ║
+║           │                                                                                  ║
+║           └──────────────────────────────────────────→ DASHBOARD                            ║
+║                                                           (reads JSON files)                 ║
+║                                                           P&L / Analytics                   ║
+╚═══════════════════════════════════════════════════════════════════════════════════════════════╝
+```
+
+---
+
+## 🎯 IDEAL SYSTEM FLOW (How It Should Work)
+
+```
+╔═══════════════════════════════════════════════════════════════════════════════════════════╗
+║                         IDEAL COMPLETE FLOW (BOTH SIDES)                                 ║
+╠═══════════════════════════════════════════════════════════════════════════════════════════╣
+║                                                                                           ║
+║  ┌─────────────────┐      ┌───────────────────┐      ┌───────────────────────────────┐  ║
+║  │   VENDOR /      │      │   INVENTORY       │      │        CUSTOMER               │  ║
+║  │   SUPPLIER      │      │   (Central Hub)   │      │                               │  ║
+║  └────────┬────────┘      └────────┬──────────┘      └──────────────┬────────────────┘  ║
+║           │                        │                                 │                    ║
+║  Purchase  ────────────────────→  +Stock                            │                    ║
+║  (single/bulk)                     │                     Browse website (catalog)        ║
+║           │                        │                                 │                    ║
+║  Purchase Return ──────────────→  -Stock                  Customer Login / Register      ║
+║  (return to vendor)                │                                 │                    ║
+║           │                        │         ←────────────── Walk-in / Online Order     ║
+║           │                        │                   ─────────────────↓                ║
+║           │                        │ ←──────────────────── New Billing (Sale)            ║
+║           │                   -Stock (sold)            Eye Prescription filled            ║
+║           │                        │                   Bill generated + Saved            ║
