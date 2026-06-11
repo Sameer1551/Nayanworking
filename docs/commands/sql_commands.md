@@ -52,3 +52,21 @@ INSERT INTO branches (code, name, address, is_active, created_at, updated_at)
 VALUES ('BR01', 'Main Branch', '123 Eye Street', 1, NOW(), NOW());
 
 -- Manually inject a manual inventory item
+INSERT INTO inventory_items (product_name, product_code, category, subcategory, hsn_code, quantity, purchase_price, selling_price, gst_percentage, supplier_name)
+VALUES ('Demo Lens Wipe', 'DEMO-001', 'OTHER', 'Cleaning', '3402', 100, 10.00, 25.00, 18.00, 'Demo Supplier');
+```
+
+### 4. Edit Data (UPDATE)
+Use `UPDATE` to modify existing records. **Always use a `WHERE` clause** so you don't overwrite every row in the table!
+```sql
+-- Change the price of a specific inventory item
+UPDATE inventory_items 
+SET selling_price = 35.00, purchase_price = 12.00 
+WHERE product_code = 'DEMO-001';
+
+-- Mark a bill as strictly PAID 
+UPDATE billing_records 
+SET payment_status = 'PAID' 
+WHERE bill_number = 'INV-2026-001';
+
+-- Promote a user to active status
