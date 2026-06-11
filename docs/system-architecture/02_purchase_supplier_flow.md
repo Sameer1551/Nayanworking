@@ -114,3 +114,29 @@ bulkPurchaseService.createBulkPurchase(bulkPurchaseData)
 
 ## 🔁 Category Mapping (Frontend → Backend)
 
+| Frontend Display | Java Enum Value |
+|-----------------|----------------|
+| Spectacles | `SPECTACLES` |
+| Frame | `FRAMES` |
+| Contact Lens | `CONTACT_LENSES` |
+| Sunglasses | `SUNGLASSES` |
+| Lens | `LENS` |
+| Solution | `SOLUTIONS` |
+| Other | `OTHER` |
+| Non-Chargeable | `NON_CHARGEABLE` |
+
+---
+
+## 📂 Data Persistence (Dual-Layer)
+
+Both purchase types use a dual-layer storage:
+
+```
+Layer 1 (Primary):   H2 Database via Spring Boot REST API
+Layer 2 (Fallback):  JSON files in /data/ directory
+                     └── purchase-records.json
+```
+
+If the backend API at `localhost:8080` is **unreachable**, the frontend falls back to:
+1. Reading from `localStorage`
+2. Reading from `/data/purchase-records.json` (static file)
