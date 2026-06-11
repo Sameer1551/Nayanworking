@@ -34,3 +34,10 @@ This directory contains all documentation files for the Nayan Eye Care project, 
 - `PURCHASE_RETURN_ENHANCEMENT.md`
 - `BILLING_APPEND_IMPLEMENTATION.md`
 - `EXCEL_INTEGRATION_README.md`
+
+## Guidelines
+
+1. **Root README**: The main [README.md](../README.md) in the project root provides the high-level overview and setup instructions.
+2. **Feature Docs**: Place all new feature-specific documentation in this `docs/` folder.
+3. **Naming**: Use descriptive naming conventions (e.g., `FEATURE_NAME_IMPLEMENTATION.md`).
+4. **Maintenance**: Update this index when adding new documentation files.
