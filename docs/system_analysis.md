@@ -284,3 +284,146 @@ purchases (id PK, purchase_bill_no UNIQUE, purchase_date, branch, material_name,
 bulk_purchases (id PK, purchase_bill_no UNIQUE, purchase_date, branch,
                 supplier_name, supplier_address, supplier_gstin, remarks,
                 total_bill_amount, total_gst_amount, created_at, updated_at)
+
+purchase_items (id PK, bulk_purchase_id FK→bulk_purchases.id,
+               material_name, product_code, product_description, category ENUM,
+               subcategory, hsn, quantity, purchase_price, input_gst_percent,
+               input_gst_amount, total_amount,
+               [conditional: color, size, type, gender, shape, material, etc.])
+
+inventory_items (id PK, product_name, product_code UNIQUE, category, subcategory,
+                description, hsn_code, quantity, purchase_price, selling_price,
+                gst_percentage, supplier_name, supplier_address, supplier_gstin,
+                purchase_date, expiry_date, minimum_stock, maximum_stock,
+                reorder_point, remarks, created_at, updated_at)
+
+customers (id PK, branch_name, branch_code, title, full_name, mobile_no UNIQUE, mobile_no2,
+           gender ENUM, gstin_no, date_of_birth, age, notes, email, city, anniversary,
+           date_of_visit, last_visit_date, visit_count, total_spent, average_bill_amount,
+           last_bill_number, last_bill_date, source ENUM, created_at, updated_at)
+
+billing_records (id PK, bill_number UNIQUE, bill_date, branch_code, branch_name,
+                customer_name, customer_contact, customer_email, customer_address,
+                [eye prescription fields: sph/cyl/axis/pd for R+L],
+                subtotal, total_gst, amount, discount, advance_paid, final_payable,
+                payment_method, transaction_ref, payment_status,
+                warranty_details, return_policy, prescription_delivery_date,
+                authorized_signatory, customer_id FK→customers.id,
+                created_at, updated_at)
+
+billing_products (id PK, billing_record_id FK→billing_records.id,
+                 product_name, product_code, category, quantity,
+                 unit_price, gst_percentage, total_price)
+
+users (id PK, email UNIQUE, phone, password_hash, user_type ENUM, 
+       first_name, last_name, company_name, gstin_number, business_address, address)
+```
+
+---
+
+## 🔗 Entity Relationships
+
+```
+purchases ──────────────── inventory_items (product_code → update stock +qty)
+bulk_purchases ──1:N───── purchase_items
+purchase_items ─────────── inventory_items (product_code → update stock +qty)
+billing_records ──N:1──── customers (customer_id FK)
+billing_records ──1:N──── billing_products
+billing_products ──────── inventory_items (product_code → deduct stock -qty)
+```
+
+---
+
+## 🎯 Mermaid Diagram
+
+```mermaid
+erDiagram
+    SUPPLIER_INPUT {
+        string supplierName
+        string supplierAddress
+        string supplierGstin
+    }
+
+    PURCHASE {
+        bigint id PK
+        string purchaseBillNo UK
+        date purchaseDate
+        string branch
+        string materialName
+        string productCode
+        string category
+        int quantity
+        decimal purchasePrice
+        decimal inputGSTPercent
+        decimal inputGSTAmount
+        decimal totalAmount
+    }
+
+    BULK_PURCHASE {
+        bigint id PK
+        string purchaseBillNo UK
+        date purchaseDate
+        string branch
+        string supplierName
+        decimal totalBillAmount
+        decimal totalGstAmount
+    }
+
+    PURCHASE_ITEM {
+        bigint id PK
+        bigint bulkPurchaseId FK
+        string materialName
+        string productCode
+        string category
+        int quantity
+        decimal purchasePrice
+        decimal totalAmount
+        string color
+        string size
+        string lensDetail
+    }
+
+    INVENTORY_ITEM {
+        bigint id PK
+        string productCode UK
+        string productName
+        string category
+        int quantity
+        decimal purchasePrice
+        decimal sellingPrice
+        decimal gstPercentage
+        string supplierName
+        int minimumStock
+        int maximumStock
+        int reorderPoint
+    }
+
+    CUSTOMER {
+        bigint id PK
+        string mobileNo UK
+        string fullName
+        string branchName
+        string branchCode
+        string gender
+        date dateOfBirth
+        int visitCount
+        double totalSpent
+        double averageBillAmount
+        string lastBillNumber
+        date lastBillDate
+    }
+
+    BILLING_RECORD {
+        bigint id PK
+        string billNumber UK
+        date billDate
+        string branchCode
+        string branchName
+        string customerContact
+        string customerName
+        decimal subtotal
+        decimal totalGst
+        decimal amount
+        decimal discount
+        decimal finalPayable
+        string paymentMethod
