@@ -4,3 +4,9 @@
 > **Backend API**: `http://localhost:8080/api`  
 > **Branches**: DIGL (Diglipur), MAYA (Mayabunder), RANG (Rangat), JUNG (Junglighat)
 
+---
+
+## 📂 Document Parts
+
+| File | Contents |
+|------|----------|
