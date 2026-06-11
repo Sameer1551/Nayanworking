@@ -256,3 +256,132 @@ PATH B: Bulk Purchase (/supplier/bulk-purchase)
 
 ---
 
+### 2F. Customer Management
+
+```
+[/supplier/customers]
+        ↓
+{customerService.getCustomers()}               +  {billingService.mergeCustomerAndBillingData()}
+        ↓                                                       ↓
+  → GET /api/customers                           → GET /api/billing-records
+        ↓                                                       ↓
+  (customers table)                              Extract unique customers from billing
+        ↓                                                       ↓
+  ════════════════ MERGE by mobileNo ════════════════════════════
+        ↓
+  Unified customer list:
+  source = 'customer_record' | 'billing_record' | 'combined'
+        ↓
+  Table view with:
+  ├── fullName, mobileNo, branchName
+  ├── visitCount, totalSpent, averageBillAmount
+  ├── lastBillNumber, lastBillDate
+  └── Actions: View | Edit | Delete
+
+  Add New Customer Form:
+  ├── title, fullName, mobileNo (UNIQUE), mobileNo2
+  ├── gender, email, city, dateOfBirth, age
+  ├── branchName, gstinNo, anniversary, notes
+  └── → POST /api/customers
+```
+
+---
+
+### 2G. New Billing / Sales (Core Transaction)
+
+```
+══════════════════════════════════════════════════════════════════
+                    BILLING / SALES FLOW
+══════════════════════════════════════════════════════════════════
+
+[/supplier/billing]
+        ↓
+STEP 1: Select or Enter Customer
+  ├── Search existing by name / mobile
+  │     → GET /api/customers?search=...
+  └── or enter new customer details inline
+
+STEP 2: Add Products
+  ├── Pick from inventory (product search)
+  │     → GET /api/inventory (for product lookup)
+  ├── Set quantity per product
+  └── System auto-fills: unitPrice, GST%, totalPrice
+
+STEP 3: Fill Prescription (optional)
+  ├── Right Eye: SPH, CYL, AXIS, PD
+  └── Left Eye: SPH, CYL, AXIS, PD
+
+STEP 4: Billing Summary
+  ├── Subtotal = Σ (qty × unitPrice) per product
+  ├── Total GST = Σ (qty × unitPrice × gst%) per product
+  ├── Discount (manual entry)
+  ├── Advance Paid
+  ├── Final Payable = Subtotal + GST - Discount - Advance
+  ├── Payment Method (Cash / Card / UPI)
+  └── Payment Status (Paid / Partial / Pending)
+
+STEP 5: Save Bill
+        ↓
+{billingService / POST /api/billing-records}
+        ↓
+  [Java: BillingRecordService.createBillingRecord()]
+        ↓
+  ┌─────────────────────────────────────────────────────┐
+  │  A. Look up Customer by customerContact (mobileNo)  │
+  │     → Link BillingRecord.customer_id = customer.id  │
+  │                                                     │
+  │  B. Update Customer stats:                          │
+  │     visitCount++                                    │
+  │     totalSpent += finalPayable                      │
+  │     averageBillAmount = totalSpent / visitCount     │
+  │     lastBillNumber = billNumber                     │
+  │     lastBillDate = billDate                         │
+  │     → save(customer)                                │
+  │                                                     │
+  │  C. Save (billing_records) row                      │
+  │                                                     │
+  │  D. Save all (billing_products) rows (cascade)      │
+  │                                                     │
+  │  E. reduceInventoryFromSale():                      │
+  │     For each BillingProduct:                        │
+  │       findByProductCode() or fallback by name       │
+  │       newQty = max(0, currentQty - soldQty)         │
+  │       → save(inventoryItem)                         │
+  │       WARNING if newQty ≤ minimumStock (server log) │
+  └─────────────────────────────────────────────────────┘
+        ↓
+  → Backup to billing-records.json (FileController)
+        ↓
+  Generate printable Bill / Invoice for customer
+
+══════════════════════════════════════════════════════════════════
+```
+
+---
+
+### 2H. Billing Records View
+
+```
+[/supplier/billing-records]
+        ↓
+{GET /api/billing-records}
+        ↓
+  Table view with filters:
+  ├── Search by bill no / customer / date
+  ├── Filter by branch / payment status / date range
+  └── Pagination
+
+  Actions:
+  ├── 👁️ View full bill details + prescription
+  ├── 🖨️ Print/download bill
+  └── ❌ No edit / no delete from UI currently
+```
+
+---
+
+### 2I. Sales Return Flow (Customer Returns Product)
+
+```
+[/supplier/sales-return]
+        ↓
+STEP 1: Enter return details manually:
