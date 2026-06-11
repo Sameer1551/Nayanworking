@@ -82,3 +82,31 @@ src/
 │   │   ├── BillingRecords.tsx     ← Sales history (component)
 │   │   ├── Customers.tsx          ← Customer management
 │   │   └── SalesReturn.tsx        ← Return from customer
+│   └── categories/
+│       ├── Spectacles.tsx
+│       ├── Sunglasses.tsx
+│       ├── ContactLenses.tsx
+│       ├── Frames.tsx
+│       └── Solutions.tsx
+├── services/
+│   ├── authService.ts
+│   ├── purchaseService.ts
+│   ├── bulkPurchaseService.ts
+│   ├── inventoryService.ts
+│   ├── customerService.ts
+│   ├── billingService.ts
+│   └── dashboardService.ts
+└── types/
+    ├── auth.ts
+    └── inventory.ts
+```
+
+---
+
+## ☕ Backend File Structure (Key Files)
+
+```
+src/main/java/com/nayaneyecare/
+├── entity/
+│   ├── Purchase.java
+│   ├── BulkPurchase.java
