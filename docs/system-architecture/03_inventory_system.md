@@ -60,3 +60,34 @@ foreach PurchaseItem in bulkPurchase:
     ├── FOUND → existingItem.quantity += item.quantity
     │            update purchaseDate if newer
     │            save(existingItem)
+    └── NOT FOUND → create new InventoryItem
+                     sellingPrice = purchasePrice × 1.30  ← 30% markup
+                     minimumStock = 5
+                     maximumStock = item.quantity × 2
+                     reorderPoint = 10
+                     save(newItem)
+```
+
+> ⚠️ Both paths update the **same `inventory_items` table** — single and bulk purchases share unified inventory.
+
+---
+
+## ➖ Stock Decrement (After Sale)
+
+```
+BillingRecordService.java → reduceInventoryFromSale()
+    ↓
+foreach BillingProduct in billingRecord:
+    reduceInventoryForProduct(product)
+    ↓
+    Step 1: find by productCode  → inventoryItemRepository.findByProductCode()
+    Step 2: if not found → find by productName (fallback search)
+    Step 3: if found:
+        newQty = max(0, currentQty - soldQty)
+        inventoryItem.quantity = newQty
+        save(inventoryItem)
+    Step 4: if newQty ≤ minimumStock → log WARNING (no alert sent to frontend)
+```
+
+### Low Stock Warning Logic
+```java
