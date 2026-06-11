@@ -54,3 +54,31 @@ User opens app (/)
     ↓
 authService.isAuthenticated()  (checks sessionStorage for token)
     ↓
+If authenticated + userType === 'supplier'
+    → Redirect to /supplier/dashboard
+Else
+    → Show Home (public customer-facing pages)
+```
+
+> ⚠️ **Current State**: Auth is mocked — hardcoded credentials:  
+> `siddhesh@amityonline.com` / `Sameer123`  
+> Auth state stored in `sessionStorage` (cleared on tab close).
+
+---
+
+## 🗺️ Frontend File Structure (Key Files)
+
+```
+src/
+├── pages/
+│   ├── supplier/
+│   │   ├── Dashboard.tsx          ← Analytics dashboard
+│   │   ├── Purchase.tsx           ← Single purchase form
+│   │   ├── BulkPurchase.tsx       ← Bulk purchase form
+│   │   ├── PurchaseHistory.tsx    ← Purchase records
+│   │   ├── PurchaseReturn.tsx     ← Return to supplier
+│   │   ├── Inventory.tsx          ← Stock view
+│   │   ├── NewBilling.tsx         ← Create sale/invoice
+│   │   ├── BillingRecords.tsx     ← Sales history (component)
+│   │   ├── Customers.tsx          ← Customer management
+│   │   └── SalesReturn.tsx        ← Return from customer
