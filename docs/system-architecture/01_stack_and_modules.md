@@ -110,3 +110,28 @@ src/main/java/com/nayaneyecare/
 ├── entity/
 │   ├── Purchase.java
 │   ├── BulkPurchase.java
+│   ├── PurchaseItem.java
+│   ├── InventoryItem.java
+│   ├── Customer.java
+│   ├── BillingRecord.java
+│   ├── BillingProduct.java
+│   └── User.java
+├── service/
+│   ├── PurchaseService.java
+│   ├── BulkPurchaseService.java
+│   ├── InventoryItemService.java
+│   ├── CustomerService.java
+│   ├── BillingRecordService.java
+│   └── AuthService.java
+├── controller/
+│   ├── PurchaseController.java
+│   ├── BulkPurchaseController.java
+│   ├── InventoryController.java
+│   ├── CustomerController.java
+│   ├── BillingRecordController.java
+│   ├── AuthController.java
+│   └── FileController.java
+├── repository/          ← JPA Repositories (Spring Data)
+├── dto/                 ← Request/Response DTOs
+└── config/              ← CORS, Security config
+```
