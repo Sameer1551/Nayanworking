@@ -144,3 +144,76 @@
         { "name": "purchase_price", "type": "decimal", "nullable": true },
         { "name": "selling_price", "type": "decimal", "nullable": true },
         { "name": "gst_percentage", "type": "decimal", "nullable": true },
+        { "name": "supplier_name", "type": "varchar", "nullable": true },
+        { "name": "supplier_address", "type": "text", "nullable": true },
+        { "name": "supplier_gstin", "type": "varchar", "nullable": true },
+        { "name": "purchase_date", "type": "date", "nullable": true },
+        { "name": "expiry_date", "type": "date", "nullable": true },
+        { "name": "remarks", "type": "text", "nullable": true },
+        { "name": "supplier_id", "type": "bigint", "nullable": true, "key": "MUL", "references": "users(id)" },
+        { "name": "created_at", "type": "datetime", "nullable": true },
+        { "name": "updated_at", "type": "datetime", "nullable": true }
+      ]
+    },
+    "numbering_counters": {
+      "description": "Internal counters for generating sequences like bill numbers",
+      "columns": [
+        { "name": "counter_key", "type": "varchar", "nullable": false, "key": "PRI" },
+        { "name": "counter_value", "type": "bigint", "nullable": false }
+      ]
+    },
+    "numbering_state": {
+      "description": "State management for sequential numbering across branches",
+      "columns": [
+        { "name": "id", "type": "bigint", "nullable": false, "key": "PRI", "extra": "auto_increment" },
+        { "name": "counter_key", "type": "varchar", "nullable": false, "key": "UNI" },
+        { "name": "counter_value", "type": "bigint", "nullable": false }
+      ]
+    },
+    "purchase_items": {
+      "description": "Individual items within a bulk purchase",
+      "columns": [
+        { "name": "id", "type": "bigint", "nullable": false, "key": "PRI", "extra": "auto_increment" },
+        { "name": "bulk_purchase_id", "type": "bigint", "nullable": false, "key": "MUL", "references": "bulk_purchases(id)" },
+        { "name": "product_code", "type": "varchar", "nullable": true },
+        { "name": "material_name", "type": "varchar", "nullable": true },
+        { "name": "category", "type": "enum", "nullable": true },
+        { "name": "subcategory", "type": "varchar", "nullable": true },
+        { "name": "hsn", "type": "varchar", "nullable": true },
+        { "name": "quantity", "type": "int", "nullable": true },
+        { "name": "purchase_price", "type": "decimal", "nullable": true },
+        { "name": "input_gst_percent", "type": "decimal", "nullable": true },
+        { "name": "input_gst_amount", "type": "decimal", "nullable": true },
+        { "name": "total_amount", "type": "decimal", "nullable": true },
+        { "name": "product_description", "type": "text", "nullable": true },
+        { "name": "base_curve", "type": "varchar", "nullable": true },
+        { "name": "bridge_size", "type": "varchar", "nullable": true },
+        { "name": "color", "type": "varchar", "nullable": true },
+        { "name": "ct", "type": "varchar", "nullable": true },
+        { "name": "design", "type": "varchar", "nullable": true },
+        { "name": "diameter", "type": "varchar", "nullable": true },
+        { "name": "dkt", "type": "varchar", "nullable": true },
+        { "name": "gender", "type": "varchar", "nullable": true },
+        { "name": "lens_addition", "type": "varchar", "nullable": true },
+        { "name": "lens_axis", "type": "varchar", "nullable": true },
+        { "name": "lens_coating", "type": "varchar", "nullable": true },
+        { "name": "lens_detail", "type": "varchar", "nullable": true },
+        { "name": "lens_index", "type": "varchar", "nullable": true },
+        { "name": "lens_number", "type": "varchar", "nullable": true },
+        { "name": "lens_number_range", "type": "varchar", "nullable": true },
+        { "name": "lens_product_name", "type": "varchar", "nullable": true },
+        { "name": "material", "type": "varchar", "nullable": true },
+        { "name": "modality", "type": "varchar", "nullable": true },
+        { "name": "name", "type": "varchar", "nullable": true },
+        { "name": "packing_type", "type": "varchar", "nullable": true },
+        { "name": "shape", "type": "varchar", "nullable": true },
+        { "name": "size", "type": "varchar", "nullable": true },
+        { "name": "solution_name", "type": "varchar", "nullable": true },
+        { "name": "temple_details", "type": "varchar", "nullable": true },
+        { "name": "type", "type": "varchar", "nullable": true },
+        { "name": "validity", "type": "varchar", "nullable": true },
+        { "name": "variant", "type": "varchar", "nullable": true },
+        { "name": "water_content", "type": "varchar", "nullable": true }
+      ]
+    },
+    "purchase_returns": {
