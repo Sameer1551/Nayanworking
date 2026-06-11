@@ -18,3 +18,13 @@ Good — open-source only. That works well; some of the best security tooling is
   ---
   Approach B: Defense + Formal Audit Trail
   Everything in A + adds:
+  - Tamper-evident audit logs (hash chains)
+  - GDPR-style data access logs
+  - Session management with device tracking
+  - Login history for users
+
+  Visible proof: "Security Audit Log" UI panel for admins.
+
+  ---
+  Approach C: Full Enterprise Simulation
+  B + simulates enterprise features:
