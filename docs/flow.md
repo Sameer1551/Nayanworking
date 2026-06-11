@@ -78,3 +78,83 @@ flowchart TD
 ```
 
 ## 4. Routing and Entry Flow
+
+The app starts in `src/App.tsx`.
+
+Current routing pattern:
+
+- `/` shows the public home page unless a supplier session exists
+- supplier sessions redirect to `/supplier/dashboard`
+- supplier pages are protected through `ProtectedRoute`
+- public category pages are:
+  - `/spectacles`
+  - `/sunglasses`
+  - `/contact-lenses`
+  - `/frames`
+  - `/solutions`
+
+Auth is coordinated through:
+
+- `src/components/Header.tsx`
+- `src/components/LoginModal.tsx`
+- `src/services/authService.ts`
+
+Expected auth flow:
+
+1. User opens the app.
+2. `authService.isAuthenticated()` checks session state.
+3. If the user is a supplier, route them into the protected supplier panel.
+4. If not authenticated, keep them on the public site.
+5. Login/signup should eventually be backed by real backend auth for both supplier and customer roles.
+
+Current implementation note:
+
+- supplier login works through a mock-first flow in `authService.ts`
+- auth state is kept in `sessionStorage`
+- customer-facing account flow is not yet a complete working portal
+
+## 5. Public Website Flow
+
+The public site is mainly a presentation and discovery layer.
+
+Current public flow:
+
+1. User lands on `Home.tsx`.
+2. They browse categories and featured products.
+3. They can open login/signup from the header.
+4. Real product purchase is still completed through the supplier billing workflow rather than an end-to-end online checkout flow.
+
+How this side should work in the final system:
+
+1. Browse live inventory-backed catalog data.
+2. Register or log in as a customer.
+3. Save prescription details or booking requests.
+4. View bills, purchase history, and returns.
+5. Connect smoothly into offline walk-in billing and future online order journeys.
+
+## 6. Supplier Operations Flow
+
+The supplier panel is the true operational core of the project.
+
+### 6.1 Dashboard
+
+Route: `/supplier/dashboard`
+
+Purpose:
+
+- Show business summary
+- Track revenue, purchases, profit, customers, category mix, and branch performance
+
+How it should work:
+
+1. Read live purchase, billing, customer, inventory, and return data.
+2. Aggregate by date range and branch.
+3. Calculate revenue, COGS, gross profit, net profit, and stock alerts.
+4. Surface low-stock and action-needed items.
+
+Current implementation note:
+
+- `dashboardService.ts` still reads JSON files under `data/`
+- this means analytics can lag behind the live backend database
+
+### 6.2 Purchase Intake
