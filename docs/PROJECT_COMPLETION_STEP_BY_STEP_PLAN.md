@@ -46,3 +46,27 @@ Status legend:
 | 23 | ? Pending | Replace the placeholder Data page with a real reports page | `Data.tsx` is still not a finished reports module |
 | 24 | ? Pending | Build the low-stock page | Missing |
 | 25 | ? Pending | Build supplier master management | Missing |
+| 26 | ? Pending | Build inventory adjustments | Missing |
+| 27 | ? Pending | Build stock audit / reconciliation | Missing |
+| 28 | ? Pending | Add expiry, warranty, and prescription operations | Missing |
+
+## Phase 4. Finish Security, Roles, And Admin Controls
+
+| Step | Status | Task | What Is Left |
+|------|--------|------|--------------|
+| 29 | ? Pending | Add real roles and permissions | Frontend route protection exists, but backend authorization does not |
+| 30 | ? Pending | Add branch-aware access rules | Missing |
+| 31 | ? Pending | Build the users page | Missing |
+| 32 | ? Pending | Build the settings page | Missing |
+
+## Phase 5. Build The Missing Customer Portal
+
+| Step | Status | Task | What Is Left |
+|------|--------|------|--------------|
+| 33 | ? Done | Create customer login and register pages | Core pages exist and are routed |
+| 34 | ? Done | Build the customer dashboard and profile | Core pages exist and are protected |
+| 35 | ? Done | Build customer bills and prescriptions pages | Core pages exist |
+| 36 | ?? Partial | Build customer returns and service requests | Returns page exists, but workflow depth is still limited |
+| 37 | ?? Partial | Build appointment or eye-test booking | Booking page exists, but backend appointment workflow is still pending |
+
+## Phase 6. Turn The Public Site Into A Real Catalog
