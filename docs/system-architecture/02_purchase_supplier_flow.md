@@ -85,3 +85,32 @@ bulkPurchaseService.createBulkPurchase(bulkPurchaseData)
 | `supplierName` | string | |
 | `supplierAddress` | string | |
 | `supplierGstin` | string | |
+| `remarks` | string | |
+| `totalBillAmount` | decimal | Auto-calculated from items |
+| `totalGstAmount` | decimal | Auto-calculated from items |
+
+### PurchaseItem Fields (per product in bulk)
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `materialName` | string | |
+| `productCode` | string | Used for inventory lookup |
+| `productDescription` | string | |
+| `category` | enum | Same 8 categories |
+| `subcategory` | string | |
+| `hsn` | string | |
+| `quantity` | int | |
+| `purchasePrice` | decimal | |
+| `inputGSTPercent` | decimal | |
+| `inputGSTAmount` | decimal | |
+| `totalAmount` | decimal | |
+| **Conditional (Spectacles/Frames)** | | color, size, type, gender, shape, material, templeDetails, bridgeSize |
+| **Conditional (Lens)** | | lensDetail, lensCoating, design, lensIndex, lensNumber, lensAddition, lensAxis, lensNumberRange |
+| **Conditional (Contact Lenses)** | | lensProductName, ct, baseCurve, diameter, modality, validity, waterContent, dkt |
+| **Conditional (Solutions)** | | solutionName, variant, packingType |
+| **Conditional (Other/Non-Chargeable)** | | name |
+
+---
+
+## 🔁 Category Mapping (Frontend → Backend)
+
