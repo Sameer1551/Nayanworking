@@ -74,3 +74,18 @@ public class BillingHardReset {
 
         try (ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM billing_records")) {
           rs.next();
+          System.out.println("billing_records rows=" + rs.getInt(1));
+        }
+        try (ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM billing_products")) {
+          rs.next();
+          System.out.println("billing_products rows=" + rs.getInt(1));
+        }
+        try (ResultSet rs = st.executeQuery("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA='nayan-db' AND TABLE_NAME='billing_records'")) {
+          if (rs.next()) {
+            System.out.println("billing_records AUTO_INCREMENT=" + rs.getLong(1));
+          }
+        }
+      }
+    }
+  }
+}
