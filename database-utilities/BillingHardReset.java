@@ -55,3 +55,22 @@ public class BillingHardReset {
         st.execute("CREATE TABLE billing_products ("
           + "id bigint NOT NULL AUTO_INCREMENT,"
           + "category varchar(255) DEFAULT NULL,"
+          + "description text,"
+          + "gst_amount decimal(38,2) DEFAULT NULL,"
+          + "gst_percentage decimal(38,2) DEFAULT NULL,"
+          + "hsn_code varchar(255) DEFAULT NULL,"
+          + "price_per_unit decimal(38,2) DEFAULT NULL,"
+          + "product_code varchar(255) DEFAULT NULL,"
+          + "product_name varchar(255) DEFAULT NULL,"
+          + "quantity int DEFAULT NULL,"
+          + "total decimal(38,2) DEFAULT NULL,"
+          + "billing_record_id bigint DEFAULT NULL,"
+          + "PRIMARY KEY (id),"
+          + "KEY FK6sjb3h3k61cuad4lf4rp7u3jf (billing_record_id),"
+          + "CONSTRAINT FK6sjb3h3k61cuad4lf4rp7u3jf FOREIGN KEY (billing_record_id) REFERENCES billing_records (id)"
+          + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci");
+
+        st.execute("SET FOREIGN_KEY_CHECKS=1");
+
+        try (ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM billing_records")) {
+          rs.next();
