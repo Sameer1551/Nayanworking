@@ -49,3 +49,20 @@ Harden the web layer.
 ---
 
 ## Detailed Component Breakdown
+
+### [NEW] [user_sessions table](file:///d:/nayan/project/nayanworking-main/nayanworking-main/src/main/resources/db/migration/V2__Add_Security_Tables.sql)
+#### [NEW] [UserSession.java](file:///d:/nayan/project/nayanworking-main/nayanworking-main/src/main/java/com/nayaneyecare/entity/UserSession.java)
+#### [NEW] [AuditLog.java](file:///d:/nayan/project/nayanworking-main/nayanworking-main/src/main/java/com/nayaneyecare/entity/AuditLog.java)
+
+### [MODIFY] [User.java](file:///d:/nayan/project/nayanworking-main/nayanworking-main/src/main/java/com/nayaneyecare/entity/User.java)
+- Add `mfa_enabled`, `totp_secret`, `failed_login_attempts`, `locked_until` fields.
+
+### [MODIFY] [AuthService.java](file:///d:/nayan/project/nayanworking-main/nayanworking-main/src/main/java/com/nayaneyecare/service/AuthService.java)
+- Integrate MFA flow into login.
+- Add logic for account locking/unlocking.
+
+### [NEW] [RateLimitingFilter.java](file:///d:/nayan/project/nayanworking-main/nayanworking-main/src/main/java/com/nayaneyecare/config/RateLimitingFilter.java)
+- Basic IP-based rate limiting for sensitive endpoints.
+
+## Open Questions
+
