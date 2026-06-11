@@ -127,3 +127,132 @@
   ├── Active Customers
   ├── Monthly Growth %
   ├── Category Breakdown (by item count, NOT revenue)
+  ├── Branch Performance (DIGL / MAYA / RANG / JUNG)
+  └── Monthly Trend Chart (12 months)
+
+⚠️ Dashboard reads JSON files, not live DB → stale data possible
+❌ Returns (sales/purchase) not factored into P&L
+❌ Low stock alerts not shown on dashboard
+```
+
+---
+
+### 2C. Purchase Flow (Supplier Buys from Supplier/Vendor)
+
+```
+══════════════════════════════════════════════════════════════════
+                    PURCHASE ENTRY FLOW
+══════════════════════════════════════════════════════════════════
+
+PATH A: Single Purchase (/supplier/purchase)
+─────────────────────────────────────────────
+[Purchase Form]
+  Fields: purchaseBillNo, purchaseDate, branch
+          materialName, productCode, productDescription
+          category, subcategory, hsn
+          quantity, purchasePrice, inputGSTPercent
+          supplierName, supplierAddress, supplierGstin
+          remarks
+        ↓
+{purchaseService.appendPurchaseData()}
+        ↓
+  → POST /api/purchases
+        ↓
+  [Java: PurchaseService.java]
+  → Save to (purchases) table
+  → updateInventoryFromPurchase():
+       findByProductCode(productCode)
+       ┌── EXISTS → quantity += purchasedQty
+       │            (update purchaseDate if newer)
+       └── NOT EXISTS → CREATE new inventory_items row
+                         (no selling price set ⚠️)
+        ↓
+  → Backup to purchase-records.json (FileController)
+        ↓
+{inventoryService.refreshInventory()} ← frontend cache refresh
+
+
+PATH B: Bulk Purchase (/supplier/bulk-purchase)
+────────────────────────────────────────────────
+[Bulk Purchase Form]
+  Header: purchaseBillNo, purchaseDate, branch
+          supplierName, supplierAddress, supplierGstin, remarks
+  Item(s): materialName, productCode, category, subcategory
+           hsn, quantity, purchasePrice, inputGSTPercent
+           + Conditional fields by category:
+             Spectacles/Frames → color, size, type, shape, material
+             Lens             → lensDetail, lensCoating, lensIndex
+             Contact Lenses   → baseCurve, diameter, modality, validity
+             Solutions        → solutionName, variant, packingType
+             Other            → name
+        ↓
+{bulkPurchaseService.createBulkPurchase()}
+        ↓
+  → POST /api/bulk-purchases
+        ↓
+  [Java: BulkPurchaseService.java]
+  → Save (bulk_purchases) header row
+  → Cascade save all (purchase_items) rows
+  → For EACH item: updateInventoryFromBulkPurchase():
+       findByProductCode(productCode)
+       ┌── EXISTS → quantity += item.quantity
+       └── NOT EXISTS → CREATE new inventory_items row
+                         sellingPrice = purchasePrice × 1.30 ✅
+                         minimumStock = 5
+                         maximumStock = item.quantity × 2
+                         reorderPoint = 10
+
+══════════════════════════════════════════════════════════════════
+               BOTH PATHS → UPDATE inventory_items
+══════════════════════════════════════════════════════════════════
+```
+
+---
+
+### 2D. Purchase History
+
+```
+[/supplier/purchase-history]
+        ↓
+{purchaseService.getPurchaseRecords()}
+        ↓
+  → GET /api/purchases         (all single purchases)
+  → GET /api/bulk-purchases    (all bulk purchases)
+        ↓
+  Table view with filters:
+  ├── Search by bill no / product / supplier
+  ├── Filter by category / branch / date range
+  └── Pagination (50/100/200/500 per page)
+
+  Actions:
+  ├── 👁️ View details (expand row)
+  ├── ✏️ Edit purchase record
+  └── 🗑️ Delete purchase record
+```
+
+---
+
+### 2E. Inventory View
+
+```
+[/supplier/inventory]
+        ↓
+{inventoryService.getInventory()}
+        ↓
+  → GET /api/inventory
+        ↓
+  Table view of all inventory_items:
+  ├── productCode, productName, category
+  ├── quantity (current stock)
+  ├── purchasePrice, sellingPrice
+  ├── supplierName, minimumStock, reorderPoint
+  └── Status badge (In Stock / Low Stock / Out of Stock)
+
+⚠️ Low stock threshold checked only server-side
+❌ No reorder alerts or notifications sent to frontend
+❌ No stock movement history / audit trail
+❌ No manual stock adjustment feature
+```
+
+---
+
