@@ -134,3 +134,35 @@ Each billing record has one or more products (1:N):
 | `category` | string | |
 | `quantity` | int | |
 | `unit_price` | decimal | |
+| `gst_percentage` | decimal | |
+| `total_price` | decimal | |
+
+---
+
+## 📊 Customer Stats Auto-Update
+
+Every time a new billing record is created, these customer fields auto-update:
+
+```java
+// In BillingRecordService.java → updateCustomerBillingInfo()
+
+customer.setVisitCount(currentVisitCount + 1);
+customer.setLastVisitDate(parsedBillDate);
+customer.setDateOfVisit(parsedBillDate);
+customer.setTotalSpent(currentTotalSpent + amount);
+customer.setAverageBillAmount(totalSpent / visitCount);
+customer.setLastBillNumber(billNumber);
+customer.setLastBillDate(parsedBillDate);
+customerRepository.save(customer);
+```
+
+---
+
+## 🔍 Billing Records View
+
+- GET `/api/billing-records` — all records
+- GET `/api/billing-records/{id}` — by ID
+- GET `/api/billing-records/bill/{billNumber}` — by bill number
+- GET `/api/billing-records/branch/{branchCode}` — by branch
+- GET `/api/billing-records/customer/{contact}` — by mobile
+- Supports date range, amount range, payment status filters
