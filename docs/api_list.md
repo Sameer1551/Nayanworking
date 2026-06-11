@@ -46,3 +46,19 @@ Base URL: `/api/purchases`
 - `PUT /{id}` : Edit purchase record
 - `DELETE /{id}` : Delete purchase record (auto-reverses inventory)
 - `GET /search` : Search purchases via filters
+
+Base URL: `/api/bulk-purchases`
+- `GET /` : Get list of all bulk purchases
+- `GET /{id}` : Get bulk purchase by ID
+- `POST /` : Upload a new bulk purchase invoice containing multiple items
+- `PUT /{id}` : Edit a bulk purchase
+- `DELETE /{id}` : Delete entire bulk purchase
+
+Base URL: `/api/purchase-history`
+- `GET /` : Get combined timeline of standalone and bulk purchases
+
+## Customer & Billing APIs
+Base URL: `/api/customers`
+- `GET /` : Get customer list
+- `GET /{id}` : Get specific customer profile
+- `POST /` : Create new customer profile
