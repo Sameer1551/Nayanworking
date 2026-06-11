@@ -62,3 +62,19 @@ Base URL: `/api/customers`
 - `GET /` : Get customer list
 - `GET /{id}` : Get specific customer profile
 - `POST /` : Create new customer profile
+- `PUT /{id}` : Edit customer profile
+- `DELETE /{id}` : Remove customer profile
+- `GET /search?term={term}` : Search customer directory
+
+Base URL: `/api/billing-records`
+- `GET /` : Get list of all billing records (invoices)
+- `GET /{id}` : Get exact billing record
+- `POST /` : Create a new bill (auto-decrements inventory)
+- `PUT /{id}` : Update billing record (e.g. tracking advance payments)
+- `DELETE /{id}` : Delete bill
+- `PUT /{id}/payment-status` : Update status to PAID or PARTIAL
+
+## Configuration APIs
+Base URL: `/api/numbering`
+- `GET /next-bill-number` : Auto-generates the next sequential invoice code
+- `GET /next-purchase-number` : Auto-generates the next purchase record ID
