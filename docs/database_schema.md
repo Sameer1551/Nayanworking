@@ -290,3 +290,74 @@
         { "name": "temple_details", "type": "varchar", "nullable": true },
         { "name": "type", "type": "varchar", "nullable": true },
         { "name": "validity", "type": "varchar", "nullable": true },
+        { "name": "variant", "type": "varchar", "nullable": true },
+        { "name": "water_content", "type": "varchar", "nullable": true }
+      ]
+    },
+    "sales_return_items": {
+      "description": "Specific items returned by customers from a bill",
+      "columns": [
+        { "name": "id", "type": "bigint", "nullable": false, "key": "PRI", "extra": "auto_increment" },
+        { "name": "sales_return_id", "type": "bigint", "nullable": true, "key": "MUL", "references": "sales_returns(id)" },
+        { "name": "billing_product_id", "type": "bigint", "nullable": true, "key": "MUL", "references": "billing_products(id)" },
+        { "name": "product_name", "type": "varchar", "nullable": true },
+        { "name": "product_code", "type": "varchar", "nullable": true },
+        { "name": "category", "type": "varchar", "nullable": true },
+        { "name": "subcategory", "type": "varchar", "nullable": true },
+        { "name": "hsn_code", "type": "varchar", "nullable": true },
+        { "name": "original_qty", "type": "int", "nullable": true },
+        { "name": "returned_qty", "type": "int", "nullable": true },
+        { "name": "unit_price", "type": "decimal", "nullable": true },
+        { "name": "gst_percent", "type": "decimal", "nullable": true },
+        { "name": "line_return_amount", "type": "decimal", "nullable": true },
+        { "name": "return_reason", "type": "varchar", "nullable": true },
+        { "name": "remarks", "type": "text", "nullable": true }
+      ]
+    },
+    "sales_returns": {
+      "description": "Credit notes/returns for customer invoices",
+      "columns": [
+        { "name": "id", "type": "bigint", "nullable": false, "key": "PRI", "extra": "auto_increment" },
+        { "name": "return_number", "type": "varchar", "nullable": true, "key": "UNI" },
+        { "name": "return_date", "type": "date", "nullable": true },
+        { "name": "billing_record_id", "type": "bigint", "nullable": true, "key": "MUL", "references": "billing_records(id)" },
+        { "name": "bill_number", "type": "varchar", "nullable": true },
+        { "name": "customer_name", "type": "varchar", "nullable": true },
+        { "name": "customer_contact", "type": "varchar", "nullable": true },
+        { "name": "customer_email", "type": "varchar", "nullable": true },
+        { "name": "customer_address", "type": "text", "nullable": true },
+        { "name": "total_return_amount", "type": "decimal", "nullable": true },
+        { "name": "branch_name", "type": "varchar", "nullable": true },
+        { "name": "notes", "type": "text", "nullable": true },
+        { "name": "created_at", "type": "datetime", "nullable": true },
+        { "name": "updated_at", "type": "datetime", "nullable": true }
+      ]
+    },
+    "users": {
+      "description": "System users, employees, and suppliers",
+      "columns": [
+        { "name": "id", "type": "bigint", "nullable": false, "key": "PRI", "extra": "auto_increment" },
+        { "name": "email", "type": "varchar", "nullable": true, "key": "UNI" },
+        { "name": "password", "type": "varchar", "nullable": true },
+        { "name": "first_name", "type": "varchar", "nullable": true },
+        { "name": "last_name", "type": "varchar", "nullable": true },
+        { "name": "phone", "type": "varchar", "nullable": true, "key": "UNI" },
+        { "name": "user_type", "type": "enum", "nullable": false },
+        { "name": "company_name", "type": "varchar", "nullable": true },
+        { "name": "gst_number", "type": "varchar", "nullable": true, "key": "UNI" },
+        { "name": "is_active", "type": "bit", "nullable": true },
+        { "name": "created_at", "type": "datetime", "nullable": true },
+        { "name": "updated_at", "type": "datetime", "nullable": true }
+      ]
+    }
+  },
+  "connections": [
+    { "from": "billing_products.billing_record_id", "to": "billing_records.id", "type": "One-to-Many" },
+    { "from": "billing_records.customer_id", "to": "customers.id", "type": "Many-to-One" },
+    { "from": "purchase_items.bulk_purchase_id", "to": "bulk_purchases.id", "type": "One-to-Many" },
+    { "from": "customers.user_id", "to": "users.id", "type": "One-to-One" },
+    { "from": "sales_returns.billing_record_id", "to": "billing_records.id", "type": "Many-to-One" },
+    { "from": "sales_return_items.sales_return_id", "to": "sales_returns.id", "type": "One-to-Many" },
+    { "from": "sales_return_items.billing_product_id", "to": "billing_products.id", "type": "Many-to-One" }
+  ]
+}
