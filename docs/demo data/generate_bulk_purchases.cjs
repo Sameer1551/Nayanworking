@@ -310,3 +310,80 @@ cycles.forEach((cycle) => {
                     unique_key: uniqueKey,
                     purchase_bill_no: billNo,
                     category: product.category,
+                    product_code: product.productCode,
+                    material_name: product.materialName,
+                    product_description: product.productDescription,
+                    hsn: product.hsn,
+                    quantity: qty,
+                    purchase_price: product.purchasePrice,
+                    input_gst_percent: GST,
+                    input_gst_amount: inputGstAmount,
+                    total_amount: totalAmount,
+                    subcategory: 'MID',
+                    color: product.color || null,
+                    size: product.size || null,
+                    type: product.type || null,
+                    shape: product.shape || null,
+                    material: product.material || null,
+                    gender: product.gender || null,
+                    lens_coating: null,
+                    lens_index: null,
+                    power: null,
+                    remarks: cycle.label,
+                    brand: product.brand || null
+                });
+
+                inventory[product.productCode] = (inventory[product.productCode] || 0) + qty;
+            }
+        });
+
+        // Only create bulk_purchase header if there are actual items
+        const headerItemCount = purchaseItems.filter(p => p.bulk_purchase_id === cycleBulkPurchaseId).length;
+        if (headerItemCount > 0) {
+            bulkPurchases.push({
+                id: cycleBulkPurchaseId,
+                branch: supplier.branch,
+                created_at: purchaseDate,
+                purchase_bill_no: billNo,
+                purchase_date: purchaseDate,
+                remarks: cycle.label,
+                supplier_address: 'India',
+                supplier_gstin: supplier.gstNumber,
+                supplier_name: supplier.companyName,
+                total_bill_amount: +cycleTotalAmount.toFixed(2),
+                total_gst_amount: +cycleTotalGst.toFixed(2),
+                updated_at: purchaseDate,
+                supplier_id: null,
+                unique_key: uniqueKey
+            });
+        }
+    }
+
+    // --- SELL SIMULATION between cycles ---
+    if (cycle.sellPercent !== null) {
+        Object.keys(inventory).forEach(key => {
+            const stock = inventory[key];
+            if (stock === 0) return;
+            const sold = Math.floor(stock * (cycle.sellPercent / 100));
+            inventory[key] = stock - sold;
+        });
+    }
+});
+
+// Sort purchase items by bill_no
+purchaseItems.sort((a, b) => a.purchase_bill_no.localeCompare(b.purchase_bill_no));
+
+// -------------------- SAVE TWO FILES --------------------
+const outputBulk = path.join(__dirname, 'generated_bulk_purchases.json');
+const outputItems = path.join(__dirname, 'generated_bulk_purchase_items.json');
+
+fs.writeFileSync(outputBulk, JSON.stringify(bulkPurchases, null, 2));
+fs.writeFileSync(outputItems, JSON.stringify(purchaseItems, null, 2));
+
+console.log(`Generated:`);
+console.log(`  - bulk_purchases:   ${bulkPurchases.length} bills`);
+console.log(`  - purchase_items:   ${purchaseItems.length} line items`);
+console.log(`  Spectacles/Sun:     ${purchaseItems.filter(p => p.category === 'SPECTACLES' || p.category === 'SUNGLASSES').length}`);
+console.log(`  Lens items:         ${purchaseItems.filter(p => p.category === 'LENS').length}`);
+console.log(`  Contact Lens items: ${purchaseItems.filter(p => p.category === 'CONTACT_LENSES').length}`);
+console.log(`  Power steps:        ${POWER_STEPS.length} (${POWER_STEPS[0]} to ${POWER_STEPS[POWER_STEPS.length-1]})`);
