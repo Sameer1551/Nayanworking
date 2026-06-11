@@ -61,3 +61,66 @@ function getHSN(category, material) {
         NON_CHARGEABLE: '0000.0000'
     };
     return map[category] || '9004.9090';
+}
+
+// -------------------- PRODUCT GENERATION --------------------
+function generateCatalog() {
+    const catalog = [];
+    let code = 1000;
+
+    const shapes = ['Rectangle', 'Round', 'Aviator', 'Square', 'Cat Eye'];
+    const materials = ['Acetate', 'Metal', 'TR90', 'Titanium'];
+    const types = ['Full Rim', 'Half Rim', 'Rimless'];
+    const colors = ['Black', 'Brown', 'Blue', 'Transparent'];
+    const sizes = ['S', 'M', 'L'];
+    const genders = ['Male', 'Female', 'Unisex'];
+
+    function create(category, count) {
+        for (let i = 0; i < count; i++) {
+            const tier = pick(['budget', 'mid', 'premium']);
+            const shape = pick(shapes);
+            const material = pick(materials);
+            const type = pick(types);
+            const color = pick(colors);
+            const size = pick(sizes);
+            const gender = pick(genders);
+            const hsn = getHSN(category, material);
+
+            catalog.push({
+                productCode: `${category.slice(0, 3)}-${code++}`,
+                materialName: `${shape} Model ${i}`,
+                productDescription: `${material} ${type} ${shape}`,
+                category,
+                subcategory: tier.toUpperCase(),
+                hsn,
+                purchasePrice: getPrice(category, tier),
+                tier,
+                color,
+                size,
+                type,
+                gender,
+                shape,
+                material
+            });
+        }
+    }
+
+    create('SPECTACLES', 25);
+    create('SUNGLASSES', 25);
+    create('FRAMES', 25);
+
+    // LENSES
+    const coatings = ['ARC', 'Blue Cut', 'Photochromic', 'Anti Glare'];
+    const indexTypes = ['1.5', '1.56', '1.6', '1.67'];
+
+    for (let i = 0; i < 40; i++) {
+        const coating = pick(coatings);
+        const tier = coating === 'Photochromic' ? 'premium' : 'mid';
+
+        catalog.push({
+            productCode: `LNS-${code++}`,
+            materialName: `Single Vision Lens`,
+            productDescription: `${coating} Lens Index ${pick(indexTypes)}`,
+            category: 'LENS',
+            subcategory: tier.toUpperCase(),
+            hsn: getHSN('LENS'),
