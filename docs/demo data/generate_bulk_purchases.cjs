@@ -232,3 +232,81 @@ cycles.forEach((cycle) => {
                     } else {
                         const key = `${product.productCode}_${power}`;
                         const currentStock = inventory[key] || 0;
+                        const targetStock = rand(30, 50);
+                        qty = Math.max(0, targetStock - currentStock);
+                        if (qty === 0) return;
+                    }
+
+                    const base = product.purchasePrice * qty;
+                    const inputGstAmount = +(base * GST / 100).toFixed(2);
+                    const totalAmount = +(base + inputGstAmount).toFixed(2);
+
+                    cycleTotalAmount += totalAmount;
+                    cycleTotalGst += inputGstAmount;
+
+                    const itemUniqueKey = randomUniqueKey();
+
+                    purchaseItems.push({
+                        // linking fields
+                        bulk_purchase_id: cycleBulkPurchaseId,
+                        unique_key: uniqueKey,
+                        purchase_bill_no: billNo,
+                        // product fields
+                        category: product.category,
+                        product_code: product.productCode,
+                        material_name: product.materialName,
+                        product_description: product.productDescription,
+                        hsn: product.hsn,
+                        quantity: qty,
+                        purchase_price: product.purchasePrice,
+                        // GST fields
+                        input_gst_percent: GST,
+                        input_gst_amount: inputGstAmount,
+                        total_amount: totalAmount,
+                        // optical fields
+                        subcategory: 'MID',
+                        color: product.color || null,
+                        size: product.size || null,
+                        type: product.type || null,
+                        shape: product.shape || null,
+                        material: product.material || null,
+                        gender: product.gender || null,
+                        // lens/CL specific
+                        lens_coating: product.coating || null,
+                        lens_index: product.index || null,
+                        power: power,
+                        // extras
+                        remarks: cycle.label,
+                        brand: product.brand || null
+                    });
+
+                    // Update inventory
+                    const key = `${product.productCode}_${power}`;
+                    inventory[key] = (inventory[key] || 0) + qty;
+                });
+
+            } else {
+                // SPECTACLES / SUNGLASSES
+                let qty;
+
+                if (cycle.highQty) {
+                    qty = rand(50, 100);
+                } else {
+                    const currentStock = inventory[product.productCode] || 0;
+                    const targetStock = rand(40, 60);
+                    qty = Math.max(0, targetStock - currentStock);
+                    if (qty === 0) return;
+                }
+
+                const base = product.purchasePrice * qty;
+                const inputGstAmount = +(base * GST / 100).toFixed(2);
+                const totalAmount = +(base + inputGstAmount).toFixed(2);
+
+                cycleTotalAmount += totalAmount;
+                cycleTotalGst += inputGstAmount;
+
+                purchaseItems.push({
+                    bulk_purchase_id: cycleBulkPurchaseId,
+                    unique_key: uniqueKey,
+                    purchase_bill_no: billNo,
+                    category: product.category,
