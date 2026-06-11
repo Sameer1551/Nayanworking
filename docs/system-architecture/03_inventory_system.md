@@ -29,3 +29,34 @@
 | `purchase_date` | date | Date of last purchase |
 | `expiry_date` | date | For contact lenses / solutions |
 | `minimum_stock` | int | Default: 0 (bulk sets 5) |
+| `maximum_stock` | int | Default: null (bulk sets qty×2) |
+| `reorder_point` | int | Default: 0 (bulk sets 10) |
+| `remarks` | text | |
+| `created_at` | datetime | Auto-set on insert |
+| `updated_at` | datetime | Auto-set on update |
+
+---
+
+## ➕ Stock Increment (After Purchase)
+
+### Triggered by Single Purchase
+```
+PurchaseService.java → updateInventoryFromPurchase()
+
+findByProductCode(productCode)
+    ├── FOUND → existingItem.quantity += purchasedQty
+    │            save(existingItem)
+    └── NOT FOUND → create new InventoryItem
+                     set all fields from Purchase
+                     save(newItem)
+```
+
+### Triggered by Bulk Purchase
+```
+BulkPurchaseService.java → updateInventoryFromBulkPurchase()
+
+foreach PurchaseItem in bulkPurchase:
+    findByProductCode(item.productCode)
+    ├── FOUND → existingItem.quantity += item.quantity
+    │            update purchaseDate if newer
+    │            save(existingItem)
