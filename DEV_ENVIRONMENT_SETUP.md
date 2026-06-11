@@ -145,3 +145,52 @@ Default ports (can be changed in the scripts):
 - **Backend**: 8080
 - **H2 Console**: 8080/h2-console
 
+### MySQL Service Names
+The scripts automatically detect common MySQL service names:
+- MySQL80
+- MySQL
+- mysql80
+- mysql
+
+## 🚨 Troubleshooting
+
+### MySQL Issues
+1. **Service not found**: Ensure MySQL is installed and configured
+2. **Access denied**: Check credentials in `application.properties`
+3. **Port conflicts**: Ensure port 3306 is available
+
+### Spring Boot Issues
+1. **Maven not found**: Add Maven to your PATH
+2. **Port conflicts**: Ensure port 8080 is available
+3. **Java version**: Ensure Java 17+ is installed
+
+### Frontend Issues
+1. **Node.js not found**: Add Node.js to your PATH
+2. **Port conflicts**: Ensure port 5173 is available
+3. **Dependencies**: Run `npm install` first
+
+### Permission Issues
+1. **Windows**: Run as Administrator
+2. **Linux/Mac**: Use `sudo` or ensure proper permissions
+
+## 🔄 Manual Startup (Fallback)
+
+If the automated scripts fail, you can start components manually:
+
+### 1. Start MySQL
+```bash
+# Windows
+net start MySQL80
+
+# Linux/Mac
+sudo systemctl start mysql
+```
+
+### 2. Start Spring Boot
+```bash
+mvn spring-boot:run
+```
+
+### 3. Start Frontend
+```bash
+npm run dev
