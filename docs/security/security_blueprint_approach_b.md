@@ -79,3 +79,30 @@ flowchart TD
 *   **API Error Standardization:** Never return "User not found". Always return generic messages like `"Invalid credentials"` to prevent User Enumeration attacks.
 *   **HTTPS Enforcement:** Redirect all HTTP traffic to HTTPS. Enforce **HSTS** (`Strict-Transport-Security: max-age=31536000; includeSubDomains`).
 *   **Strict Security Headers & CORS:**
+    *   **CORS:** Explicitly whitelist the frontend domain (e.g., `https://your-frontend.com`) and completely disable `*` wildcards.
+    *   `Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none';`
+    *   `X-Content-Type-Options: nosniff`
+    *   `Referrer-Policy: strict-origin-when-cross-origin`
+
+### Phase 2: Session, Hierarchy & CSRF
+*   **HttpOnly Cookies & Robust CSRF:** Implement the **Double-Submit Cookie Pattern** or Spring Security's native CSRF protection to block CSRF attacks against `HttpOnly` cookies.
+*   **Role Hierarchy:** Define the Spring Security hierarchy (`ROLE_ADMIN > ROLE_SUPPLIER`). This ensures Admins implicitly inherit Supplier permissions without redundant code.
+*   **Refresh Token Storage:** Create a `refresh_tokens` DB table (`token_id`, `user_id`, `expiry`, `revoked_status`).
+*   **Token Rotation:** Invalidate the old refresh token upon use and issue a new one.
+*   **Strict Logout Flow:** User logs out -> mark the refresh token as `revoked=true` in the DB -> explicitly clear the `HttpOnly` cookies in the HTTP response.
+
+### Phase 3: Tamper-Evident Audit Logging
+*   **Hash Chaining:** `SHA-256(user_email + action + timestamp + previous_hash)`.
+*   **Automated Verification:** Add a backend API (`/api/admin/audit/verify`) that iterates through the entire `AuditLog` table and recalculates hashes. Call this automatically on server startup.
+
+### Phase 4: Dynamic Rate Limiting & Account Lockout
+*   **Endpoint-Specific Limits:** Implement dynamic Bucket4j limits:
+    *   `/api/auth/login`: 5 requests per minute (Stricter).
+    *   `/api/data/**`: 100 requests per minute (Standard).
+*   **Account Lockout:** Track failed logins. On 5 consecutive failures, lock the account for 15 minutes.
+
+### Phase 5: Encryption at Rest & Secure Configuration
+*   **Encryption at Rest:** Ensure the underlying database utilizes disk-level encryption (e.g., AWS KMS or LUKS). For highly sensitive PII fields (like custom API keys), use JPA `@Converter` with AES-256 encryption.
+*   **Secrets:** Move database credentials and JWT secret to a `.env` file (excluded via `.gitignore`).
+*   **Dependency Strategy:** Implement a regular patch cycle using tools like **Dependabot** or **Renovate** to automatically update dependencies and flag CVEs.
+
