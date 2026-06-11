@@ -66,3 +66,37 @@ Unified CustomerBillingSummary
 
 ---
 
+## 💰 Sales / Billing Flow
+
+**Frontend**: `src/pages/supplier/NewBilling.tsx`  
+**Backend**: `BillingRecordService.java` → `BillingRecordController.java`  
+**DB Tables**: `billing_records` + `billing_products`
+
+```
+Supplier opens New Billing page (/supplier/billing)
+    ↓
+Search/select customer by name or mobile
+    ↓
+Add products from inventory (with qty, price, GST)
+    ↓
+System auto-calculates: subtotal, totalGST, discount, finalPayable
+    ↓
+Fill in eye prescription (optional):
+    sphRight, cylRight, axisRight, pdRight
+    sphLeft, cylLeft, axisLeft, pdLeft
+    ↓
+Submit billing
+    ↓
+POST /api/billing-records
+    ↓
+BillingRecordService.createBillingRecord()
+    ├── Look up Customer by customerContact (mobileNo)
+    ├── Link BillingRecord ↔ Customer via FK (customer_id)
+    ├── Update Customer stats:
+    │     visitCount++
+    │     totalSpent += finalPayable
+    │     averageBillAmount = totalSpent / visitCount
+    │     lastBillNumber = billNumber
+    │     lastBillDate = billDate
+    │     lastVisitDate = billDate
+    └── reduceInventoryFromSale()
