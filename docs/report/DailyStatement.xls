@@ -258,3 +258,133 @@
                 <td class="tableRow">11-08-2025 12:38</td>
                 <td class="tableRow">11-08-2025 12:38</td>
                 <td class="tableRow">11-08-2025 12:38</td>
+                <td class="tableRow">Admin</td>
+                <td class="tableRow">ND/3747</td>
+                <td class="tableRow">ND/3747</td>
+                <td class="tableRow">MRS PUSHPANJALI</td>
+                <td class="tableRow">780.00</td>
+                <td class="tableRow">80.00</td>
+                <td class="tableRow">0.00</td>
+                <td class="tableRow">700.00</td>
+                <td class="tableRow">700.00</td>
+                <td class="tableRow"><br/>700.00 Cash - 921948-2 (385)</td>
+                <td class="tableRow">0.00</td>
+            </tr><tr>
+                <td class="tableRow">12</td>
+                <td class="tableRow">11-08-2025 12:40</td>
+                <td class="tableRow">11-08-2025 12:40</td>
+                <td class="tableRow">11-08-2025 12:40</td>
+                <td class="tableRow">11-08-2025 12:40</td>
+                <td class="tableRow">Admin</td>
+                <td class="tableRow">NJ/10380</td>
+                <td class="tableRow">NJ/10380</td>
+                <td class="tableRow">MRS HAFIDA BANU</td>
+                <td class="tableRow">1650.00</td>
+                <td class="tableRow">150.00</td>
+                <td class="tableRow">0.00</td>
+                <td class="tableRow">1500.00</td>
+                <td class="tableRow">1500.00</td>
+                <td class="tableRow"><br/>1500.00 Bank - 921948-1 (13)</td>
+                <td class="tableRow">0.00</td>
+            </tr><tr>
+                <td class="tableRow">13</td>
+                <td class="tableRow">11-08-2025 12:54</td>
+                <td class="tableRow">11-08-2025 12:54</td>
+                <td class="tableRow">11-08-2025 12:54</td>
+                <td class="tableRow">11-08-2025 12:54</td>
+                <td class="tableRow">Admin</td>
+                <td class="tableRow">NJ/10381</td>
+                <td class="tableRow">NJ/10381</td>
+                <td class="tableRow">MRS BAKUL MISTRY</td>
+                <td class="tableRow">4719.00</td>
+                <td class="tableRow">319.00</td>
+                <td class="tableRow">0.00</td>
+                <td class="tableRow">4400.00</td>
+                <td class="tableRow">4400.00</td>
+                <td class="tableRow"><br/>4400.00 Bank - 921948-1 (13)</td>
+                <td class="tableRow">0.00</td>
+            </tr><tr>
+                <td class="tableRow">14</td>
+                <td class="tableRow">11-08-2025 17:21</td>
+                <td class="tableRow">12-08-2025 17:16</td>
+                <td class="tableRow">11-08-2025 17:21</td>
+                <td class="tableRow"></td>
+                <td class="tableRow">Admin</td>
+                <td class="tableRow">NJ/10382</td>
+                <td class="tableRow"></td>
+                <td class="tableRow">MRS VIJETHA</td>
+                <td class="tableRow">1575.00</td>
+                <td class="tableRow">275.00</td>
+                <td class="tableRow">0.00</td>
+                <td class="tableRow">1300.00</td>
+                <td class="tableRow">1300.00</td>
+                <td class="tableRow"><br/>1000.00 Bank - 921948-1 (13)</td>
+                <td class="tableRow">300.00</td>
+            </tr><tr>
+                <td class="tableRow">15</td>
+                <td class="tableRow">11-08-2025 19:20</td>
+                <td class="tableRow">11-08-2025 19:20</td>
+                <td class="tableRow">11-08-2025 19:20</td>
+                <td class="tableRow">11-08-2025 19:20</td>
+                <td class="tableRow">Admin</td>
+                <td class="tableRow">NJ/10383</td>
+                <td class="tableRow">NJ/10383</td>
+                <td class="tableRow">MR . SELVIN</td>
+                <td class="tableRow">2730.00</td>
+                <td class="tableRow">230.00</td>
+                <td class="tableRow">0.00</td>
+                <td class="tableRow">2500.00</td>
+                <td class="tableRow">2500.00</td>
+                <td class="tableRow"><br/>2500.00 Cash - 921948-1 (12)</td>
+                <td class="tableRow">0.00</td>
+            </tr><tr style="font-weight: bold; background-color: #C9C9C9; font-size: 8px;">
+            <td class="tableHeader" colspan="8" width="41%" style="font-size: 13px;" align="center">ADVANCE COLLECTION<br>25300.00</td>
+            <td class="tableHeader" width="13%" align="right">TOTAL</td>
+            <td class="tableRow" align="left"></td>
+            <td class="tableRow" align="left"></td>
+            <td class="tableRow" align="left"></td>
+            <td class="tableRow" align="left"></td>
+            <td class="tableRow" align="left"></td>
+            <td colspan="1" class="tableRow"><br/>13000.00 Cash - 921948-1 (12)<br/>8900.00 Bank - 921948-1 (13)<br/>2700.00 Bank - 921948-2 (386)<br/>700.00 Cash - 921948-2 (385)
+            </td>
+            <td class="tableRow" align="left"></td>
+        </tr>
+        <tr><td colspan="16" style="color: #FF0000; font-style: italic;">*Data displayed in the new order advance collections table is as per payment date.</td></tr></table><br><table width=500><tr>
+        <td colspan="14" align="left" style="font-weight: bold;"><h4>Balance Payment Collections</h4></td>
+    </tr>
+    <tr>
+        <td class="tableHeader">Sl no</td>
+        <td class="tableHeader">Order Date</td>
+        <td class="tableHeader">Delivery Date</td>
+        <td class="tableHeader">Payment Date</td>
+        <td class="tableHeader">Invoice Date</td>
+        <td class="tableHeader">Sales Staff</td>
+        <td class="tableHeader">Order Number</td>
+        <td class="tableHeader">Invoice Number</td>
+        <td class="tableHeader">Customer Name</td>
+        <td class="tableHeader">Order Value</td>
+        <td class="tableHeader">Total Discount</td>
+        <td class="tableHeader">RoundOff Amount</td>
+        <td class="tableHeader">Net Value</td>
+        <td class="tableHeader">Amount Collected</td>
+    </tr><tr>
+                <td class="tableRow">1</td>
+                <td class="tableRow">02-08-2025 19:27</td>
+                <td class="tableRow">03-08-2025 19:23</td>
+                <td class="tableRow">11-08-2025 18:48</td>
+                <td class="tableRow">11-08-2025 18:48</td>
+                <td class="tableRow">Admin</td>
+                <td class="tableRow">ND/3723</td>
+                <td class="tableRow">ND/3723</td>
+                <td class="tableRow">MR SUDIP</td>
+                <td class="tableRow">2250.00</td>
+                <td class="tableRow">150.00</td>
+                <td class="tableRow">0.00</td>
+                <td class="tableRow">2100.00</td>
+                <td class="tableRow"><br/>1100.00 Cash - 921948-2 (385)
+                </td>
+            </tr><tr>
+                <td class="tableRow">2</td>
+                <td class="tableRow">31-07-2025 17:36</td>
+                <td class="tableRow">01-08-2025 17:30</td>
+                <td class="tableRow">11-08-2025 19:10</td>
