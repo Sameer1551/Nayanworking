@@ -100,3 +100,37 @@ BillingRecordService.createBillingRecord()
     │     lastBillDate = billDate
     │     lastVisitDate = billDate
     └── reduceInventoryFromSale()
+          → deduct each product's quantity from inventory_items
+```
+
+---
+
+## 🧾 BillingRecord Fields
+
+| Field Group | Fields |
+|-------------|--------|
+| **Identity** | `id`, `bill_number` (UNIQUE) |
+| **Dates** | `bill_date`, `prescription_delivery_date` |
+| **Branch** | `branch_code`, `branch_name` |
+| **Customer** | `customer_name`, `customer_contact`, `customer_email`, `customer_address`, `customer_id` FK |
+| **Prescription** | `lens_power_right`, `lens_power_left`, `pd`, `sph_right`, `cyl_right`, `axis_right`, `pd_right`, `sph_left`, `cyl_left`, `axis_left`, `pd_left`, `additional_notes` |
+| **Billing** | `subtotal`, `total_gst`, `amount`, `discount`, `advance_paid`, `final_payable` |
+| **Payment** | `payment_method`, `transaction_ref`, `payment_status` |
+| **Extras** | `warranty_details`, `return_policy`, `authorized_signatory` |
+| **Timestamps** | `created_at`, `updated_at` |
+
+---
+
+## 🛒 BillingProduct Fields
+
+Each billing record has one or more products (1:N):
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | bigint PK | |
+| `billing_record_id` | bigint FK | References `billing_records.id` |
+| `product_name` | string | |
+| `product_code` | string | Used to match inventory |
+| `category` | string | |
+| `quantity` | int | |
+| `unit_price` | decimal | |
