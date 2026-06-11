@@ -32,3 +32,37 @@ Unified CustomerBillingSummary
 
 ---
 
+## 👤 Customer Entity Fields
+
+**DB Table**: `customers`  
+**Java Entity**: `Customer.java`
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | bigint PK | |
+| `mobile_no` | string UNIQUE | Primary identifier |
+| `full_name` | string | |
+| `branch_name` | string | |
+| `branch_code` | string | |
+| `title` | string | Mr/Mrs/Ms etc. |
+| `mobile_no2` | string | Secondary number |
+| `gender` | enum | MALE / FEMALE / OTHER |
+| `gstin_no` | string | |
+| `date_of_birth` | date | |
+| `age` | int | |
+| `notes` | text | |
+| `email` | string | |
+| `city` | string | |
+| `anniversary` | date | |
+| `date_of_visit` | date | |
+| `last_visit_date` | date | Auto-updated on billing |
+| `visit_count` | int | Incremented on each sale |
+| `total_spent` | double | Cumulative sales amount |
+| `average_bill_amount` | double | totalSpent / visitCount |
+| `last_bill_number` | string | |
+| `last_bill_date` | date | |
+| `source` | enum | CUSTOMER_RECORD / BILLING_RECORD / COMBINED |
+| `created_at` / `updated_at` | datetime | |
+
+---
+
