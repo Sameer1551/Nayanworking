@@ -41,3 +41,46 @@ The main gap now is:
 |------|--------|-------|
 | `/` | [x] | Home page exists |
 | `/spectacles` | [x] | Category page exists, but still not fully live-data driven |
+| `/sunglasses` | [x] | Category page exists, but still not fully live-data driven |
+| `/contact-lenses` | [x] | Category page exists, but still not fully live-data driven |
+| `/frames` | [x] | Category page exists, but still not fully live-data driven |
+| `/solutions` | [x] | Category page exists, but still not fully live-data driven |
+
+### Supplier / Staff Pages
+
+| Route | Status | Notes |
+|------|--------|-------|
+| `/supplier/dashboard` | [~] | Page exists and dashboard frontend now uses backend API, but analytics still need further hardening |
+| `/supplier/billing` | [~] | Page exists, but billing contract gaps still remain |
+| `/supplier/billing-records` | [x] | Routed and usable |
+| `/supplier/customers` | [~] | Page exists, but still has mixed backend/file/localStorage logic |
+| `/supplier/purchase` | [~] | Backend create flow exists, but broader cleanup is still pending |
+| `/supplier/bulk-purchase` | [~] | Backend exists, but cleanup/security work is still pending |
+| `/supplier/purchase-history` | [~] | Page exists, but still contains heavy local fallback logic |
+| `/supplier/purchase-return` | [x] | Page exists and is now backend-connected |
+| `/supplier/sales-return` | [x] | Page exists and is now backend-connected |
+| `/supplier/data` | [ ] | Still only a placeholder instead of a real reports page |
+| `/supplier/inventory` | [~] | Page exists, but frontend/backend model cleanup is still not complete |
+
+### Customer Portal Pages
+
+| Route | Status | Notes |
+|------|--------|-------|
+| `/customer/login` | [x] | Created and routed |
+| `/customer/register` | [x] | Created and routed |
+| `/customer/dashboard` | [x] | Created and protected |
+| `/customer/profile` | [x] | Created and protected |
+| `/customer/bills` | [x] | Created and protected |
+| `/customer/prescriptions` | [x] | Created and protected |
+| `/customer/returns` | [x] | Created and protected |
+| `/customer/book-eye-test` | [x] | Created and protected |
+| `/customer/contact-lens-reorders` | [x] | Created and protected |
+
+## 3. Existing UI Files That Exist But Still Need Product Cleanup
+
+- [~] `src/components/LoginModal.tsx` still exists even though auth is now more route-driven.
+- [~] `src/components/MovementHistory.tsx` exists, but there is still no real movement ledger backend behind it.
+- [ ] `src/pages/categories/Others.tsx` exists, but is not routed.
+- [~] `src/components/BillingRecords.tsx` is usable, but structurally it still belongs in `pages/`.
+
+## 4. Backend Modules That Already Exist
