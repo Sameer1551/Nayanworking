@@ -366,3 +366,94 @@ It is updated at the end of each implementation phase.
 
 ---
 
+### 6.1 User Location & Device Tracking
+
+**Why:** Gives users visibility into their account security (so they can spot unauthorized access) and provides admins with forensics data.
+
+**How it works:**
+- `AuthController` receives the HTTP request and passes it to `AuthService`.
+- `LoginHistoryService` extracts the IP address (handling `X-Forwarded-For` for proxies).
+- It performs basic string matching on the `User-Agent` header to determine the Browser and OS (e.g., "Chrome on Windows").
+- This data is saved to the `login_history` table on every successful login.
+
+---
+
+### 6.2 The "Wow" UI Feature
+
+**Why:** Security should be visible to the end-user to build trust.
+
+**How it works:**
+- When a user logs in (or fetches their profile), `LoginHistoryService` queries their *previous* login record.
+- It formats the time elapsed (e.g., "2 hours ago").
+- The `AuthResponse` DTO now includes: `"lastLoginDetails": "Last login: Local Network (Chrome on Windows) - 2 hours ago"`.
+- The frontend can simply display this string in a prominent security widget on the Dashboard.
+
+---
+
+### 6.3 Automated Database Backups
+
+**Why:** Ransomware or accidental drops.
+
+**How it works:**
+- We created a `backup_db.bat` script.
+- It uses `mysqldump` to export the entire database to a `.sql` file with a timestamp.
+- It automatically deletes backups older than 30 days to save disk space.
+- The system administrator can schedule this to run daily using Windows Task Scheduler (or a Cron job on Linux).
+
+---
+
+## Phase 7: Structured Monitoring & Security Test Endpoint ✅ COMPLETE
+
+**Date:** 2026-04-29
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `resources/logback-spring.xml` | Configured a `RollingFileAppender` for `logs/security.json` |
+| `service/SecurityLogger.java` | Centralized JSON logging service utilizing `LogstashEncoder` |
+| `controller/SecurityTestController.java` | Exposes `/api/security/test` for monitoring validation |
+
+### Files Modified
+
+| File | Change Summary |
+|------|---------------|
+| `pom.xml` | Added `logstash-logback-encoder` dependency |
+| `config/RateLimitingFilter.java` | Intercepts 429 errors and pushes them to `SecurityLogger` |
+| `config/SecurityConfig.java` | Added custom handlers for 401 and 403 errors |
+
+---
+
+### 7.1 Structured JSON Security Logs
+
+**Why:** Parsing standard text logs (`2026-04-29 10:00:00 - User failed login from IP...`) is error-prone. Modern security tools (Splunk, ELK, Datadog) ingest JSON instantly.
+
+**How it works:**
+- We imported `logstash-logback-encoder`.
+- Defined `logback-spring.xml` to intercept the `SECURITY_AUDIT` logger.
+- `SecurityLogger.java` uses `StructuredArguments.entries()` to output perfectly formatted JSON directly into `logs/security.json`.
+- The log files rollover daily and are kept for 30 days.
+
+---
+
+### 7.2 Centralized Error Auditing (401, 403, 429)
+
+**Why:** A spike in these HTTP status codes is the #1 indicator of a cyber attack.
+- `401 Unauthorized`: Attackers guessing passwords or using expired tokens.
+- `403 Forbidden`: Attackers trying to access endpoints they don't have roles for.
+- `429 Too Many Requests`: DoS or brute force bots hitting Bucket4j rate limits.
+
+**How it works:**
+- `SecurityConfig` uses `.exceptionHandling()` to intercept `AuthenticationEntryPoint` (401) and `AccessDeniedHandler` (403), piping the request data to `SecurityLogger`.
+- `RateLimitingFilter` pipes 429 errors to `SecurityLogger`.
+
+---
+
+### 7.3 Security Test Endpoint
+
+**Why:** To easily verify that the rate limiter, headers, and IP extraction are working correctly in any environment.
+
+**How it works:**
+- `GET /api/security/test`
+- Returns your IP, User-Agent, and all headers.
+- Since Bucket4j protects `/api/**` with 100 requests per minute, you can write a simple loop script against this endpoint to verify that the `429` block works and appears in `logs/security.json`.
