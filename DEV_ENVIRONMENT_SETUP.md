@@ -47,3 +47,52 @@ node start-dev.js
 | `npm run dev:full` | Start everything (MySQL + Spring Boot + Frontend) |
 | `npm run dev:batch` | Start everything using batch file |
 | `npm run dev:backend` | Start only MySQL and Spring Boot |
+| `npm run dev:frontend` | Start only the frontend |
+| `npm run start:mysql` | Start only MySQL service |
+| `npm run start:springboot` | Start only Spring Boot |
+| `npm run start:all` | Start MySQL and Spring Boot (without frontend) |
+
+### Direct Script Execution
+
+| Script | Description |
+|--------|-------------|
+| `start-dev-environment.bat` | Windows batch script |
+| `start-dev-environment.ps1` | PowerShell script (recommended for Windows) |
+| `start-dev.js` | Node.js script (cross-platform) |
+
+## 🔧 Prerequisites
+
+### Required Software
+1. **MySQL** - Database server
+2. **Java 17+** - For Spring Boot
+3. **Maven** - Build tool for Spring Boot
+4. **Node.js** - For frontend development
+5. **npm** - Package manager
+
+### Required Permissions
+- **Windows**: Run as Administrator (for MySQL service management)
+- **Linux/Mac**: sudo access (for MySQL service management)
+
+## 📁 File Structure
+
+```
+project/
+├── start-dev-environment.bat      # Windows batch script
+├── start-dev-environment.ps1     # PowerShell script
+├── start-dev.js                  # Node.js script
+├── package.json                  # Updated with new scripts
+└── src/main/resources/
+    └── application.properties    # Database configuration
+```
+
+## 🎯 Usage Examples
+
+### Start Everything
+```bash
+# Using npm (recommended)
+npm run dev:full
+
+# Using PowerShell directly
+powershell -ExecutionPolicy Bypass -File start-dev-environment.ps1
+
+# Using batch file
