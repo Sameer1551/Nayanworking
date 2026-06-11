@@ -24,3 +24,16 @@ SELECT * FROM billing_records ORDER BY created_at DESC LIMIT 10;
 SELECT * FROM billing_products WHERE billing_record_id = <bill_id>;
 -- Get all bills for a specific customer contact
 SELECT * FROM billing_records WHERE customer_contact = '1234567890';
+-- Total sales for the current month
+SELECT SUM(final_payable) as monthly_sales FROM billing_records WHERE MONTH(bill_date) = MONTH(CURRENT_DATE()) AND YEAR(bill_date) = YEAR(CURRENT_DATE());
+
+-- PURCHASES
+SELECT * FROM purchases ORDER BY purchase_date DESC;
+SELECT * FROM purchase_items WHERE purchase_id = <purchase_id>;
+
+-- SEARCHING
+-- Search products by name (fuzzy search)
+SELECT * FROM inventory_items WHERE product_name LIKE '%Frame%';
+
+-- RETURNS
+SELECT * FROM sales_returns ORDER BY return_date DESC;
