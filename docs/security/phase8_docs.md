@@ -54,3 +54,13 @@
 - On every request, `JwtAuthFilter` re-calculates the hash from the current request's `User-Agent`.
 - If the hashes don't match, the token is rejected as a "Replay Attack."
 
+---
+
+### 8.4 Encrypted Database Backups
+
+**Why:** If your backup server is compromised, your data should still be safe.
+
+**How it works:**
+- The `backup_db.bat` script now pipes the `mysqldump` output through OpenSSL.
+- It uses `AES-256-CBC` with `PBKDF2` key derivation.
+- The plaintext `.sql` file is deleted immediately after the `.enc` file is created.
