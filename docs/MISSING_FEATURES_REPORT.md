@@ -40,3 +40,24 @@ Status legend:
 - [x] Sales return page exists and is backend-connected.
 - [x] Purchase return page exists and is backend-connected.
 - [x] Inventory page exists.
+- [x] Billing records page exists.
+- [x] Dashboard page exists.
+- [ ] Real reports page is still missing. `Data.tsx` is still not a finished reporting module.
+- [ ] Dedicated low-stock page is still missing.
+- [ ] Supplier master page is still missing.
+- [ ] Inventory adjustments page is still missing.
+- [ ] Stock audit / reconciliation page is still missing.
+- [ ] Expiry alerts page is still missing.
+- [ ] Warranty page is still missing.
+- [ ] Users / roles page is still missing.
+- [ ] Settings page is still missing.
+
+## Customer-Side Work Status
+
+- [x] Customer login page exists.
+- [x] Customer register page exists.
+- [x] Customer dashboard page exists.
+- [x] Customer profile page exists.
+- [x] Customer bills page exists.
+- [x] Customer prescriptions page exists.
+- [x] Customer returns page exists.
