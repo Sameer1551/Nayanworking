@@ -250,3 +250,64 @@ for (let month = 0; month < 12; month += 2) {
                 id: idCounter++,
                 branch: supplier.branchCode,
                 category: product.category,
+                created_at: createdAt,
+                hsn: product.hsn,
+                input_gst_amount,
+                input_gst_percent: GST,
+                material_name: product.materialName,
+                product_code: product.productCode,
+                product_description: product.productDescription,
+                purchase_bill_no: billNo,
+                purchase_date: purchaseDate,
+                purchase_price: product.purchasePrice,
+                quantity: qty,
+                remarks: 'Bi-monthly restock cycle',
+                subcategory: product.subcategory,
+                supplier_address: 'India',
+                supplier_gstin: supplier.gstNumber,
+                supplier_name: supplier.companyName,
+                total_amount,
+                updated_at: updatedAt,
+                base_curve: null,
+                bridge_size: null,
+                color: product.color || null,
+                ct: null,
+                design: null,
+                diameter: null,
+                dkt: null,
+                gender: product.gender || null,
+                lens_addition: null,
+                lens_axis: null,
+                lens_coating: product.lensCoating || null,
+                lens_detail: null,
+                lens_index: product.lensIndex || null,
+                lens_number: null,
+                lens_number_range: null,
+                lens_product_name: null,
+                material: product.material || null,
+                modality: null,
+                name: null,
+                packing_type: null,
+                shape: product.shape || null,
+                size: product.size || null,
+                solution_name: null,
+                temple_details: null,
+                type: product.type || null,
+                validity: null,
+                variant: null,
+                water_content: null,
+                supplier_id: null,
+                unique_key: uniqueKey
+            };
+
+            purchases.push(record);
+        });
+    }
+}
+
+// -------------------- SAVE --------------------
+const output = path.join(__dirname, 'generated_purchases.json');
+fs.writeFileSync(output, JSON.stringify(purchases, null, 2));
+
+console.log(`Generated ${purchases.length} purchase records`);
+console.log(`Categories: SPECTACLES=${purchases.filter(p=>p.category==='SPECTACLES').length}, SUNGLASSES=${purchases.filter(p=>p.category==='SUNGLASSES').length}, LENS=${purchases.filter(p=>p.category==='LENS').length}, CONTACT_LENSES=${purchases.filter(p=>p.category==='CONTACT_LENSES').length}, FRAMES=${purchases.filter(p=>p.category==='FRAMES').length}, SOLUTIONS=${purchases.filter(p=>p.category==='SOLUTIONS').length}, OTHER=${purchases.filter(p=>p.category==='OTHER').length}, NON_CHARGEABLE=${purchases.filter(p=>p.category==='NON_CHARGEABLE').length}`);
