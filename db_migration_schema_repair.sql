@@ -56,3 +56,32 @@ PREPARE s FROM @stmt; EXECUTE s; DEALLOCATE PREPARE s;
 -- ----------------------------------------------------------------
 -- 2. FOREIGN KEYS from supplier-linked tables to users
 -- ----------------------------------------------------------------
+
+-- Disable FK checks temporarily so we can add constraints safely
+-- even if there are pre-existing orphaned rows (log them below first).
+-- WARNING: Review the orphan queries below before applying FKs in production.
+
+-- 2a. Orphan check — find purchases with no matching user
+SELECT 'Orphan check: purchases.supplier_id not in users.id' AS check_label;
+SELECT p.id, p.supplier_id
+FROM purchases p
+WHERE p.supplier_id IS NOT NULL
+  AND NOT EXISTS (SELECT 1 FROM users u WHERE u.id = p.supplier_id)
+LIMIT 20;
+
+-- 2b. Orphan check — inventory_items
+SELECT 'Orphan check: inventory_items.supplier_id not in users.id' AS check_label;
+SELECT i.id, i.supplier_id
+FROM inventory_items i
+WHERE i.supplier_id IS NOT NULL
+  AND NOT EXISTS (SELECT 1 FROM users u WHERE u.id = i.supplier_id)
+LIMIT 20;
+
+-- 2c. Orphan check — bulk_purchases
+SELECT 'Orphan check: bulk_purchases.supplier_id not in users.id' AS check_label;
+SELECT b.id, b.supplier_id
+FROM bulk_purchases b
+WHERE b.supplier_id IS NOT NULL
+  AND NOT EXISTS (SELECT 1 FROM users u WHERE u.id = b.supplier_id)
+LIMIT 20;
+
