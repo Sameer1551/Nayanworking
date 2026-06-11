@@ -388,3 +388,133 @@
                 <td class="tableRow">31-07-2025 17:36</td>
                 <td class="tableRow">01-08-2025 17:30</td>
                 <td class="tableRow">11-08-2025 19:10</td>
+                <td class="tableRow">11-08-2025 19:09</td>
+                <td class="tableRow">Admin</td>
+                <td class="tableRow">ND/3717</td>
+                <td class="tableRow">ND/3717</td>
+                <td class="tableRow">MR MOHAMMED ASHRAF</td>
+                <td class="tableRow">3749.00</td>
+                <td class="tableRow">249.00</td>
+                <td class="tableRow">0.00</td>
+                <td class="tableRow">3500.00</td>
+                <td class="tableRow"><br/>1500.00 Bank - 921948-2 (386)
+                </td>
+            </tr><tr>
+                <td class="tableRow">3</td>
+                <td class="tableRow">07-08-2025 10:11</td>
+                <td class="tableRow">08-08-2025 10:08</td>
+                <td class="tableRow">11-08-2025 20:13</td>
+                <td class="tableRow">11-08-2025 20:13</td>
+                <td class="tableRow">Admin</td>
+                <td class="tableRow">NJ/10322</td>
+                <td class="tableRow">NJ/10322</td>
+                <td class="tableRow">MR JOHN WILLIE</td>
+                <td class="tableRow">2740.00</td>
+                <td class="tableRow">240.00</td>
+                <td class="tableRow">0.00</td>
+                <td class="tableRow">2500.00</td>
+                <td class="tableRow"><br/>2000.00 Bank - 921948-1 (13)
+                </td>
+            </tr><tr>
+                <td class="tableRow">4</td>
+                <td class="tableRow">07-08-2025 09:47</td>
+                <td class="tableRow">08-08-2025 09:43</td>
+                <td class="tableRow">11-08-2025 20:14</td>
+                <td class="tableRow">11-08-2025 20:14</td>
+                <td class="tableRow">Admin</td>
+                <td class="tableRow">NJ/10321</td>
+                <td class="tableRow">NJ/10321</td>
+                <td class="tableRow">MR . DEVENDRA TOOPO</td>
+                <td class="tableRow">7720.00</td>
+                <td class="tableRow">420.00</td>
+                <td class="tableRow">0.00</td>
+                <td class="tableRow">7300.00</td>
+                <td class="tableRow"><br/>6300.00 Bank - 921948-1 (13)
+                </td>
+            </tr><tr>
+            <td class="tableHeader" colspan="8"><b>BALANCE COLLECTION<br>10900.00</b></td>
+            <td class="tableHeader">TOTAL</td>
+            <td class="tableRow">16459.00</td>
+            <td class="tableRow">1059.00</td>
+            <td class="tableRow">0.00</td>
+            <td class="tableRow">15400.00</td>
+            <td class="tableRow"><br/>1100.00 Cash - 921948-2 (385)<br/>1500.00 Bank - 921948-2 (386)<br/>8300.00 Bank - 921948-1 (13)</td>
+        </tr>
+        <tr><td colspan="14" style="color: #FF0000; font-style: italic;">*Data displayed in the balance payment collections table is as per payment date.</td></tr></table><br><table width=500><tr>
+        <td colspan="13" align="left" style="font-weight: bold;"><h4>Return Payments</h4></td>
+    </tr>
+    <tr style="font-weight: bold; background-color: #C9C9C9; font-size: 9px;">
+        <td class="tableHeader">Sr No</td>
+        <td class="tableHeader">Order Date</td>
+        <td class="tableHeader">Delivery Date</td>
+        <td class="tableHeader">Payment Date</td>
+        <td class="tableHeader">Invoice Date</td>
+        <td class="tableHeader">Sales Staff</td>
+        <td class="tableHeader">Order Number</td>
+        <td class="tableHeader">Invoice Number</td>
+        <td class="tableHeader">Customer Name</td>
+        <td class="tableHeader">Order Value</td>
+        <td class="tableHeader">Total Discount</td>
+        <td class="tableHeader">RoundOff Amount</td>
+        <td class="tableHeader">Net Value</td>
+        <td class="tableHeader">Return Amount</td>
+    </tr><tr><td colspan="11" align="center">No Data Found</td></tr></table><table width=500><tr>
+        <td colspan="11" align="left" style="font-weight: bold;"><h4>Sales Return History</h4></td>
+    </tr>
+    <tr style="font-weight: bold; background-color: #C9C9C9; font-size: 9px;">
+        <td class="tableHeader">Sl no</td>
+        <td class="tableHeader">Order Date</td>
+        <td class="tableHeader">Delivery Date</td>
+        <td class="tableHeader">Payment Date</td>
+        <td class="tableHeader">Invoice Date</td>
+        <td class="tableHeader">Order Number</td>
+        <td class="tableHeader">Invoice Number</td>
+        <td class="tableHeader">Product Code</td>
+        <td class="tableHeader">Product Type</td>
+        <td class="tableHeader">Description</td>
+        <td class="tableHeader">Return Amount</td>
+    </tr><tr><td colspan="11" align="center">No Data Found</td></tr><tr style="font-weight: bold; background-color: #C9C9C9; font-size: 8px;">
+        <td class="tableHeader" colspan="10" width="85%" align="center">Total Sales Return Amount<br>0.00</td>
+        <td class="tableRow">0.00</td>
+    </tr>
+    <tr><td colspan="11" style="color: #FF0000; font-style: italic;">*Data displayed in the sales return history table is as per sales return date.</td></tr></table><table width=800 ><tr>
+        <td colspan="7" align="left" style="font-weight: bold;"><h4>Additional Receipts</h4></td>
+    </tr>
+    <tr>
+        <td class="tableHeader">Sl no</td>
+        <td class="tableHeader">Date</td>
+        <td class="tableHeader">Sales Staff</td>
+        <td class="tableHeader">Voucher Number</td>
+        <td class="tableHeader">Narration</td>
+        <td class="tableHeader">Credit Ledger</td>
+        <td class="tableHeader">Debit Ledger</td>
+    </tr><tr><td colspan="7" align="center">No Data Found</td></tr><tr>
+        <td class="tableHeader" colspan="3"><b>TOTAL ADDITIONAL PAYMENTS<br>0.00</b></td>
+        <td class="tableHeader">TOTAL</td>
+        <td class="tableRow">
+        <td class="tableRow"></td>
+            <td class="tableRow"></td>
+    </tr>
+    <tr><td colspan="7" style="color: #FF0000; font-style: italic;">*Data displayed in the additional receipts table is as per voucher date.</td></tr></table><table width=500><tr>
+        <td colspan="7" align="left" style="font-weight: bold;"><h4>Additional Payments</h4></td>
+    </tr>
+    <tr>
+        <td class="tableHeader">Sl no</td>
+        <td class="tableHeader">Date</td>
+        <td class="tableHeader">Sales Staff</td>
+        <td class="tableHeader">Voucher Number</td>
+        <td class="tableHeader">Narration</td>
+        <td class="tableHeader">Credit Ledger</td>
+        <td class="tableHeader">Debit Ledger</td>
+    </tr><tr><td colspan="7" align="center">No Data Found</td></tr><tr>
+            <td class="tableHeader" colspan="3"><b>TOTAL ADDITIONAL PAYMENTS<br>0.00</b></td>
+            <td class="tableHeader">TOTAL</td>
+            <td class="tableRow">
+            <td class="tableRow"></td>
+            <td class="tableRow"></td>
+        </tr>
+        <tr><td colspan="7" style="color: #FF0000; font-style: italic;">*Data displayed in the additional payments table is as per voucher date.</td></tr>
+</table><br><table width=500 ><tr>
+        <td colspan="8" align="left" style="font-weight: bold;"><h4>Expenses Payments</h4></td>
+    </tr>
+    <tr>
