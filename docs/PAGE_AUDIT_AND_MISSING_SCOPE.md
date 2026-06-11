@@ -84,3 +84,46 @@ The main gap now is:
 - [~] `src/components/BillingRecords.tsx` is usable, but structurally it still belongs in `pages/`.
 
 ## 4. Backend Modules That Already Exist
+
+- [x] `AuthController` / `AuthService`
+- [x] `InventoryController` / `InventoryItemService`
+- [x] `PurchaseController` / `PurchaseService`
+- [x] `BulkPurchaseController` / `BulkPurchaseService`
+- [x] `BillingRecordController` / `BillingRecordService`
+- [x] `CustomerController` / `CustomerService`
+- [x] `DashboardController` / `DashboardService`
+- [x] `SalesReturnController` / `SalesReturnService`
+- [x] `PurchaseReturnController` / `PurchaseReturnService`
+- [x] `FileController`
+- [x] `NumberingService`
+
+## 5. Pages That Exist But Are Still Functionally Incomplete
+
+- [~] Public category pages still need live catalog/inventory connection.
+- [~] Supplier dashboard is wired better than before, but analytics are still not fully normalized around all business flows.
+- [~] Billing page still needs invoice-number, product-source, and overall contract cleanup.
+- [~] Customers page still needs full backend-first cleanup.
+- [~] Purchase history still needs localStorage cleanup and stock-safe reconciliation.
+- [~] Inventory page still needs frontend/backend field-shape cleanup.
+- [~] Customer portal pages exist, but some flows still rely on local/client-side service layers until deeper backend support is finished.
+- [ ] Data page is still a placeholder.
+
+## 6. Pages You Still Need To Create
+
+### Supplier / Staff Pages Still Missing
+
+- [ ] `/supplier/reports`
+- [ ] `/supplier/low-stock`
+- [ ] `/supplier/suppliers`
+- [ ] `/supplier/inventory-adjustments`
+- [ ] `/supplier/stock-audit`
+- [ ] `/supplier/prescriptions`
+- [ ] `/supplier/expiry-alerts`
+- [ ] `/supplier/warranty`
+- [ ] `/supplier/settings`
+- [ ] `/supplier/users`
+
+### Public Experience Pages Still Missing
+
+- [ ] `/products/search`
+- [ ] `/product/:productCode`
