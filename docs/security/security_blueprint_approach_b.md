@@ -106,3 +106,27 @@ flowchart TD
 *   **Secrets:** Move database credentials and JWT secret to a `.env` file (excluded via `.gitignore`).
 *   **Dependency Strategy:** Implement a regular patch cycle using tools like **Dependabot** or **Renovate** to automatically update dependencies and flag CVEs.
 
+### Phase 6: Login Tracking & "Wow" UI Features
+*   **Location Tracking:** Capture IP Address and `User-Agent`. Save to `login_history` table.
+*   **UI Display:** Show a security widget on the Dashboard: *"Last login: Gujarat, India (Chrome) - 2 hours ago"*.
+*   **Backup Strategy:** Implement a daily automated MySQL dump script (`mysqldump`), alongside transaction log backups.
+
+### Phase 7: Structured Monitoring & Security Endpoint
+*   **Structured JSON Logging:** Instead of plain text, format your security logs as JSON objects containing `{ "userId": 123, "ip": "192.168.1.1", "action": "FAILED_LOGIN", "timestamp": "..." }`. This allows easy integration with SIEM tools.
+*   **Monitoring:** Log all `401`, `403`, and `429` errors to a rolling `security.json` log.
+*   **Security Test Endpoint:** Create `/api/security/test` (accessible by anyone). It returns a JSON summary of active headers, user IP, and rate-limit status for live demonstrations.
+
+---
+
+## 5. OWASP Top 10 Alignment Checklist
+
+*   [x] **A01: Broken Access Control** -> `@PreAuthorize`, strictly enforced Repository-level isolation, Role Hierarchy, and Logout Revocation.
+*   [x] **A02: Cryptographic Failures** -> BCrypt, HSTS, HttpOnly cookies, Token Rotation, and **Encryption at Rest**.
+*   [x] **A03: Injection** -> Parameterized queries and strict Input Sanitization/Escaping.
+*   [x] **A04: Insecure Design** -> Addressed by this layered blueprint, Threat Model, and Double-Submit CSRF.
+*   [x] **A05: Security Misconfiguration** -> `.env` Secrets Management, strict CSP, `nosniff`, and **Strict CORS rules**.
+*   [x] **A06: Vulnerable/Outdated Components** -> Routine `mvn dependency:check` and automated **Dependabot patch cycles**.
+*   [x] **A07: Identification & Auth Failures** -> Account Lockout (5 attempts), Generic Errors, and Location tracking.
+*   [x] **A08: Software & Data Integrity Failures** -> Tamper-evident hash chaining with automated verification.
+*   [x] **A09: Security Logging & Monitoring** -> **Structured JSON logs** and login history auditing.
+*   [x] **A10: Server-Side Request Forgery (SSRF)** -> N/A.
