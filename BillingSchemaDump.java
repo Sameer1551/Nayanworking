@@ -10,3 +10,7 @@ public class BillingSchemaDump {
               System.out.println("=== " + table + " ===");
               System.out.println(rs.getString(2));
             }
+          }
+        }
+      }
+    }
