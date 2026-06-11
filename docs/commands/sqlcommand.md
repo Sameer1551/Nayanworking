@@ -37,3 +37,16 @@ SELECT * FROM inventory_items WHERE product_name LIKE '%Frame%';
 
 -- RETURNS
 SELECT * FROM sales_returns ORDER BY return_date DESC;
+SELECT * FROM purchase_returns ORDER BY return_date DESC;
+
+-- SYSTEM STATE (Numbering/IDs)
+SELECT * FROM numbering_state;
+
+-- SYSTEM MAINTENANCE (CAUTION!)
+-- DELETE FROM billing_products;
+-- DELETE FROM billing_records;
+-- ALTER TABLE billing_records AUTO_INCREMENT = 1;
+
+
+
+
