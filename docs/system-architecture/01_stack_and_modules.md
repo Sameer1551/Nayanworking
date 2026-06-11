@@ -26,3 +26,31 @@
 | Purchase History | `/supplier/purchase-history` | View/edit/delete purchases |
 | Purchase Return | `/supplier/purchase-return` | Return goods to supplier |
 | Inventory | `/supplier/inventory` | Stock tracking |
+| New Billing | `/supplier/billing` | Create sales invoice |
+| Billing Records | `/supplier/billing-records` | Sales history |
+| Customers | `/supplier/customers` | Customer management |
+| Sales Return | `/supplier/sales-return` | Return from customer |
+
+---
+
+## 🏢 Branch Codes
+
+| Branch Name | Code |
+|-------------|------|
+| Junglighat | JUNG |
+| Bathubasti | BATH |
+| Diglipur | DIGL |
+| Mayabunder | MAYA |
+| Rangat | RANG |
+| Havelock | HAVE |
+| Neil Island | NEIL |
+
+---
+
+## 🔐 Authentication Flow
+
+```
+User opens app (/)
+    ↓
+authService.isAuthenticated()  (checks sessionStorage for token)
+    ↓
