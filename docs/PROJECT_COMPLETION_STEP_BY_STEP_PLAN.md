@@ -70,3 +70,27 @@ Status legend:
 | 37 | ?? Partial | Build appointment or eye-test booking | Booking page exists, but backend appointment workflow is still pending |
 
 ## Phase 6. Turn The Public Site Into A Real Catalog
+
+| Step | Status | Task | What Is Left |
+|------|--------|------|--------------|
+| 38 | ? Pending | Decide the public catalog data model | Still not finalized |
+| 39 | ? Pending | Connect category pages to live data | Public category pages are still mostly static |
+| 40 | ? Pending | Build product detail and search pages | Missing |
+| 41 | ? Pending | Decide whether online ordering is in scope | Still open |
+
+## Phase 7. Add Business Polish And Launch Readiness
+
+| Step | Status | Task | What Is Left |
+|------|--------|------|--------------|
+| 42 | ? Pending | Add print, PDF, and return documents | Missing |
+| 43 | ? Pending | Add alerts and notifications | Missing |
+| 44 | ? Pending | Test the complete transaction loop | Still needs a full acceptance pass |
+| 45 | ?? Partial | Remove dead fallback logic | Purchase service reviewed; purchase history/customers still need cleanup |
+| 46 | ?? Partial | Do the final documentation pass | Main docs updated again, but final launch docs are still not complete |
+
+## Shortest High-Value Build Order From Here
+
+1. Lock down backend security.
+2. Fix billing contract gaps, especially invoice numbering and product source.
+3. Finish the return modules from file-backed to full backend persistence if you want DB-first consistency.
+4. Remove old localStorage/file fallback logic from purchase history and customers.
