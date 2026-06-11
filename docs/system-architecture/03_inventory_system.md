@@ -122,3 +122,34 @@ Creates PurchaseReturnRecord (in memory + localStorage)
 ❌ MISSING: inventoryItem.quantity -= returnQty   ← stock NOT deducted
 ❌ MISSING: POST to backend API
 ```
+
+> ⚠️ **Impact**: After a Sales Return, the inventory shows lower stock than actual physical stock. After a Purchase Return, inventory shows higher stock than actual physical stock. Both cause inaccurate stock levels.
+
+---
+
+## 🖥️ Frontend Inventory Service
+
+**File**: `src/services/inventoryService.ts`
+
+Key methods:
+```typescript
+inventoryService.refreshInventory()    // Fetches all inventory from backend
+inventoryService.addStock(productCode, qty)    // Increment stock
+inventoryService.removeStock(productCode, qty) // Decrement stock
+inventoryService.getInventory()        // Get current in-memory state
+```
+
+> These frontend methods exist but the **return pages do not call them**.
+
+---
+
+## ⚠️ Known Field Naming Inconsistency
+
+| TypeScript (`inventory.ts`) | Java (`InventoryItem.java`) |
+|-----------------------------|-----------------------------|
+| `currentStock` | `quantity` |
+| `movements[]` (array defined) | ❌ Not in Java entity |
+| `unitCost` | `purchasePrice` |
+| `estimatedSalesPrice` | `sellingPrice` |
+
+The TypeScript type has more fields than the backend entity, causing partial data mapping.
