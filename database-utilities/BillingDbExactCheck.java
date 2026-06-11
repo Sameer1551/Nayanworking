@@ -10,3 +10,7 @@ public class BillingDbExactCheck {
           while (rs.next()) {
             System.out.println("id=" + rs.getLong(1) + ", bill=" + rs.getString(2));
           }
+        }
+      }
+    }
+  }
