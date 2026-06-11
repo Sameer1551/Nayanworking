@@ -74,3 +74,20 @@
     "uniqueSupplierKey": "SUP-HAVE-006",
     "isActive": true,
     "createdAt": "2024-04-20T11:15:00Z",
+    "branch": "Havelock",
+    "branchCode": "HAVE"
+  },
+  {
+    "firstName": "Deepak",
+    "lastName": "Verma",
+    "email": "deepak.neil@nayan.com",
+    "phone": "9876543216",
+    "companyName": "Nayan Eye Care - Neil Island",
+    "gstNumber": "35GGGGG6666G1Z1",
+    "uniqueSupplierKey": "SUP-NEIL-007",
+    "isActive": true,
+    "createdAt": "2024-04-20T11:30:00Z",
+    "branch": "Neil Island",
+    "branchCode": "NEIL"
+  }
+]
