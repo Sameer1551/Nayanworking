@@ -127,3 +127,46 @@ The main gap now is:
 
 - [ ] `/products/search`
 - [ ] `/product/:productCode`
+- [ ] `/offers`
+- [ ] `/cart` if online ordering is in scope
+- [ ] `/checkout` if online ordering is in scope
+- [ ] `/order-success` if online ordering is in scope
+
+### Utility Pages Still Missing
+
+- [ ] `/unauthorized`
+- [ ] `/not-found`
+
+## 7. Everything Missing Right Now In The Project
+
+### A. Backend / Security Gaps
+
+- [ ] Real JWT request-authentication filter / API protection
+- [ ] Role-based authorization on backend APIs
+- [~] Return modules exist, but are still file-backed rather than full repository-backed DB modules
+- [ ] Inventory movement / audit ledger backend
+- [ ] Supplier master backend module
+- [ ] Appointment / eye-test booking backend module
+- [ ] Invoice-number generation backend/service support for billing
+
+### B. Frontend Integration Gaps
+
+- [~] `authService.ts` is backend-first now, but backend enforcement is still open because security config is permissive
+- [ ] `NewBilling.tsx` still depends on `billingService.getNextInvoiceNumber()` which is missing
+- [ ] `NewBilling.tsx` still needs a cleaner inventory-backed product source
+- [ ] `PurchaseHistory.tsx` still contains heavy `localStorage` fallback logic
+- [ ] `Customers.tsx` still contains `localStorage` fallback logic
+- [ ] `inventoryService.ts` and the inventory page still need final contract cleanup in some endpoints/field mappings
+
+### C. Frontend / Backend Model Mismatches
+
+- [ ] Inventory field naming still needs full cleanup across UI and backend models
+- [ ] Billing items should store/use `productCode` more consistently
+- [ ] Movement-history UI still has no true backend movement source
+
+### D. Missing Supplier-Side Product Workflows
+
+- [ ] reports
+- [ ] low-stock actions
+- [ ] supplier master
+- [ ] inventory adjustments
