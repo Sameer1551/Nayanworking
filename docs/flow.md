@@ -318,3 +318,79 @@ Current implementation note:
 - the intended final system should persist both to backend tables and update inventory immediately
 
 ## 7. Data and Source-of-Truth Model
+
+The project currently uses multiple storage layers, but the desired operating model is clear:
+
+### Primary source of truth
+
+- Spring Boot APIs
+- H2 database entities and tables
+
+### Secondary or transitional support layers
+
+- JSON files in `data/`
+- `localStorage` fallbacks
+- `sessionStorage` for auth session state
+
+How the system should work long term:
+
+1. UI writes operational data to backend APIs.
+2. Backend updates database entities transactionally.
+3. Dashboard and list views read from backend APIs, not stale snapshots.
+4. JSON and browser storage remain optional backup or migration utilities, not the main runtime source.
+
+## 8. Route-to-Responsibility Map
+
+| Route | Role in the system |
+|------|---------------------|
+| `/` | Public entry and auth gateway |
+| `/spectacles`, `/sunglasses`, `/contact-lenses`, `/frames`, `/solutions` | Public catalog browsing |
+| `/supplier/dashboard` | Business summary and analytics |
+| `/supplier/purchase` | Single purchase intake |
+| `/supplier/bulk-purchase` | Multi-item purchase intake |
+| `/supplier/purchase-history` | Historical purchase management |
+| `/supplier/inventory` | Central stock view |
+| `/supplier/billing` | Create customer sale and invoice |
+| `/supplier/billing-records` | Sales history |
+| `/supplier/customers` | Customer master and merged customer insights |
+| `/supplier/sales-return` | Customer returns back into stock |
+| `/supplier/purchase-return` | Supplier returns out of stock |
+| `/supplier/data` | Placeholder management/reporting page |
+
+## 9. What "Done Correctly" Looks Like
+
+The project should behave as one continuous loop:
+
+```text
+Vendor purchase
+-> inventory increases
+-> staff sells to customer
+-> inventory decreases
+-> customer history updates
+-> returns adjust inventory correctly
+-> dashboard reports the real business position
+```
+
+If that loop is accurate, then:
+
+- stock numbers match physical stock
+- customer metrics match billing history
+- profit reporting is trustworthy
+- branch performance is comparable
+- return handling does not distort inventory or P&L
+
+## 10. Current Gaps To Close For The Full Target Flow
+
+These are the main gaps between the current codebase and the full intended system flow:
+
+- customer-side online account flow is incomplete
+- auth is still mock-first instead of fully backend-driven
+- dashboard still depends on JSON snapshots instead of live backend reads
+- sales returns do not yet restore stock through the backend
+- purchase returns do not yet deduct stock through the backend
+- returns are not yet first-class backend entities
+- inventory movement history is not yet a complete audited ledger
+
+## 11. One-Line Summary
+
+This project should work as a branch-aware eyewear retail operating system where purchases feed inventory, billing consumes inventory, returns correct inventory, customer records grow from sales activity, and the dashboard reports the live state of the business from the same underlying data.
