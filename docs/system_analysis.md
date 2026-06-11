@@ -141,3 +141,146 @@ POST /api/billing-records
 BillingRecordService.createBillingRecord()
         ├── Looks up Customer by mobileNo
         ├── Links BillingRecord ↔ Customer (FK: customer_id)
+        ├── Updates Customer: visitCount++, totalSpent, averageBillAmount, lastBillNumber, lastBillDate
+        └── reduceInventoryFromSale() → decrements InventoryItem.quantity for each product
+```
+
+**BillingRecord fields**: id, billNumber (unique), billDate, branchCode, branchName, customerName, customerContact, customerEmail, customerAddress, Eye Prescription (lensPowerRight/Left, sph/cyl/axis/pd for both eyes), subtotal, totalGst, amount, discount, advancePaid, finalPayable, paymentMethod, paymentStatus, warrantyDetails, returnPolicy, prescriptionDeliveryDate, authorizedSignatory, products (OneToMany → BillingProduct)
+
+---
+
+## 🔄 4. Return Management
+
+### Sales Return Lifecycle
+```
+Customer returns product
+        ↓
+SalesReturn.tsx → handleSaveReturn()
+        ↓
+Creates SalesReturnRecord: {
+  returnDate, originalSaleBillNo, serialNo, branch,
+  customerName/Contact/Email/Address,
+  productName/Code, category, subcategory, hsn,
+  returnQuantity, originalQuantity,
+  salePrice, outputGSTPercent, outputGSTAmount, totalAmount,
+  returnReason, remarks
+}
+        ↓
+localStorage['salesReturns']
+        ↓
+⚠️ MISSING: Should → POST /api/billing-records/{id}/return
+⚠️ MISSING: Should → inventoryService.addStock() to restore quantity
+⚠️ MISSING: Should → update financial records (reduce sales revenue)
+```
+
+### Purchase Return Lifecycle
+```
+Supplier is sent goods back
+        ↓
+PurchaseReturn.tsx → handleSaveReturn()
+        ↓
+Creates PurchaseReturnRecord: {
+  returnDate, originalPurchaseBillNo, branch,
+  materialName, productCode, category, hsn,
+  returnQuantity, originalQuantity,
+  purchasePrice, inputGSTPercent, inputGSTAmount, totalAmount,
+  returnReason, supplier: { name, address, gstin }, remarks
+}
+        ↓
+localStorage['purchaseReturns']
+        ↓
+⚠️ MISSING: Should → PUT /api/purchases/{id} to reduce quantity
+⚠️ MISSING: Should → inventoryService.removeStock() to reduce quantity
+⚠️ MISSING: Should → update financial records (reduce purchase cost)
+```
+
+---
+
+## 📊 5. Dashboard & Analytics
+
+### Data Sources (dashboardService.ts)
+```
+getDashboardData(timeFilter, year)
+  ├── readDataFile('purchase-records.json')   → PurchaseData[]
+  ├── readDataFile('billing-records.json')    → SalesData[]
+  ├── readDataFile('customer-records.json')   → Customer[]
+  └── readDataFile('inventory-records.json')  → InventoryItem[]
+```
+
+> ⚠️ **GAP**: Dashboard reads from JSON FILES (not the backend API). This means if data is only in the H2 database (not synced to JSON), the dashboard will show stale/empty data.
+
+### Profit & Loss Calculation
+```
+Net Profit = Total Sales Revenue - Cost of Goods Sold (COGS)
+
+COGS per product = (unitCost from InventoryItem × quantity_sold) + GST on cost
+                         ↑
+               Matched by productName or productCode or category
+
+Profit Margin = (Net Profit / Total Sales) × 100%
+
+Monthly Growth = (Current Month Sales - Previous Month Sales) / Previous Month Sales × 100%
+```
+
+### Summary Stats Structure
+```typescript
+SummaryStats {
+  totalPurchases: number   // Sum of purchase amounts
+  totalSales: number       // Sum of final billing amounts
+  netProfit: number        // totalSales - COGS
+  profitMargin: number     // %
+  activeCustomers: number  // Unique names from Customer + BillingRecord
+  monthlyGrowth: number    // %
+}
+```
+
+### Category Breakdown
+- **Sales**: counted by **quantity** (not monetary amount, each item sold = 1)
+- **Purchases**: aggregated by monetary amount
+- Percentage = category_sales_count / total_items_sold × 100
+
+### Branch Performance
+- Branches: DIGL, MAYA, RANG, JUNG
+- Aggregates sales + purchase amounts per branch
+- Profit per branch = branch_sales - branch_purchases
+
+---
+
+## 🚨 6. Identified Gaps & Issues
+
+### Critical Gaps
+
+| # | Gap | Location | Impact |
+|---|-----|----------|--------|
+| 1 | **Sales Return does NOT update inventory** | `SalesReturn.tsx` | Stock levels wrong after customer return |
+| 2 | **Purchase Return does NOT update inventory** | `PurchaseReturn.tsx` | Stock levels wrong after supplier return |
+| 3 | **Dashboard reads JSON files, not DB** | `dashboardService.ts` | Analytics may show stale data |
+| 4 | **Returns not stored in backend DB** | Both return pages | Data loss on localStorage clear |
+| 5 | **No `SalesReturn` entity in Java** | `src/main/java/.../entity/` | No backend support for returns |
+| 6 | **No `PurchaseReturn` entity in Java** | `src/main/java/.../entity/` | No backend support for returns |
+
+### Design Inconsistencies
+
+| # | Issue | Location |
+|---|-------|----------|
+| 1 | `SalesReturn` references `salesRecords` from localStorage but the actual sales are `BillingRecords` in DB | `SalesReturn.tsx` line 147 |
+| 2 | Inventory `movements[]` array defined in TypeScript type but NOT in Java entity | `inventory.ts` vs `InventoryItem.java` |
+| 3 | `InventoryItem.ts` has `currentStock` but Java entity uses `quantity` | Field naming inconsistency |
+| 4 | Auth is mock only (hardcoded: siddhesh@amityonline.com / Sameer123) | `authService.ts` |
+| 5 | Selling price formula in bulk purchase: `purchasePrice × 1.30` (30% margin) — hardcoded | `BulkPurchaseService.java` line 157 |
+| 6 | Single Purchase does NOT have the 30% markup logic | `PurchaseService.java` |
+| 7 | Dashboard `processSalesData` uses `amount: 1` per item (count) not actual price | `dashboardService.ts` line 133 |
+
+---
+
+## 📐 Database Schema (ER Summary)
+
+```
+purchases (id PK, purchase_bill_no UNIQUE, purchase_date, branch, material_name, 
+           product_code, product_description, category ENUM, subcategory, hsn,
+           quantity, purchase_price, input_gst_percent, input_gst_amount, total_amount,
+           supplier_name, supplier_address, supplier_gstin, remarks, created_at, updated_at)
+
+bulk_purchases (id PK, purchase_bill_no UNIQUE, purchase_date, branch,
+                supplier_name, supplier_address, supplier_gstin, remarks,
+                total_bill_amount, total_gst_amount, created_at, updated_at)
