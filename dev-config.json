@@ -7,3 +7,12 @@
         "password": "root"
       },
       "port": 3306,
+      "waitTime": 5000,
+      "maxRetries": 10
+    }
+  },
+  "backend": {
+    "springBoot": {
+      "port": 8080,
+      "waitTime": 15000,
+      "maxRetries": 20,
