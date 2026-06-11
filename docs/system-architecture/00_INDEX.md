@@ -16,3 +16,9 @@
 | [Part 4 — Customer & Sales Flow](./04_customer_sales_flow.md) | Customer sources, billing, sales lifecycle |
 | [Part 5 — Return Management](./05_return_management.md) | Sales return & purchase return lifecycle |
 | [Part 6 — Dashboard & Analytics](./06_dashboard_analytics.md) | P&L calculation, stats, branch performance |
+| [Part 7 — Database Schema & ER Diagram](./07_database_schema_er.md) | Full DB schema, Mermaid ER diagram, draw.io XML |
+| [Part 8 — Gaps, Issues & Summary](./08_gaps_and_summary.md) | Critical gaps, design inconsistencies, what works vs missing |
+
+---
+
+## 🚀 Quick Navigation
