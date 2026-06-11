@@ -427,3 +427,146 @@ erDiagram
         decimal discount
         decimal finalPayable
         string paymentMethod
+        string paymentStatus
+        string lensPowerRight
+        string lensPowerLeft
+    }
+
+    BILLING_PRODUCT {
+        bigint id PK
+        bigint billingRecordId FK
+        string productName
+        string productCode
+        string category
+        int quantity
+        decimal unitPrice
+        decimal gstPercentage
+        decimal totalPrice
+    }
+
+    SALES_RETURN {
+        string id
+        date returnDate
+        string originalSaleBillNo
+        string customerName
+        string productCode
+        int returnQuantity
+        string returnReason
+        decimal totalAmount
+    }
+
+    PURCHASE_RETURN {
+        string id
+        date returnDate
+        string originalPurchaseBillNo
+        string supplier_name
+        string productCode
+        int returnQuantity
+        string returnReason
+        decimal totalAmount
+    }
+
+    USER {
+        bigint id PK
+        string email UK
+        string passwordHash
+        string userType
+        string firstName
+        string lastName
+    }
+
+    BULK_PURCHASE ||--o{ PURCHASE_ITEM : "contains"
+    PURCHASE_ITEM }o--|| INVENTORY_ITEM : "updates stock +"
+    PURCHASE }o--|| INVENTORY_ITEM : "updates stock +"
+    BILLING_RECORD ||--o{ BILLING_PRODUCT : "contains"
+    BILLING_PRODUCT }o--|| INVENTORY_ITEM : "reduces stock -"
+    BILLING_RECORD }o--o| CUSTOMER : "linked by mobileNo"
+    CUSTOMER ||--o{ BILLING_RECORD : "has many bills"
+    BILLING_RECORD ||--o{ SALES_RETURN : "may be returned"
+    PURCHASE ||--o{ PURCHASE_RETURN : "may be returned"
+```
+
+---
+
+## 🔀 Full Data Flow Diagram (Mermaid Flowchart)
+
+```mermaid
+flowchart TD
+    subgraph AUTH["🔐 AUTH LAYER"]
+        LOGIN["Supplier Login\n(mock or JWT)"]
+    end
+
+    subgraph PURCHASE_FLOW["📥 PURCHASE FLOW"]
+        SP["Single Purchase Form\n/supplier/purchase"]
+        BP["Bulk Purchase Form\n/supplier/bulk-purchase"]
+        PH["Purchase History\n/supplier/purchase-history"]
+    end
+
+    subgraph PURCHASE_DB["💾 PURCHASE STORAGE"]
+        PDB["purchases table\n(H2 DB)"]
+        BPD["bulk_purchases table\n(H2 DB)"]
+        PIF["purchase_items table\n(H2 DB)"]
+        PJSON["purchase-records.json\n(file backup)"]
+    end
+
+    subgraph INVENTORY_DB["📦 INVENTORY"]
+        INV["inventory_items table\n(H2 DB)"]
+        INV_SVC["InventoryItem Service\n(addStock / removeStock)"]
+    end
+
+    subgraph SALES_FLOW["💰 SALES FLOW"]
+        NB["New Billing\n/supplier/billing"]
+        BR["Billing Records\n/supplier/billing-records"]
+    end
+
+    subgraph SALES_DB["💾 SALES STORAGE"]
+        BRDB["billing_records table\n(H2 DB)"]
+        BPRD["billing_products table\n(H2 DB)"]
+        BJSON["billing-records.json\n(file)"]
+    end
+
+    subgraph CUSTOMER_DB["👥 CUSTOMER"]
+        CUST["customers table\n(H2 DB)"]
+        CJSON["customer-records.json\n(file)"]
+    end
+
+    subgraph RETURNS["🔄 RETURNS"]
+        SR["Sales Return\n/supplier/sales-return"]
+        PR["Purchase Return\n/supplier/purchase-return"]
+        SRL["localStorage[salesReturns]"]
+        PRL["localStorage[purchaseReturns]"]
+    end
+
+    subgraph DASHBOARD["📊 DASHBOARD"]
+        DASH["Dashboard\n/supplier/dashboard"]
+        PL["P&L Calculation\n(Sales - COGS)"]
+        CAT["Category Breakdown\n(quantity-based)"]
+        BRANCH["Branch Performance"]
+    end
+
+    LOGIN --> SP
+    LOGIN --> BP
+    LOGIN --> NB
+
+    SP -->|"POST /api/purchases"| PDB
+    SP -->|"backup"| PJSON
+    PDB -->|"auto-create/update"| INV
+
+    BP -->|"POST /api/bulk-purchases"| BPD
+    BPD --> PIF
+    PIF -->|"auto-create/update"| INV
+
+    PH -->|"GET /api/purchases"| PDB
+
+    NB -->|"lookup inventory"| INV
+    NB -->|"POST /api/billing-records"| BRDB
+    BRDB --> BPRD
+    BRDB -->|"update customer stats"| CUST
+    BPRD -->|"deduct stock"| INV
+
+    BR -->|"GET /api/billing-records"| BRDB
+
+    SR -->|"⚠️ localStorage only"| SRL
+    SR -.->|"MISSING: should\nrestore stock"| INV
+
+    PR -->|"⚠️ localStorage only"| PRL
