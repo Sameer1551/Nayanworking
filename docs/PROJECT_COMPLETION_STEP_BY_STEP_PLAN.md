@@ -94,3 +94,25 @@ Status legend:
 2. Fix billing contract gaps, especially invoice numbering and product source.
 3. Finish the return modules from file-backed to full backend persistence if you want DB-first consistency.
 4. Remove old localStorage/file fallback logic from purchase history and customers.
+5. Build the reports and low-stock pages.
+6. Add movement ledger and stock reconciliation.
+7. Finish the customer backend workflows.
+8. Upgrade the public catalog to live data.
+
+## Practical Reading Of This Plan Right Now
+
+The biggest wins already done in the last day are:
+- supplier auth moved backend-first
+- customer portal core pages created
+- sales return core flow connected
+- purchase return core flow connected
+- dashboard frontend moved to backend API
+- purchase-service review issues fixed
+
+The biggest things still left are:
+- backend security
+- billing cleanup
+- movement ledger / stock reconciliation
+- old fallback removal from legacy supplier pages
+- reports / alerts / admin pages
+- live public catalog
