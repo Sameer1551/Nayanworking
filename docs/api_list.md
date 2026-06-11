@@ -30,3 +30,19 @@ Base URL: `/api/inventory`
 - `GET /{id}` : Get inventory item by ID
 - `POST /` : Create a new inventory record manually
 - `PUT /{id}` : Update an existing inventory record
+- `DELETE /{id}` : Delete an inventory item
+- `GET /search?searchTerm={term}` : Search inventory
+- `GET /low-stock` : Get items below minimum threshold
+- `GET /out-of-stock` : Get items with 0 stock
+- `GET /category/{category}` : Filter inventory by category
+- `PUT /{id}/add-stock` : Add stock amount to item
+- `PUT /{id}/remove-stock` : Deduct stock from item
+
+## Supplier & Purchases APIs
+Base URL: `/api/purchases`
+- `GET /` : Get list of all purchases
+- `GET /{id}` : Get purchase by ID
+- `POST /` : Record a new standalone purchase
+- `PUT /{id}` : Edit purchase record
+- `DELETE /{id}` : Delete purchase record (auto-reverses inventory)
+- `GET /search` : Search purchases via filters
