@@ -90,3 +90,95 @@ It is updated at the end of each implementation phase.
 | `repository/RefreshTokenRepository.java` | DB access with revocation & cleanup queries |
 | `service/RefreshTokenService.java` | Token issuance, validation, rotation, and revocation |
 | `dto/RefreshRequest.java` | Request body for the `/api/auth/refresh` endpoint |
+
+### Files Modified
+
+| File | Change Summary |
+|------|---------------|
+| `dto/AuthResponse.java` | Added `refreshToken` field returned on every login |
+| `service/AuthService.java` | Issues refresh tokens on login; added `refreshAccessToken()` and `logout()` |
+| `controller/AuthController.java` | Added `/api/auth/refresh` and upgraded `/api/auth/logout` |
+| `config/SecurityConfig.java` | Added Role Hierarchy (`ROLE_ADMIN > ROLE_SUPPLIER > ROLE_CUSTOMER`) |
+| `resources/application.properties` | Reduced access token lifetime to 15 min; added 7-day refresh expiry config |
+
+---
+
+### 2.1 Refresh Token Storage (MySQL-backed)
+
+**Why:** Stateless JWTs cannot be revoked — once issued, they are valid until expiry. A DB-backed refresh token table allows us to instantly invalidate any session (on logout, on suspicious activity).
+
+**How it works:**
+- On every login, two tokens are now issued: a short-lived **Access Token** (15 minutes) and a long-lived **Refresh Token** (7 days).
+- The Refresh Token is stored in the `refresh_tokens` MySQL table with fields: `token`, `user_email`, `user_type`, `expiry_date`, `revoked`, `created_at`.
+- The Access Token is short-lived so even if stolen, it expires quickly.
+
+**How to test:**
+1. Login and check the response JSON — it now contains both `token` (access) and `refreshToken`.
+2. Run `SELECT * FROM refresh_tokens;` in MySQL to see the stored token.
+
+---
+
+### 2.2 Token Rotation (Anti-Theft)
+
+**Why:** If a refresh token is stolen, an attacker could use it to get new access tokens forever. Token Rotation prevents this by invalidating the old token every time it is used.
+
+**How it works:**
+- Client calls `POST /api/auth/refresh` with the current refresh token.
+- Backend validates the token, marks it as `revoked=true` in the DB.
+- A brand-new refresh token is issued and returned alongside the new access token.
+- If an attacker tries to reuse the old token, they get a `401 Unauthorized`.
+
+**How to test:**
+1. Login and capture the `refreshToken` from the response.
+2. Call `POST /api/auth/refresh` with `{ "refreshToken": "<token>" }` — get new tokens.
+3. Call `POST /api/auth/refresh` again with the **same old token** — get `401: Refresh token has been revoked`.
+
+---
+
+### 2.3 Strict Logout Flow
+
+**Before:** `POST /api/auth/logout` simply returned a success message. Client-side token deletion was the only protection.
+
+**After:** The endpoint now extracts the user's email from the Authorization header and calls `refreshTokenService.revokeAllUserTokens(email)`. All active refresh tokens for that user are marked `revoked=true` in the DB.
+
+**How to test:**
+1. Login → capture both tokens.
+2. Call `POST /api/auth/logout` with the `Authorization: Bearer <accessToken>` header.
+3. Run `SELECT revoked FROM refresh_tokens WHERE user_email = 'your@email.com';` — all rows should show `1` (revoked).
+
+---
+
+### 2.4 Role Hierarchy
+
+**File:** `SecurityConfig.java`
+
+**Hierarchy:** `ROLE_ADMIN > ROLE_SUPPLIER > ROLE_CUSTOMER`
+
+**Why:** Without this, you need to write `hasAnyRole('ADMIN', 'SUPPLIER')` everywhere. With hierarchy, since Admin inherits Supplier, writing `hasRole('SUPPLIER')` automatically grants access to Admins too — without code duplication.
+
+**How to test:** Login as Admin and confirm you can access endpoints that only say `hasAnyRole("SUPPLIER")` — they now work for Admin automatically.
+
+---
+
+### 2.5 Access Token Lifetime Reduced
+
+**Before:** `app.jwt.expiration=86400000` (24 hours)
+
+**After:** `app.jwt.expiration=900000` (15 minutes)
+
+**Why:** Shorter-lived access tokens minimize the damage if a token is intercepted. The Refresh Token (7 days) is stored server-side and can be revoked.
+
+---
+
+## Phase 3: Tamper-Evident Audit Logging ✅ COMPLETE
+
+**Date:** 2026-04-29
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `entity/AuditLog.java` | JPA entity for the audit log with hash chaining fields |
+| `repository/AuditLogRepository.java` | DB access for fetching the log chain |
+| `service/AuditLogService.java` | Cryptographic hash chaining logic and startup verification |
+| `controller/AuditLogController.java` | Exposes `/api/admin/audit/verify` for manual verification |
