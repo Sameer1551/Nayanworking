@@ -61,3 +61,24 @@ Status legend:
 - [x] Customer bills page exists.
 - [x] Customer prescriptions page exists.
 - [x] Customer returns page exists.
+- [x] Customer eye-test booking page exists.
+- [x] Customer contact-lens reorder page exists.
+- [~] Customer portal backend depth is still incomplete for service requests, appointment workflow, and reorder processing.
+
+## Public Website Work Status
+
+- [x] Public category pages exist for spectacles, sunglasses, contact lenses, frames, and solutions.
+- [ ] Category pages are not fully connected to live product/catalog data yet.
+- [ ] Product detail page is missing.
+- [ ] Product search page is missing.
+- [ ] Offers page is missing.
+- [ ] Clear online-ordering path is still undecided or unfinished.
+
+## Operations, Alerts, and Reporting Still Missing
+
+- [ ] Low stock UI alerts.
+- [ ] Expiry date alerts.
+- [ ] Print / PDF bill output.
+- [ ] Credit-note / debit-note style return documents.
+- [ ] Email notifications.
+- [ ] WhatsApp / SMS reminders.
