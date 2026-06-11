@@ -76,3 +76,81 @@ function getHSN(category) {
 }
 
 // -------------------- POWER STEPS FOR LENSES & CONTACT LENSES --------------------
+function generatePowerSteps() {
+    const steps = [];
+    for (let p = -4.0; p <= -0.25; p += 0.25) steps.push(parseFloat(p.toFixed(2)));
+    for (let p = 0.25; p <= 4.0; p += 0.25) steps.push(parseFloat(p.toFixed(2)));
+    return steps;
+}
+
+const POWER_STEPS = generatePowerSteps(); // 32 values
+
+// -------------------- PRODUCT CATALOGUE --------------------
+let codeSpectacles = 2000;
+let codeLens = 3000;
+let codeCL = 4000;
+
+const catalogue = [];
+
+// --- SPECTACLES ---
+for (let i = 0; i < 30; i++) {
+    const brand = pick(midBrands.SPECTACLES);
+    const shape = pick(shapes);
+    const material = pick(materials);
+    const type = pick(types);
+    catalogue.push({
+        category: 'SPECTACLES',
+        productCode: `SPE-${codeSpectacles++}`,
+        materialName: `${brand} ${shape} ${i}`,
+        productDescription: `${brand} ${material} ${type} Spectacle Frame with Demo Lens`,
+        hsn: getHSN('SPECTACLES'),
+        purchasePrice: getPrice('SPECTACLES'),
+        brand,
+        shape,
+        material,
+        type,
+        color: pick(colors),
+        size: pick(sizes),
+        gender: pick(genders)
+    });
+}
+
+// --- SUNGLASSES ---
+for (let i = 0; i < 30; i++) {
+    const brand = pick(midBrands.SUNGLASSES);
+    const shape = pick(shapes);
+    const material = pick(materials);
+    const type = pick(types);
+    catalogue.push({
+        category: 'SUNGLASSES',
+        productCode: `SUN-${codeSpectacles++}`,
+        materialName: `${brand} ${shape} Sunglasses ${i}`,
+        productDescription: `${brand} ${material} ${type} Sunglasses`,
+        hsn: getHSN('SUNGLASSES'),
+        purchasePrice: getPrice('SUNGLASSES'),
+        brand,
+        shape,
+        material,
+        type,
+        color: pick(colors),
+        size: pick(sizes),
+        gender: pick(genders)
+    });
+}
+
+// --- LENS ---
+const coatings = ['ARC', 'Blue Cut', 'Photochromic', 'Anti Glare'];
+const indices = ['1.5', '1.56', '1.6', '1.67'];
+
+for (let i = 0; i < 20; i++) {
+    const coating = pick(coatings);
+    catalogue.push({
+        category: 'LENS',
+        productCode: `LNS-${codeLens++}`,
+        materialName: `Single Vision Lens`,
+        productDescription: `${coating} Lens Index ${pick(indices)}`,
+        hsn: getHSN('LENS'),
+        purchasePrice: getPrice('LENS'),
+        coating,
+        index: pick(indices)
+    });
