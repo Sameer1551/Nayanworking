@@ -91,3 +91,34 @@ foreach BillingProduct in billingRecord:
 
 ### Low Stock Warning Logic
 ```java
+if (newQuantity <= inventoryItem.getMinimumStock()) {
+    // Only prints to server console — NOT surfaced to frontend UI
+    System.out.println("WARNING: Low stock for " + product.getProductName());
+}
+```
+
+> ⚠️ Low stock alerts are only printed server-side, not sent to the frontend.
+
+---
+
+## 🔄 Stock Adjustment (Returns) — INCOMPLETE
+
+### Sales Return (Customer Returns Product)
+```
+SalesReturn.tsx → handleSaveReturn()
+    ↓
+Creates SalesReturnRecord (in memory + localStorage)
+    ↓
+❌ MISSING: inventoryItem.quantity += returnQty   ← stock NOT restored
+❌ MISSING: POST to backend API
+```
+
+### Purchase Return (Goods Sent Back to Supplier)
+```
+PurchaseReturn.tsx → handleSaveReturn()
+    ↓
+Creates PurchaseReturnRecord (in memory + localStorage)
+    ↓
+❌ MISSING: inventoryItem.quantity -= returnQty   ← stock NOT deducted
+❌ MISSING: POST to backend API
+```
