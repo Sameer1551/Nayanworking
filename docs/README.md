@@ -7,3 +7,12 @@ This directory contains all documentation files for the Nayan Eye Care project, 
 - [System Flow Diagram](SYSTEM_FLOW_DIAGRAM.md) - High-level system flow
 - [System Analysis](system_analysis.md) - Deep dive into system components
 - [Project Flow](flow.md) - Detailed project workflows
+- [Missing Features Report](MISSING_FEATURES_REPORT.md) - Status of features and pending tasks
+
+## Feature Documentation (Historical)
+> [!NOTE]
+> Some of these files may be currently unavailable in the repository but are listed for reference.
+
+### Summary Files
+- `CONTACT_LENS_DISPLAY_FIX_SUMMARY.md`
+- `CONTACT_LENS_TESTING_SUMMARY.md`
