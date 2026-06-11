@@ -187,3 +187,66 @@ function generateCatalog() {
             category: 'NON_CHARGEABLE',
             subcategory: 'PROMO',
             hsn: getHSN('NON_CHARGEABLE'),
+            purchasePrice: 0,
+            tier: 'budget'
+        });
+    }
+
+    return catalog;
+}
+
+// -------------------- SIMULATION --------------------
+const catalog = generateCatalog();
+const inventory = {};
+let purchases = [];
+let billCounter = 1;
+let idCounter = 1;
+const GST = 12;
+
+catalog.forEach((p, i) => p.supplierIndex = i % 5);
+
+// -------------------- EVERY 2 MONTH PURCHASE --------------------
+for (let month = 0; month < 12; month += 2) {
+
+    const supplierBuckets = [[], [], [], [], []];
+
+    catalog.forEach(product => {
+        let qty = 0;
+
+        if (month === 0) {
+            qty = getQuantity(product.tier);
+            inventory[product.productCode] = qty;
+        } else {
+            const current = inventory[product.productCode] || 0;
+            const sold = Math.floor(current * (rand(60, 80) / 100));
+            const remaining = current - sold;
+            qty = sold;
+            inventory[product.productCode] = remaining + qty;
+        }
+
+        if (qty > 0) {
+            supplierBuckets[product.supplierIndex].push({ product, qty });
+        }
+    });
+
+    // -------------------- CREATE PURCHASE --------------------
+    for (let s = 0; s < 5; s++) {
+        const items = supplierBuckets[s];
+        if (!items.length) continue;
+
+        const supplier = suppliers[s];
+        const billNo = `PB-2024-${String(billCounter++).padStart(4, '0')}`;
+        const purchaseDate = new Date(2024, month, rand(1, 28)).toISOString().split('T')[0];
+        const uniqueKey = randomUniqueKey();
+        const createdAt = purchaseDate;
+        const updatedAt = purchaseDate;
+
+        items.forEach(({ product, qty }) => {
+            const base = product.purchasePrice * qty;
+            const input_gst_amount = +(base * GST / 100).toFixed(2);
+            const total_amount = +(base + input_gst_amount).toFixed(2);
+
+            const record = {
+                id: idCounter++,
+                branch: supplier.branchCode,
+                category: product.category,
