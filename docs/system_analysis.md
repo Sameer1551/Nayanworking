@@ -570,3 +570,142 @@ flowchart TD
     SR -.->|"MISSING: should\nrestore stock"| INV
 
     PR -->|"⚠️ localStorage only"| PRL
+    PR -.->|"MISSING: should\ndeduct stock"| INV
+
+    DASH -->|"reads JSON files"| PJSON
+    DASH -->|"reads JSON files"| BJSON
+    DASH -->|"reads JSON files"| CJSON
+    DASH --> PL
+    DASH --> CAT
+    DASH --> BRANCH
+
+    style SR fill:#ffcccc
+    style PR fill:#ffcccc
+    style SRL fill:#ffaaaa
+    style PRL fill:#ffaaaa
+    style DASH fill:#fff3cd
+```
+
+---
+
+## 📐 Draw.io Compatible XML
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    
+    <!-- ==================== SUPPLIER / PURCHASE ==================== -->
+    <mxCell id="10" value="&lt;b&gt;Purchase (Single)&lt;/b&gt;&#xa;─────────────────&#xa;PK: id&#xa;purchaseBillNo (UNIQUE)&#xa;purchaseDate&#xa;branch&#xa;materialName&#xa;productCode&#xa;productDescription&#xa;category (ENUM)&#xa;subcategory&#xa;hsn&#xa;quantity&#xa;purchasePrice&#xa;inputGSTPercent&#xa;inputGSTAmount&#xa;totalAmount&#xa;supplierName&#xa;supplierAddress&#xa;supplierGstin&#xa;remarks" style="shape=table;startSize=30;container=0;collapsible=0;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+      <mxGeometry x="30" y="60" width="200" height="380" as="geometry" />
+    </mxCell>
+    
+    <mxCell id="20" value="&lt;b&gt;BulkPurchase&lt;/b&gt;&#xa;─────────────────&#xa;PK: id&#xa;purchaseBillNo (UNIQUE)&#xa;purchaseDate&#xa;branch&#xa;supplierName&#xa;supplierAddress&#xa;supplierGstin&#xa;remarks&#xa;totalBillAmount&#xa;totalGstAmount" style="shape=table;startSize=30;container=0;collapsible=0;fontStyle=1;align=center;resizeLast=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+      <mxGeometry x="260" y="60" width="200" height="260" as="geometry" />
+    </mxCell>
+    
+    <mxCell id="30" value="&lt;b&gt;PurchaseItem&lt;/b&gt;&#xa;─────────────────&#xa;PK: id&#xa;FK: bulkPurchaseId&#xa;materialName&#xa;productCode&#xa;productDescription&#xa;category (ENUM)&#xa;subcategory&#xa;hsn&#xa;quantity&#xa;purchasePrice&#xa;inputGSTPercent&#xa;inputGSTAmount&#xa;totalAmount&#xa;[color, size, type,&#xa; shape, material]&#xa;[lensDetail, lensCoating&#xa; design, lensIndex]&#xa;[baseCurve, diameter,&#xa; modality, waterContent]&#xa;[solutionName, variant]" style="shape=table;startSize=30;container=0;collapsible=0;fontStyle=1;align=center;resizeLast=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+      <mxGeometry x="260" y="360" width="200" height="420" as="geometry" />
+    </mxCell>
+    
+    <!-- ==================== INVENTORY ==================== -->
+    <mxCell id="40" value="&lt;b&gt;InventoryItem&lt;/b&gt;&#xa;─────────────────&#xa;PK: id&#xa;productCode (UNIQUE)&#xa;productName&#xa;category&#xa;subcategory&#xa;description&#xa;hsnCode&#xa;quantity ← STOCK&#xa;purchasePrice&#xa;sellingPrice&#xa;gstPercentage&#xa;supplierName&#xa;supplierAddress&#xa;supplierGstin&#xa;purchaseDate&#xa;expiryDate&#xa;minimumStock&#xa;maximumStock&#xa;reorderPoint&#xa;remarks" style="shape=table;startSize=30;container=0;collapsible=0;fontStyle=1;align=center;resizeLast=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+      <mxGeometry x="500" y="160" width="200" height="460" as="geometry" />
+    </mxCell>
+    
+    <!-- ==================== CUSTOMER ==================== -->
+    <mxCell id="50" value="&lt;b&gt;Customer&lt;/b&gt;&#xa;─────────────────&#xa;PK: id&#xa;branchName&#xa;branchCode&#xa;title&#xa;fullName&#xa;mobileNo (UNIQUE)&#xa;mobileNo2&#xa;gender (ENUM)&#xa;gstinNo&#xa;dateOfBirth&#xa;age&#xa;notes&#xa;email&#xa;city&#xa;anniversary&#xa;dateOfVisit&#xa;lastVisitDate&#xa;visitCount&#xa;totalSpent&#xa;averageBillAmount&#xa;lastBillNumber&#xa;lastBillDate&#xa;source (ENUM)" style="shape=table;startSize=30;container=0;collapsible=0;fontStyle=1;align=center;resizeLast=1;fillColor=#ffe6cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="740" y="60" width="200" height="500" as="geometry" />
+    </mxCell>
+    
+    <!-- ==================== BILLING RECORD ==================== -->
+    <mxCell id="60" value="&lt;b&gt;BillingRecord (Sales)&lt;/b&gt;&#xa;─────────────────&#xa;PK: id&#xa;billNumber (UNIQUE)&#xa;billDate&#xa;branchCode&#xa;branchName&#xa;customerName&#xa;customerContact&#xa;customerEmail&#xa;customerAddress&#xa;── Prescription ──&#xa;lensPowerRight&#xa;lensPowerLeft&#xa;sphRight, cylRight&#xa;axisRight, pdRight&#xa;sphLeft, cylLeft&#xa;axisLeft, pdLeft&#xa;── Billing ──&#xa;subtotal&#xa;totalGst&#xa;amount&#xa;discount&#xa;advancePaid&#xa;finalPayable&#xa;paymentMethod&#xa;paymentStatus&#xa;FK: customer_id&#xa;── Timestamps ──&#xa;createdAt, updatedAt" style="shape=table;startSize=30;container=0;collapsible=0;fontStyle=1;align=center;resizeLast=1;fillColor=#ffe6cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="980" y="60" width="210" height="580" as="geometry" />
+    </mxCell>
+    
+    <!-- ==================== BILLING PRODUCT ==================== -->
+    <mxCell id="70" value="&lt;b&gt;BillingProduct&lt;/b&gt;&#xa;─────────────────&#xa;PK: id&#xa;FK: billingRecordId&#xa;productName&#xa;productCode&#xa;category&#xa;quantity&#xa;unitPrice&#xa;gstPercentage&#xa;totalPrice" style="shape=table;startSize=30;container=0;collapsible=0;fontStyle=1;align=center;resizeLast=1;fillColor=#ffe6cc;strokeColor=#d6b656;" vertex="1" parent="1">
+      <mxGeometry x="1230" y="260" width="190" height="230" as="geometry" />
+    </mxCell>
+    
+    <!-- ==================== RETURNS ==================== -->
+    <mxCell id="80" value="&lt;b&gt;SalesReturn (localStorage)&lt;/b&gt;&#xa;─────────────────&#xa;id&#xa;returnDate&#xa;originalSaleBillNo&#xa;serialNo&#xa;branch&#xa;customerName&#xa;customerContact&#xa;productName&#xa;productCode&#xa;category&#xa;returnQuantity&#xa;originalQuantity&#xa;salePrice&#xa;outputGSTAmount&#xa;totalAmount&#xa;returnReason&#xa;remarks&#xa;&#xa;⚠️ NOT in backend DB&#xa;⚠️ NOT updating inventory" style="shape=table;startSize=30;container=0;collapsible=0;fontStyle=1;align=center;resizeLast=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+      <mxGeometry x="1230" y="530" width="200" height="420" as="geometry" />
+    </mxCell>
+    
+    <mxCell id="90" value="&lt;b&gt;PurchaseReturn (localStorage)&lt;/b&gt;&#xa;─────────────────&#xa;id&#xa;returnDate&#xa;originalPurchaseBillNo&#xa;branch&#xa;materialName&#xa;productCode&#xa;category&#xa;returnQuantity&#xa;originalQuantity&#xa;purchasePrice&#xa;inputGSTAmount&#xa;totalAmount&#xa;returnReason&#xa;supplierName&#xa;supplierGstin&#xa;remarks&#xa;&#xa;⚠️ NOT in backend DB&#xa;⚠️ NOT updating inventory" style="shape=table;startSize=30;container=0;collapsible=0;fontStyle=1;align=center;resizeLast=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+      <mxGeometry x="30" y="490" width="200" height="420" as="geometry" />
+    </mxCell>
+    
+    <!-- ==================== USER ==================== -->
+    <mxCell id="100" value="&lt;b&gt;User&lt;/b&gt;&#xa;─────────────────&#xa;PK: id&#xa;email (UNIQUE)&#xa;phone&#xa;passwordHash&#xa;userType (ENUM)&#xa;firstName&#xa;lastName&#xa;companyName&#xa;gstNumber&#xa;businessAddress&#xa;address" style="shape=table;startSize=30;container=0;collapsible=0;fontStyle=1;align=center;resizeLast=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+      <mxGeometry x="740" y="600" width="200" height="280" as="geometry" />
+    </mxCell>
+    
+    <!-- ==================== RELATIONSHIPS/ARROWS ==================== -->
+    <!-- BulkPurchase 1:N PurchaseItem -->
+    <mxCell id="r1" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERone;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="20" target="30">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <!-- Purchase → Inventory (stock +) -->
+    <mxCell id="r2" value="stock +" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#82b366;" edge="1" parent="1" source="10" target="40">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <!-- PurchaseItem → Inventory (stock +) -->
+    <mxCell id="r3" value="stock +" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#82b366;" edge="1" parent="1" source="30" target="40">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <!-- BillingRecord N:1 Customer -->
+    <mxCell id="r4" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERone;startArrow=ERmany;" edge="1" parent="1" source="60" target="50">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <!-- BillingRecord 1:N BillingProduct -->
+    <mxCell id="r5" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERone;" edge="1" parent="1" source="60" target="70">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <!-- BillingProduct → Inventory (stock -) -->
+    <mxCell id="r6" value="stock -" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#b85450;" edge="1" parent="1" source="70" target="40">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <!-- BillingRecord → SalesReturn -->
+    <mxCell id="r7" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERone;dashed=1;strokeColor=#b85450;" edge="1" parent="1" source="60" target="80">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <!-- Purchase → PurchaseReturn -->
+    <mxCell id="r8" style="edgeStyle=orthogonalEdgeStyle;endArrow=ERmany;startArrow=ERone;dashed=1;strokeColor=#b85450;" edge="1" parent="1" source="10" target="90">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+  </root>
+</mxGraphModel>
+```
+
+> **To import**: Open [draw.io](https://app.diagrams.net) → Extras → Edit Diagram → paste XML above.
+
+---
+
+## ✅ Summary: What Works vs What's Missing
+
+### ✅ Working & Implemented
+- Single purchase → backend DB → inventory auto-update ✅
+- Bulk purchase → backend DB (with items) → inventory auto-update ✅
+- New billing (sale) → backend DB → inventory auto-deduct ✅
+- Customer management (CRUD via backend) ✅
+- Purchase history (view, edit, delete from backend) ✅
+- Billing records (view from backend) ✅
+- Dashboard P&L calculations (from JSON files) ✅
+- Authentication (mock + JWT support) ✅
+- Multi-branch support ✅
+- Category breakdown (Spectacles/Sunglasses/Lens/Contact Lens/Frame/Solution) ✅
+
+### ❌ Missing / Incomplete
+- Sales Return → backend API + inventory restore ❌
+- Purchase Return → backend API + inventory restore ❌  
+- `SalesReturn` entity in Java / DB table ❌
+- `PurchaseReturn` entity in Java / DB table ❌
+- Dashboard reading from backend API (instead of JSON files) ❌
+- Inventory `movements[]` tracking in backend ❌
+- Real authentication (backend user management) ❌
+- `inventory-records.json` file generation from backend ❌
+- Return transactions affecting P&L in dashboard ❌
