@@ -182,3 +182,95 @@ It is updated at the end of each implementation phase.
 | `repository/AuditLogRepository.java` | DB access for fetching the log chain |
 | `service/AuditLogService.java` | Cryptographic hash chaining logic and startup verification |
 | `controller/AuditLogController.java` | Exposes `/api/admin/audit/verify` for manual verification |
+
+### Files Modified
+
+| File | Change Summary |
+|------|---------------|
+| `service/AuthService.java` | Wired `AuditLogService` to log successful/failed logins, signups, and logouts |
+
+---
+
+### 3.1 SHA-256 Hash Chaining (Tamper Evidence)
+
+**Why:** A traditional database log is easily editable by anyone with direct SQL access (e.g., a rogue DBA or an attacker who gained root access). We need a way to prove mathematically that a log has not been altered since it was written.
+
+**How it works:**
+- Every time an event occurs (e.g., `LOGIN_SUCCESS`), `AuditLogService.logEvent()` is called.
+- The service retrieves the `currentHash` of the most recently written log entry in the database.
+- It concatenates the new event data: `userEmail + "|" + action + "|" + timestamp + "|" + previousHash`.
+- It computes a new `SHA-256` hash of that string.
+- The record is saved. Because the new hash incorporates the *previous* hash, all records are cryptographically linked together like a blockchain.
+- If someone manually edits a record in MySQL, its data no longer matches its hash. And because the *next* record relies on that broken hash, the entire chain after the tampered record breaks.
+
+---
+
+### 3.2 Automated Startup Verification
+
+**Why:** Tampering should trigger an immediate alarm, not wait for an admin to notice.
+
+**How it works:**
+- `AuditLogService` has a `@PostConstruct` method `verifyChainOnStartup()`.
+- When the Spring Boot server starts, it pulls the entire log history.
+- It recalculates the hash for every single row and compares it to the stored hash.
+- If they match, the server logs a green `✅ Audit Log Hash Chain is INTACT`.
+- If tampering is detected, it logs a severe `🚨 CRITICAL SECURITY ALERT`.
+
+---
+
+### 3.3 Admin Verification Endpoint
+
+**File:** `AuditLogController.java`
+
+**How it works:** Admins can trigger the verification manually at any time via `GET /api/admin/audit/verify`.
+
+**How to test the tampering detection:**
+1. Restart the Spring Boot server. Check the console to see the `INTACT` message.
+2. Log in (this writes an audit log).
+3. Log out (this writes another audit log).
+4. Connect to your MySQL database and run: `UPDATE audit_logs SET action = 'LOGIN_FAILED' WHERE id = 1;`
+5. Hit the `GET /api/admin/audit/verify` endpoint (with Admin token). You will see `"status": "COMPROMISED"`.
+6. Restart the server — the console will scream `🚨 CRITICAL SECURITY ALERT: Database tampering detected!`.
+
+---
+
+## Phase 4: Dynamic Rate Limiting & Account Lockout ✅ COMPLETE
+
+**Date:** 2026-04-29
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `config/RateLimitingFilter.java` | Spring Filter implementing Bucket4j IP-based rate limits |
+
+### Files Modified
+
+| File | Change Summary |
+|------|---------------|
+| `pom.xml` | Added `bucket4j-core` dependency |
+| `entity/User.java` | Added `failedLoginAttempts` and `lockoutUntil`; implemented `isAccountNonLocked()` |
+| `entity/Customer.java` | Added `failedLoginAttempts`, `lockoutUntil`, and `isAccountNonLocked()` |
+| `service/AuthService.java` | Implemented 5-attempt lockout logic and audit logging for blocks |
+
+---
+
+### 4.1 IP-Based Rate Limiting (Bucket4j)
+
+**Why:** To prevent denial-of-service (DoS) attacks and slow down brute-force scripts.
+
+**How it works:**
+- Every API request is intercepted by `RateLimitingFilter`.
+- The filter extracts the client's IP address (handling `X-Forwarded-For` if behind a proxy).
+- It uses two separate in-memory token buckets:
+  1. **Login Bucket (`/api/auth/login`)**: Strict limit of 5 requests per minute.
+  2. **General API Bucket (`/api/**`)**: Standard limit of 100 requests per minute.
+- If the limit is exceeded, the server instantly returns `429 Too Many Requests`.
+
+---
+
+### 4.2 Account Lockout (5 Attempts)
+
+**Why:** Rate limiting protects the *server*, but a distributed botnet using many IPs could still brute-force a specific *account*. Account lockout protects the *user*.
+
+**How it works:**
