@@ -66,3 +66,17 @@ Harden the web layer.
 
 ## Open Questions
 
+1. **Email Service**: Do you have an SMTP server (like Gmail, SendGrid, or Mailgun) ready for sending OTPs?
+2. **Cookie vs Storage**: Are you comfortable moving the token to a `Cookie`? This is much more secure (prevents JS from stealing it) but requires slightly different frontend code.
+3. **MFA Enforcement**: Should we make MFA **mandatory** or **optional** for suppliers?
+
+## Verification Plan
+
+### Automated Tests
+- `mvn test` for checking login lockout logic.
+- JWT validation tests for expired/blacklisted tokens.
+
+### Manual Verification
+- Test MFA flow: Login -> Prompt for OTP -> Verify.
+- Test Device list: Login from Chrome -> Login from Firefox -> See both in "Active Sessions".
+- Test Brute Force: Attempt 6 wrong passwords -> Verify account is locked.
