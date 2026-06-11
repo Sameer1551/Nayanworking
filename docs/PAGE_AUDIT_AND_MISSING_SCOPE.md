@@ -170,3 +170,42 @@ The main gap now is:
 - [ ] low-stock actions
 - [ ] supplier master
 - [ ] inventory adjustments
+- [ ] stock audit
+- [ ] expiry alerts
+- [ ] warranty
+- [ ] users / roles
+- [ ] settings
+- [ ] supplier-side prescription center
+
+### E. Missing Customer-Side Backend Depth
+
+- [x] core customer pages now exist
+- [ ] appointment booking backend workflow
+- [ ] customer return/service-request supplier review workflow
+- [ ] reorder fulfillment workflow
+- [ ] deeper customer record/document integrations
+
+### F. Missing Public Catalog Capabilities
+
+- [ ] live product detail page
+- [ ] live search page
+- [ ] clear public catalog data model
+- [ ] full category-to-product discovery flow
+
+## 8. Best Reading Of The Current Project State
+
+Right now the repo has a strong supplier-core base and much more backend than before.
+
+What changed recently:
+- returns are no longer frontend-only
+- supplier auth is backend-first
+- customer portal core pages now exist
+- dashboard frontend reads backend API
+- purchase-service review issues were cleaned up
+
+What is still left:
+- lock down security
+- finish billing contract cleanup
+- remove leftover localStorage/file fallbacks from older supplier pages
+- build reports, alerts, settings, and admin flows
+- complete the public catalog side
