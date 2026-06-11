@@ -96,3 +96,52 @@ npm run dev:full
 powershell -ExecutionPolicy Bypass -File start-dev-environment.ps1
 
 # Using batch file
+start-dev-environment.bat
+
+# Using Node.js
+node start-dev.js
+```
+
+### Start Specific Components
+```bash
+# Start only backend (MySQL + Spring Boot)
+npm run dev:backend
+
+# Start only frontend
+npm run dev:frontend
+
+# Start only MySQL
+npm run start:mysql
+
+# Start only Spring Boot
+npm run start:springboot
+```
+
+### Skip Components
+```bash
+# Start without MySQL
+node start-dev.js --skip-mysql
+
+# Start without Spring Boot
+node start-dev.js --skip-backend
+
+# Start without frontend
+node start-dev.js --skip-frontend
+```
+
+## ⚙️ Configuration
+
+### Database Credentials
+Update `src/main/resources/application.properties` if your MySQL credentials are different:
+
+```properties
+spring.datasource.username=root
+spring.datasource.password=root
+```
+
+### Ports
+Default ports (can be changed in the scripts):
+- **Frontend**: 5173
+- **Backend**: 8080
+- **H2 Console**: 8080/h2-console
+
