@@ -514,3 +514,128 @@ localStorage['purchaseReturns'] = [..., newReturn]
 ║           │                        │ ←──────────────────── New Billing (Sale)            ║
 ║           │                   -Stock (sold)            Eye Prescription filled            ║
 ║           │                        │                   Bill generated + Saved            ║
+║           │                        │                                 │                    ║
+║           │                        │         ←────────────── Sales Return                ║
+║           │                   +Stock (returned)        Return recorded in DB             ║
+║           │                        │                   Inventory restored                ║
+║           │                        │                   Credit note issued                ║
+║           │                        │                                 │                    ║
+║           │                        │                         Customer Portal             ║
+║           │                        │                         View: bills, prescriptions  ║
+║           │                        │                         loyalty points, offers      ║
+║           │                        │                                 │                    ║
+║  ─────────┴────────────────────────┴─────────────────────────────────┴─────────────────  ║
+║                                 DASHBOARD / ANALYTICS                                    ║
+║                                 (LIVE from DB, not JSON)                                 ║
+║                                                                                           ║
+║   P&L = Purchases - Sales Returns - Purchase Returns                                     ║
+║         + Sales - Discounts - Damaged stock                                              ║
+║                                                                                           ║
+║   Metrics: Revenue / COGS / Gross Profit / Net Profit                                   ║
+║           Branch-wise / Category-wise / Date-wise                                       ║
+║           Low Stock Alerts / Reorder Suggestions                                        ║
+║           Customer Retention Rate / Top Customers                                       ║
+╚═══════════════════════════════════════════════════════════════════════════════════════════╝
+```
+
+---
+
+## 📊 Mermaid — Full System Flowchart
+
+```mermaid
+flowchart TD
+    subgraph AUTH["🔐 Auth Layer"]
+        VISIT["Visitor arrives at /"]
+        SLOGIN["Supplier Login\n(Header button)"]
+        CLOGIN["❌ Customer Login\n(Not implemented)"]
+        VISIT --> SLOGIN & CLOGIN
+    end
+
+    subgraph CUSTOMER_PUBLIC["👤 Customer Public Pages"]
+        HOME["Home Page /"]
+        CAT1["Spectacles /spectacles"]
+        CAT2["Sunglasses /sunglasses"]
+        CAT3["Contact Lenses"]
+        CAT4["Frames /frames"]
+        CAT5["Solutions /solutions"]
+        HOME --> CAT1 & CAT2 & CAT3 & CAT4 & CAT5
+    end
+
+    subgraph SUPPLIER_PANEL["🏪 Supplier Panel (Protected)"]
+        DASH["Dashboard\n/supplier/dashboard"]
+    end
+
+    subgraph PURCHASE_FLOW["📥 Purchase Flow"]
+        SP["Single Purchase\n/supplier/purchase"]
+        BP["Bulk Purchase\n/supplier/bulk-purchase"]
+        PH["Purchase History\n/supplier/purchase-history"]
+    end
+
+    subgraph INVENTORY["📦 Inventory (H2 DB)"]
+        INV["inventory_items\ntable\n(STOCK COUNTER)"]
+    end
+
+    subgraph CUSTOMER_MGMT["👥 Customer Management"]
+        CUSTR["Customers Page\n/supplier/customers"]
+        CUSTDB["customers table\n(H2 DB)"]
+    end
+
+    subgraph SALES_FLOW["💰 Sales / Billing Flow"]
+        NB["New Billing\n/supplier/billing"]
+        BR["Billing Records\n/supplier/billing-records"]
+        BRDB["billing_records +\nbilling_products\n(H2 DB)"]
+    end
+
+    subgraph RETURNS["🔄 Return Management ⚠️"]
+        SR["Sales Return\n/supplier/sales-return"]
+        PR["Purchase Return\n/supplier/purchase-return"]
+        SRL["localStorage\nsalesReturns\n❌ No DB"]
+        PRL["localStorage\npurchaseReturns\n❌ No DB"]
+    end
+
+    subgraph ANALYTICS["📊 Dashboard & Analytics"]
+        PJSON["purchase-records.json\n⚠️ File, not live DB"]
+        BJSON["billing-records.json\n⚠️ File, not live DB"]
+        CJSON["customer-records.json\n⚠️ File, not live DB"]
+        PL["P&L Calculation\nSales − COGS"]
+        BPERF["Branch Performance"]
+        CATBRD["Category Breakdown"]
+    end
+
+    VISIT --> HOME
+    SLOGIN -->|"auth success"| DASH
+    DASH --> PURCHASE_FLOW
+    DASH --> CUSTOMER_MGMT
+    DASH --> SALES_FLOW
+    DASH --> RETURNS
+
+    SP -->|"POST /api/purchases"| INV
+    BP -->|"POST /api/bulk-purchases"| INV
+    PH -->|"GET /api/purchases"| PH
+
+    NB -->|"lookup stock"| INV
+    NB -->|"POST /api/billing-records"| BRDB
+    BRDB -->|"update stats"| CUSTDB
+    BRDB -->|"deduct stock"| INV
+    BR -->|"GET /api/billing-records"| BRDB
+    CUSTR --> CUSTDB
+
+    SR -->|"⚠️ only saves to"| SRL
+    SR -.->|"❌ MISSING: restore stock"| INV
+    PR -->|"⚠️ only saves to"| PRL
+    PR -.->|"❌ MISSING: deduct stock"| INV
+
+    DASH -->|"reads files"| PJSON & BJSON & CJSON
+    PJSON & BJSON & CJSON --> PL
+    PL --> BPERF & CATBRD
+
+    style SR fill:#ffcccc,stroke:#b85450
+    style PR fill:#ffcccc,stroke:#b85450
+    style SRL fill:#ffaaaa,stroke:#b85450
+    style PRL fill:#ffaaaa,stroke:#b85450
+    style CLOGIN fill:#ffcccc,stroke:#b85450
+    style DASH fill:#fff3cd,stroke:#d6b656
+    style PJSON fill:#fff3cd,stroke:#d6b656
+    style BJSON fill:#fff3cd,stroke:#d6b656
+    style CJSON fill:#fff3cd,stroke:#d6b656
+```
