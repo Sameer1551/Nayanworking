@@ -40,3 +40,17 @@
 **How it works:**
 - The `refreshToken` is no longer sent in the JSON response body.
 - It is sent as a `Set-Cookie` header with `HttpOnly; Secure; SameSite=Strict` flags.
+- We enabled CSRF protection. Since the frontend needs to read the CSRF token, we use `CookieCsrfTokenRepository.withHttpOnlyFalse()`. The frontend (React) reads the `XSRF-TOKEN` cookie and sends it back in the `X-XSRF-TOKEN` header.
+
+---
+
+### 8.3 Device Fingerprinting (Replay Mitigation)
+
+**Why:** If an attacker steals a valid JWT, they shouldn't be able to use it from a different browser/device.
+
+**How it works:**
+- During login, we take the user's `User-Agent` and hash it using SHA-256.
+- This hash is embedded into the JWT as a `deviceFp` claim.
+- On every request, `JwtAuthFilter` re-calculates the hash from the current request's `User-Agent`.
+- If the hashes don't match, the token is rejected as a "Replay Attack."
+
