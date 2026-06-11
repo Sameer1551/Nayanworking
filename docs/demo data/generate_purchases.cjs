@@ -124,3 +124,66 @@ function generateCatalog() {
             category: 'LENS',
             subcategory: tier.toUpperCase(),
             hsn: getHSN('LENS'),
+            purchasePrice: getPrice('LENS', tier),
+            tier,
+            lensCoating: coating,
+            lensIndex: pick(indexTypes)
+        });
+    }
+
+    // CONTACT LENSES
+    const clBrands = ['Acuvue', 'Air Optix', 'Biofinity'];
+
+    for (let i = 0; i < 20; i++) {
+        const tier = pick(['mid', 'premium']);
+
+        catalog.push({
+            productCode: `CL-${code++}`,
+            materialName: `${pick(clBrands)} Monthly`,
+            productDescription: `Monthly Disposable Contact Lens`,
+            category: 'CONTACT_LENSES',
+            subcategory: tier.toUpperCase(),
+            hsn: getHSN('CONTACT_LENSES'),
+            purchasePrice: getPrice('CONTACT_LENSES', tier),
+            tier,
+            brand: pick(clBrands)
+        });
+    }
+
+    // SOLUTIONS
+    ['Renu', 'BioTrue', 'Opti-Free'].forEach(name => {
+        catalog.push({
+            productCode: `SOL-${code++}`,
+            materialName: `${name} 300ml`,
+            productDescription: `${name} Lens Solution`,
+            category: 'SOLUTIONS',
+            subcategory: 'MID',
+            hsn: getHSN('SOLUTIONS'),
+            purchasePrice: rand(200, 500),
+            tier: 'mid'
+        });
+    });
+
+    // OTHER
+    for (let i = 0; i < 10; i++) {
+        catalog.push({
+            productCode: `OTH-${code++}`,
+            materialName: `Accessory ${i}`,
+            productDescription: `Cleaning Cloth / Case`,
+            category: 'OTHER',
+            subcategory: 'BUDGET',
+            hsn: getHSN('OTHER'),
+            purchasePrice: rand(20, 100),
+            tier: 'budget'
+        });
+    }
+
+    // NON_CHARGEABLE
+    for (let i = 0; i < 5; i++) {
+        catalog.push({
+            productCode: `NC-${code++}`,
+            materialName: `Promo Item ${i}`,
+            productDescription: `Free Cleaning Kit`,
+            category: 'NON_CHARGEABLE',
+            subcategory: 'PROMO',
+            hsn: getHSN('NON_CHARGEABLE'),
