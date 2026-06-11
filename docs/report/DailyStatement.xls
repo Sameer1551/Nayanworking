@@ -518,3 +518,129 @@
         <td colspan="8" align="left" style="font-weight: bold;"><h4>Expenses Payments</h4></td>
     </tr>
     <tr>
+        <td class="tableHeader">Sl no</td>
+        <td class="tableHeader">Date</td>
+        <td class="tableHeader">Sales Staff</td>
+        <td class="tableHeader">Voucher Number</td>
+        <td class="tableHeader">Purpose</td>
+        <td class="tableHeader">Remarks</td>
+        <td class="tableHeader">Payment Mode</td>
+        <td class="tableHeader">Payment Amount</td>
+    </tr><tr><td colspan="8" align="center">No Data Found</td></tr><tr>
+            <td class="tableHeader" colspan="5"><b>TOTAL EXPENSES<br>0.00</b></td>
+            <td class="tableHeader">TOTAL</td>
+            <td class="tableRow"></td>
+            <td class="tableRow"></td>
+    </tr>
+    <tr><td colspan="8" style="color: #FF0000; font-style: italic;">*Data displayed in the expense payments table is as per expense payment date.</td></tr>
+</table><br><table width=500><tr>
+        <td colspan="6" align="left" style="font-weight: bold;"><h4>Insurances</h4></td>
+    </tr>
+    <tr>
+        <td class="tableHeader">Sl no</td>
+        <td class="tableHeader">Date</td>
+        <td class="tableHeader">Order Number</td>
+        <td class="tableHeader">Customer Name</td>
+        <td class="tableHeader">Insurance Scheme<br>Name</td>
+        <td class="tableHeader">Insurance Scheme Number /<br>Insurance Number</td>
+        <td class="tableHeader">Pre-Authorised<br>Details</td>
+        <td class="tableHeader">Claim Amount</td>
+        <td class="tableHeader">Claim Amount<br>Received</td>
+        <td class="tableHeader">Claim Number</td>
+        <td class="tableHeader">Status</td>
+    </tr><tr><td colspan="11" align="center">No Data Found</td></tr><tr>
+                <td class="tableHeader" colspan="6"><b>TOTAL INSURANCE CLAIM RECEIVED<br>0.00</b></td>
+                <td class="tableHeader">TOTAL</td>
+                <td class="tableRow" align="left">0.00</td>
+                <td class="tableRow" align="left">0.00</td>
+                <td class="tableRow"></td>
+                <td class="tableRow"></td></tr>
+    </table><br><table width=500><tr>
+        <td colspan="4" align="left" style="font-weight: bold;"><h4>Payment Summary</h4></td>
+    </tr><tr style="font-weight: bold; background-color: #C9C9C9; font-size: 10px;">
+        <td class="tableHeader" color="black">Payment Mode</td>
+        <td class="tableHeader" color="black">Collected Payment</td>
+        <td class="tableHeader" color="black">Return Payment</td>
+        <td class="tableHeader" color="black">Difference</td>
+    </tr><tr>
+        <td class="tableRow" color="black">CASH</td>
+        <td class="tableRow" color="black">14800.00</td>
+        <td class="tableRow" color="black">0.00</td>
+        <td class="tableRow" color="black">14800.00</td>
+    </tr><tr>
+        <td class="tableRow" color="black">CARD</td>
+        <td class="tableRow" color="black">1000.00</td>
+        <td class="tableRow" color="black">0.00</td>
+        <td class="tableRow" color="black">1000.00</td>
+    </tr><tr>
+        <td class="tableRow" color="black">GPAY</td>
+        <td class="tableRow" color="black">20400.00</td>
+        <td class="tableRow" color="black">0.00</td>
+        <td class="tableRow" color="black">20400.00</td>
+    </tr><tr style="font-weight: bold; background-color: #C9C9C9; font-size: 9px;" align="center">
+        <td class="tableRow" color="black">TOTAL</td>
+        <td class="tableRow" color="black">36200.00</td>
+        <td class="tableRow" color="black">0.00</td>
+        <td class="tableRow" color="black">36200.00</td>
+    </tr></table><table width=500 ><tr>
+        <td colspan="2" align="left" style="font-weight: bold;"><h4>Other Summary</h4></td>
+    </tr>
+            <tr style="font-weight: bold; background-color: #C9C9C9; font-size: 10px;">
+                <td class="tableRow" colspan="2" width="40%" color="black">Customer Credit</td>
+                <td class="tableRow" width="60%" color= "black">0.00</td>
+            </tr></table><br><table width=500 ><tr>
+        <td colspan="6" align="left" style="font-weight: bold;"><h4>Sales Summary</h4></td>
+    </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total No. of Sales</td>
+            <td class="tableRow" width="60%">15</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Sales</td>
+            <td class="tableRow" width="60%">Rs 34464.00</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Item Discount</td>
+            <td class="tableRow" width="60%">Rs 0.00</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Cart Discount</td>
+            <td class="tableRow" width="60%">Rs 2889.00</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Loyalty Points Amount</td>
+            <td class="tableRow" width="60%">Rs 0.00</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Discount Coupon</td>
+            <td class="tableRow" width="60%">Rs 0.00</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Gross Sales</td>
+            <td class="tableRow" width="60%">Rs 31575.00</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Tax</td>
+            <td class="tableRow" width="60%">Rs 3383.00</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Additional Tax</td>
+            <td class="tableRow" width="60%">Rs 0.00</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Round Off</td>
+            <td class="tableRow" width="60%">Rs 0.00</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Net Sales</td>
+            <td class="tableRow" width="60%">Rs 28192.00</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Sales Return</td>
+            <td class="tableRow" width="60%">Rs 0.00</td>
+        </tr>
+        <tr style="font-size: 10px;">
+            <td class="tableRow" colspan="2" width="40%">Total Final Sales</td>
+            <td class="tableRow" width="60%">Rs 28192.00</td>
+        </tr>
+        <tr><td colspan="3" style="color: #FF0000; font-style: italic;">*Data displayed in the sales summary table is as per order date.</td></tr></table></body></HTML>
