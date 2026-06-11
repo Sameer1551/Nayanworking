@@ -238,3 +238,83 @@ Routes:
 
 - `/supplier/billing`
 - `/supplier/billing-records`
+
+Purpose:
+
+- sell products to customers
+- generate invoice data
+- reduce stock
+- update customer business history
+
+Expected billing flow:
+
+1. Staff select or identify the customer.
+2. Staff add products from available inventory.
+3. The system calculates pricing, GST, discount, advance, and final payable amount.
+4. Prescription details can be attached to the bill.
+5. Billing record and billing product rows are saved.
+6. Inventory quantities are reduced.
+7. Customer stats are updated:
+   - visit count
+   - total spent
+   - average bill
+   - latest visit and bill references
+8. The bill becomes available in sales history and downstream reporting.
+
+This is the downstream consumer of inventory and the upstream source for customer analytics.
+
+### 6.5 Customer Management
+
+Route: `/supplier/customers`
+
+Purpose:
+
+- maintain customer master data
+- merge direct customer records with sales history
+
+How this should work:
+
+1. Load customer master records from the backend.
+2. Load billing records that reference customers.
+3. Merge them by mobile number.
+4. Present a unified customer view with lifetime value and visit history.
+5. Allow create, edit, delete, search, and branch-aware management.
+
+Current implementation note:
+
+- the customer page already mixes backend and local/file persistence paths
+- the merged view is one of the stronger business flows already present in the repo
+
+### 6.6 Returns Management
+
+Routes:
+
+- `/supplier/sales-return`
+- `/supplier/purchase-return`
+
+These two flows are essential because they close the stock accuracy loop.
+
+Sales return should work like this:
+
+1. Find the original sale or bill.
+2. Select the returned product and quantity.
+3. Save a sales return record.
+4. Restore inventory quantity.
+5. Update customer and reporting impact.
+6. Generate refund or credit-note style downstream effects if needed.
+
+Purchase return should work like this:
+
+1. Find the original purchase.
+2. Select the returned-to-vendor item and quantity.
+3. Save a purchase return record.
+4. Deduct inventory quantity.
+5. Update cost and reporting impact.
+6. Generate debit-note style downstream effects if needed.
+
+Current implementation note:
+
+- both return pages currently rely on `localStorage`
+- the intended final system should persist both to backend tables and update inventory immediately
+
+## 7. Data and Source-of-Truth Model
