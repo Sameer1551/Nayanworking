@@ -274,3 +274,95 @@ It is updated at the end of each implementation phase.
 **Why:** Rate limiting protects the *server*, but a distributed botnet using many IPs could still brute-force a specific *account*. Account lockout protects the *user*.
 
 **How it works:**
+- When a user enters the wrong password, `failedLoginAttempts` increments.
+- If it reaches 5, `lockoutUntil` is set to `now + 15 minutes`.
+- For the next 15 minutes, `user.isAccountNonLocked()` returns `false`, and `AuthService` explicitly rejects the login attempt even if the correct password is provided.
+- An `ACCOUNT_LOCKED` audit log is written.
+- If a successful login occurs *before* 5 failures, the counter resets to 0.
+
+**How to test:**
+1. Try logging into an account with the wrong password 5 times.
+2. Observe the error changes to: `"Account is temporarily locked due to too many failed attempts. Try again in 15 minutes."`
+3. Check the `audit_logs` table to see the `LOGIN_FAILED` and `ACCOUNT_LOCKED` events forming an intact hash chain.
+
+---
+
+## Phase 5: Encryption at Rest & Secure Configuration ✅ COMPLETE
+
+**Date:** 2026-04-29
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `util/AttributeEncryptor.java` | JPA Converter for AES-256 field-level encryption |
+| `.env.example` | Template for required production secrets |
+| `.github/dependabot.yml` | Automated dependency vulnerability scanning |
+
+### Files Modified
+
+| File | Change Summary |
+|------|---------------|
+| `entity/User.java` | Added `@Convert` to encrypt `uniqueSupplierKey` |
+| `entity/Customer.java` | Added `@Convert` to encrypt `uniqueKey` |
+| `resources/application.properties` | Replaced hardcoded secrets with `${ENV_VAR}` fallbacks |
+
+---
+
+### 5.1 AES-256 Field Level Encryption
+
+**Why:** If the database is compromised, highly sensitive PII and tenant-isolation keys must not be readable in plain text. 
+
+**How it works:**
+- We created `AttributeEncryptor` which implements `AttributeConverter<String, String>`.
+- It uses the `AES` cipher with a 256-bit key provided by the `ENCRYPTION_KEY` environment variable.
+- We annotated `uniqueSupplierKey` (User) and `uniqueKey` (Customer) with `@Convert(converter = AttributeEncryptor.class)`.
+- When Hibernate saves these entities, it transparently encrypts these fields. When it reads them, it decrypts them. The Java application only ever sees the plain text.
+
+---
+
+### 5.2 Secrets Management
+
+**Why:** Hardcoding database passwords and JWT secrets in `application.properties` is a massive security risk if the repository is ever exposed.
+
+**How it works:**
+- `application.properties` now uses Spring's expression language for secrets: `${DB_PASSWORD:root}`.
+- In production, these are passed as OS environment variables (e.g., `export DB_PASSWORD=prod_secure_password`).
+- A `.env.example` file was created to document the required variables without exposing actual secrets to source control.
+
+---
+
+### 5.3 Automated Dependency Management
+
+**Why:** Outdated dependencies (like a vulnerable version of Log4j or an old JSON parser) are the #1 cause of major breaches.
+
+**How it works:**
+- We added `.github/dependabot.yml`.
+- If this project is hosted on GitHub, Dependabot will scan the `pom.xml` weekly.
+- If a vulnerability (CVE) is discovered in any dependency, it will automatically generate a Pull Request to patch it.
+
+---
+
+## Phase 6: Login Tracking & "Wow" UI Features ✅ COMPLETE
+
+**Date:** 2026-04-29
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `entity/LoginHistory.java` | JPA entity storing IP, User-Agent, and timestamp |
+| `repository/LoginHistoryRepository.java` | DB access for login history records |
+| `service/LoginHistoryService.java` | IP extraction, User-Agent parsing, and string formatting |
+| `backup_db.bat` | Automated daily MySQL backup script |
+
+### Files Modified
+
+| File | Change Summary |
+|------|---------------|
+| `service/AuthService.java` | Passed `HttpServletRequest` to record logins; added `lastLoginDetails` |
+| `dto/AuthResponse.java` | Added `lastLoginDetails` field for the frontend UI |
+| `controller/AuthController.java` | Injected `HttpServletRequest` into the login endpoint |
+
+---
+
