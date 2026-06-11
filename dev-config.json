@@ -25,3 +25,12 @@
       "command": "npm run dev"
     }
   },
+  "logging": {
+    "enabled": true,
+    "level": "info",
+    "colors": true
+  },
+  "timeouts": {
+    "mysqlStartup": 5000,
+    "springBootStartup": 15000,
+    "connectionTest": 3000
