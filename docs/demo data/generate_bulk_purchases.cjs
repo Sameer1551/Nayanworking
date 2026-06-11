@@ -154,3 +154,81 @@ for (let i = 0; i < 20; i++) {
         coating,
         index: pick(indices)
     });
+}
+
+// --- CONTACT LENSES ---
+for (let i = 0; i < 12; i++) {
+    const brand = pick(midBrands.CONTACT_LENSES);
+    catalogue.push({
+        category: 'CONTACT_LENSES',
+        productCode: `CL-${codeCL++}`,
+        materialName: `${brand} Monthly`,
+        productDescription: `Monthly Disposable Contact Lens`,
+        hsn: getHSN('CONTACT_LENSES'),
+        purchasePrice: getPrice('CONTACT_LENSES'),
+        brand
+    });
+}
+
+// Assign each catalogue item to a supplier
+catalogue.forEach((p, i) => {
+    p.supplierIndex = i % 5;
+});
+
+// -------------------- SIMULATION STATE --------------------
+const GST = 12;
+const bulkPurchases = [];   // parent records
+const purchaseItems = [];   // child records
+let billCounter = 1;
+let bulkPurchaseIdCounter = 1;
+
+// Track inventory per product+power
+const inventory = {};
+
+// -------------------- PURCHASE CYCLES --------------------
+// Cycle 1: Initial bulk buy (50-100 qty)
+// Cycle 2: After 2 months — sell 60-80%, replenish
+// Cycle 3: After 4 months — replenish again
+
+const cycles = [
+    { label: 'Initial bulk purchase - high stock', highQty: true,  sellPercent: null },
+    { label: 'Post-sales replenishment',             highQty: false, sellPercent: 70   },
+    { label: 'Replenishment cycle 2',                highQty: false, sellPercent: 65   }
+];
+
+cycles.forEach((cycle) => {
+
+    // Group items by supplier for this cycle
+    const supplierBuckets = [[], [], [], [], []];
+    catalogue.forEach(product => {
+        supplierBuckets[product.supplierIndex].push(product);
+    });
+
+    // Create one bulk_purchase per supplier per cycle
+    for (let s = 0; s < 5; s++) {
+        const items = supplierBuckets[s];
+        if (!items.length) continue;
+
+        const supplier = allSuppliers[s];
+        const billNo = `BB-2024-${String(billCounter++).padStart(4, '0')}`;
+        const purchaseDate = nearbyDate();
+        const uniqueKey = randomUniqueKey();
+
+        let cycleTotalAmount = 0;
+        let cycleTotalGst = 0;
+
+        const cycleBulkPurchaseId = bulkPurchaseIdCounter++;
+
+        // Process all items for this supplier in this cycle
+        items.forEach(product => {
+
+            if (product.category === 'LENS' || product.category === 'CONTACT_LENSES') {
+                // Each power step = one line item
+                POWER_STEPS.forEach(power => {
+                    let qty;
+
+                    if (cycle.highQty) {
+                        qty = rand(50, 100);
+                    } else {
+                        const key = `${product.productCode}_${power}`;
+                        const currentStock = inventory[key] || 0;
