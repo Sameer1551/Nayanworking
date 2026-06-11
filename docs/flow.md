@@ -158,3 +158,83 @@ Current implementation note:
 - this means analytics can lag behind the live backend database
 
 ### 6.2 Purchase Intake
+
+Routes:
+
+- `/supplier/purchase`
+- `/supplier/bulk-purchase`
+- `/supplier/purchase-history`
+
+Purpose:
+
+- record stock coming in from vendors
+- create the upstream source for inventory availability
+
+Expected purchase flow:
+
+```mermaid
+flowchart LR
+    A[Vendor invoice or supplier order] --> B[Purchase form]
+    B --> C{Single or bulk?}
+    C -- Single --> D[Create purchase record]
+    C -- Bulk --> E[Create bulk purchase and item rows]
+    D --> F[(Purchase tables)]
+    E --> F
+    F --> G[Update inventory quantities]
+    G --> H[Inventory available for billing]
+```
+
+Operational rules:
+
+- every purchase must create or update inventory
+- `productCode` should be the main stock identity
+- stock increases after successful purchase save
+- purchase history should allow review, edit, and deletion with inventory consistency
+
+Current implementation note:
+
+- single and bulk purchase flows are wired through frontend services
+- local and file fallbacks still exist in purchase-related code for resilience
+
+### 6.3 Inventory Hub
+
+Route: `/supplier/inventory`
+
+Inventory should be the central stock ledger for the entire system.
+
+Stock movement rules:
+
+- Purchase increases stock
+- Bulk purchase increases stock
+- Billing decreases stock
+- Sales return increases stock
+- Purchase return decreases stock
+- Manual adjustments, if added, should create an audit trail
+
+```mermaid
+flowchart TD
+    A[Single purchase] --> E[(Inventory)]
+    B[Bulk purchase] --> E
+    E --> C[Billing sale]
+    D[Sales return] --> E
+    E --> F[Purchase return]
+    E --> G[Dashboard and stock alerts]
+```
+
+Target behavior:
+
+- inventory must stay in sync with every business event
+- low stock, out of stock, and reorder-needed states should be visible in UI
+- movement history should be traceable for auditing
+
+Current implementation note:
+
+- the inventory service already exposes stock update methods
+- return pages do not yet complete the inventory adjustment loop
+
+### 6.4 Billing and Sales
+
+Routes:
+
+- `/supplier/billing`
+- `/supplier/billing-records`
