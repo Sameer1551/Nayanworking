@@ -28,3 +28,13 @@ Good — open-source only. That works well; some of the best security tooling is
   ---
   Approach C: Full Enterprise Simulation
   B + simulates enterprise features:
+  - Token introspection endpoint (RFC 7662)
+  - API scope-based access control (OAuth2-style)
+  - Client certificate pinning
+  - Zero-trust supplier key verification per request
+
+  Visible proof: Security certification page, compliance report generation.
+
+  ---
+  My recommendation: Approach B for your goals — it's the best balance of real security
+  value + visible proof points without over-engineering.
