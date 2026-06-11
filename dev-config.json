@@ -34,3 +34,10 @@
     "mysqlStartup": 5000,
     "springBootStartup": 15000,
     "connectionTest": 3000
+  },
+  "autoStart": {
+    "mysql": true,
+    "springBoot": true,
+    "frontend": true
+  }
+}
