@@ -32,3 +32,20 @@ Harden the system against common automated attacks.
 
 - **Brute Force Protection**: Account lockout after 5 consecutive failed attempts (with incremental cooldown).
 - **Rate Limiting**: Limit API requests per IP (e.g., max 10 login attempts per minute).
+- **JWT Refresh Tokens**: Move to short-lived Access Tokens (15m) and long-lived Refresh Tokens (7d) to minimize damage from stolen tokens.
+
+### 4. Advanced Audit Logging
+Maintain a tamper-proof record of sensitive actions.
+
+- **AuditLog Entity**: Record `timestamp`, `user_id`, `action`, `ip_address`, `status`, and `entity_affected`.
+- **Sensitive Operations**: Log every login, password change, GST update, and bulky purchase.
+
+### 5. Infrastructure & Headers
+Harden the web layer.
+
+- **Security Headers**: Implement `Content-Security-Policy` (CSP), `Strict-Transport-Security` (HSTS), and `X-Frame-Options`.
+- **HttpOnly Cookies**: Transition from `localStorage` to `Secure; HttpOnly; SameSite=Strict` cookies for storing JWTs to eliminate XSS-based token theft.
+
+---
+
+## Detailed Component Breakdown
