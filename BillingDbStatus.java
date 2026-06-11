@@ -7,3 +7,6 @@ public class BillingDbStatus {
         try (ResultSet rs = st.executeQuery("SHOW TABLE STATUS LIKE 'billing_records'")) {
           while (rs.next()) {
             System.out.println("Rows=" + rs.getString("Rows") + ", Auto_increment=" + rs.getString("Auto_increment"));
+          }
+        }
+      }
