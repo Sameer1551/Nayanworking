@@ -56,3 +56,32 @@ inventoryService.refreshInventory()  (refresh frontend state cache)
 **Frontend**: `src/pages/supplier/BulkPurchase.tsx`  
 **Service**: `src/services/bulkPurchaseService.ts`  
 **Backend**: `BulkPurchaseService.java` → `BulkPurchaseController.java`  
+**DB Tables**: `bulk_purchases` + `purchase_items`
+
+```
+User fills Bulk Purchase Form (1 bill → multiple products)
+        ↓
+bulkPurchaseService.createBulkPurchase(bulkPurchaseData)
+        ↓
+  → POST /api/bulk-purchases  (backend REST endpoint)
+  → Creates BulkPurchase header record
+  → Creates child PurchaseItems (cascade save)
+  → For EACH PurchaseItem:
+       findByProductCode() in inventory_items
+       ├── if EXISTS → quantity += soldQty
+       └── if NEW → create InventoryItem (sellingPrice = purchasePrice × 1.30)
+```
+
+> ⚠️ **Note**: The 30% markup for selling price is **hardcoded** in `BulkPurchaseService.java` line 157.  
+> Single purchases do NOT apply this markup.
+
+### BulkPurchase Header Fields
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `purchaseBillNo` | string | **UNIQUE** |
+| `purchaseDate` | date | |
+| `branch` | string | |
+| `supplierName` | string | |
+| `supplierAddress` | string | |
+| `supplierGstin` | string | |
