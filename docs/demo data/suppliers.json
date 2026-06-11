@@ -36,3 +36,22 @@
     "isActive": true,
     "createdAt": "2024-04-20T10:30:00Z",
     "branch": "Diglipur",
+    "branchCode": "DIGL"
+  },
+  {
+    "firstName": "Priya",
+    "lastName": "Singh",
+    "email": "priya.maya@nayan.com",
+    "phone": "9876543213",
+    "companyName": "Nayan Eye Care - Mayabunder",
+    "gstNumber": "35DDDDD3333D1Z8",
+    "uniqueSupplierKey": "SUP-MAYA-004",
+    "isActive": true,
+    "createdAt": "2024-04-20T10:45:00Z",
+    "branch": "Mayabunder",
+    "branchCode": "MAYA"
+  },
+  {
+    "firstName": "Vikram",
+    "lastName": "Aditya",
+    "email": "vikram.rang@nayan.com",
